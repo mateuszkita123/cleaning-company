@@ -134,6 +134,24 @@
               ">
             <a href="/zespoly">Zespoły</a>
           </li>
+          <li class="
+                <%=
+                typeof
+                page
+                !==
+                'undefined'
+                &&
+                page
+                ===
+                'clients'
+                ?
+                'active'
+                :
+                ''
+                %>
+              ">
+            <a href="/klienci">Klienci</a>
+          </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <% if(!currentUser){ %>

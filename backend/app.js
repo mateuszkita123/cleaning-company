@@ -18,6 +18,7 @@ const invoicesRoutes = require("./routes/invoices");
 const invoicesDataRoutes = require("./routes/invoicesData");
 const teamsRoutes = require("./routes/teams");
 const accountRoutes = require("./routes/account");
+const clientsRoutes = require("./routes/clients");
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use(function (req, res, next) {
 app.use("/", indexRoutes);
 app.use("/konto", accountRoutes);
 app.use("/uslugi", servicesRoutes);
+app.use("/klienci", clientsRoutes);
 app.use("/faktury", invoicesRoutes);
 app.use("/zespoly", teamsRoutes);
 app.use("/uzytkownicy", usersRoutes);

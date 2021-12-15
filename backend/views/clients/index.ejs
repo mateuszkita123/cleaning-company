@@ -1,0 +1,35 @@
+<%- include('../partials/header'); -%>
+
+  <div class="container">
+    <div class="row">
+      <h1 style="text-align: center">Klienci</h1>
+    </div>
+    <div class="row text-center flex-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nazwa użytkownika</th>
+            <th>Email</th>
+            <th>Rola</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clients.forEach(function(client){ %>
+            <tr>
+              <th>
+                <%= client.username %>
+              </th>
+              <th>
+                <%= client.email %>
+              </th>
+              <th>
+                <%= client.role_id %>
+              </th>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%- include('../partials/footer') -%>
