@@ -28,7 +28,7 @@ router.post("/register", function (req, res) {
     }
     passport.authenticate("local")(req, res, function () {
       req.flash("success", "Rejestracja przebiegła pomyślnie! Witaj " + req.body.username);
-      res.redirect("/reports");
+      res.redirect("/uslugi");
     });
   });
 });
@@ -41,7 +41,7 @@ router.get("/login", function (req, res) {
 //handling login logic
 router.post("/login", passport.authenticate("local",
   {
-    successRedirect: "/reports",
+    successRedirect: "/uslugi",
     failureRedirect: "/login",
     failureFlash: true,
     successFlash: 'Pomyślnie zalogowano do systemu!'

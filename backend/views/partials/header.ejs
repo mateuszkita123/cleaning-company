@@ -174,7 +174,7 @@
               <a href="/register">Rejestracja</a>
             </li>
             <% } else { %>
-              <li><a href="#">Zalogowano jako <%= currentUser.username %></a></li>
+              <li><a href="/konto/<%= currentUser._id %>">Zalogowano jako <%= currentUser.username %></a></li>
               <li><a href="/logout">Wyloguj</a></li>
               <% } %>
         </ul>
