@@ -8,6 +8,7 @@
       <table class="table">
         <thead>
           <tr>
+            <th>Id</th>
             <th>Imię</th>
             <th>Nazwisko</th>
             <th>Nazwa firmy</th>
@@ -20,6 +21,9 @@
         <tbody>
           <% invoicesData.forEach(function(invoiceData){ %>
             <tr>
+              <th>
+                <%= invoiceData._id %>
+              </th>
               <th>
                 <%= invoiceData.first_name %>
               </th>
