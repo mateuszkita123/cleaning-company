@@ -8,14 +8,18 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Nazwa użytkownika</th>
+            <th>Id klienta</th>
+            <th>Login klienta</th>
             <th>Email</th>
-            <th>Rola</th>
+            <th>Akcje</th>
           </tr>
         </thead>
         <tbody>
           <% clients.forEach(function(client){ %>
             <tr>
+              <th>
+                <%= client._id %>
+              </th>
               <th>
                 <%= client.username %>
               </th>
@@ -23,7 +27,7 @@
                 <%= client.email %>
               </th>
               <th>
-                <%= client.role_id %>
+                usuń, szczegóły, edytuj, wyślij wiadomość
               </th>
             </tr>
             <% }); %>

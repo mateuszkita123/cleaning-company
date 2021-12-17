@@ -4,6 +4,41 @@
     <div class="row">
       <h1 style="text-align: center">Zespoły</h1>
     </div>
+    <div class="row text-center flex-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id zespołu</th>
+            <th>Nazwa</th>
+            <th>Id pracowników</th>
+            <th>Akcje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% teams.forEach(function(team){ %>
+            <tr>
+              <th>
+                <%= team._id %>
+              </th>
+              <th>
+                <%= team.name %>
+              </th>
+              <th>
+                <%= team.employee_id[0] %>
+              </th>
+              <th>
+                usuń, szczegóły, edytuj, wyślij wiadomość
+              </th>
+            </tr>
+            <% }); %>
+        </tbody>
+      </table>
+    </div>
+    <div class="container">
+      <p>
+        <a class="btn btn-primary btn-lg" href="/zespoly/dodaj">Utwórz zespół</a>
+      </p>
+    </div>
   </div>
 
   <%- include('../partials/footer') -%>
