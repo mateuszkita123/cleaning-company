@@ -5,9 +5,7 @@ export function Footer() {
         <p className="text-muted">
           &copy; Cleaning Master{' | '}
           <a href="/">Strona główna</a>{' | '}
-          <a href="/uslugi">Usługi</a>{' | '}
-          <a href="/kontakt">Kontakt</a>{' | '}
-          <a href="/uzytkownicy">Użytkownicy</a>
+          <a href="/kontakt">Kontakt</a>
         </p>
       </div>
     </footer>
