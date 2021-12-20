@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 
 export const HomePage: FC = () => {
   return (<><header className="jumbotron">
@@ -7,9 +8,9 @@ export const HomePage: FC = () => {
       <p>Jesteśmy liderem na rynku sprzątającym.</p>
       <p>Zachęcamy do skorzystania z naszych usługi i kontaktu.</p>
       <p>
-        <a className="btn btn-primary btn-lg" href="/uslugi">Usługi</a>
+        <Link className="btn btn-primary btn-lg" to="/uslugi">Usługi</Link>
         {' '}
-        <a className="btn btn-primary btn-lg" href="/kontakt">Kontakt</a>
+        <Link className="btn btn-primary btn-lg" to="/kontakt">Kontakt</Link>
       </p>
     </div>
   </header>
