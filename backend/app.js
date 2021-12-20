@@ -22,7 +22,7 @@ const clientsRoutes = require("./routes/clients");
 
 const app = express();
 
-const PORT = 3000;
+const PORT = 4000;
 
 mongoose.Promise = global.Promise;
 const databaseUri = process.env.MONGODB_URI || 'mongodb://localhost/cleaning-company';
