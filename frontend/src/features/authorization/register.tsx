@@ -6,7 +6,7 @@ export function Register() {
       <div className="row">
         <h1 style={{ textAlign: "center" }}>Rejestracja</h1>
         <div style={{ width: "30%", margin: "25px auto" }}>
-          <form action="/register" method="post">
+          <form method="post">
             <div className="form-group">
               <input className="form-control" type="text" name="username" placeholder="Nazwa użytkownika" />
             </div>

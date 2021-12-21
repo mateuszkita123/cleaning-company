@@ -2,9 +2,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Login } from './features/authorization/login';
 import { Register } from './features/authorization/register';
-import { Footer } from './features/footer/Footer';
-import { Header } from './features/header/Header';
-import { HomePage } from './features/homePage/homePage';
+import { Footer, } from './features/partials/footer';
+import { Header } from './features/partials/header';
+import { ContactPage } from './features/staticPages/contactPage';
+import { HomePage } from './features/staticPages/homePage';
 
 function App() {
   return (
@@ -13,8 +14,9 @@ function App() {
         <Header />
         <Routes>
           <Route path={"/"} element={<HomePage />} />
-          <Route path={"/login"} element={<Login />} />
-          <Route path={"/register"} element={<Register />} />
+          <Route path={"/kontakt"} element={<ContactPage />} />
+          <Route path={"/logowanie"} element={<Login />} />
+          <Route path={"/rejestracja"} element={<Register />} />
           <Route
             path="*"
             element={
