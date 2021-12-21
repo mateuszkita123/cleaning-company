@@ -7,6 +7,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const moment = require('moment');
+const cors = require('cors');
 require('moment/locale/pl');
 
 const User = require("./models/user");
@@ -31,6 +32,8 @@ mongoose.connect(databaseUri, { useNewUrlParser: true, useUnifiedTopology: true 
   .then(() => console.log(`Database connected`))
   .catch(err => console.log(`Database connection error: ${err.message}`));
 
+app.use(cors());
+app.options('*', cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));

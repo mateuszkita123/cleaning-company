@@ -1,4 +1,4 @@
-import { Return } from "../links/return";
+import { Return } from "../links/Return";
 
 export function Login() {
   return (

@@ -46,10 +46,10 @@ export const Header: FC<Props> = (props) => {
             <ul className="nav navbar-nav navbar-right">
               {!currentUser ? (<>
                 <li className={typeof page !== 'undefined' && page === 'login' ? 'active nav-item' : 'nav-item'} style={{ marginRight: "0.5em" }}>
-                  <Link className="nav-link" to="/login">Logowanie</Link>
+                  <Link className="nav-link" to="/logowanie">Logowanie</Link>
                 </li>
                 <li className={typeof page !== 'undefined' && page === 'register' ? 'active nav-item' : 'nav-item'}>
-                  <Link className="nav-link" to="/register">Rejestracja</Link>
+                  <Link className="nav-link" to="/rejestracja">Rejestracja</Link>
                 </li>
               </>) : (<>
                 <li style={{ marginRight: "0.5em" }}>
