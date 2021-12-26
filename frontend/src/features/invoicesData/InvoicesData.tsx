@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from "react";
-import { FetchingDataStatus } from "../../constans";
+import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { options } from "../../app/utils";
 
 interface IInvoicesData {
   _id: String,
@@ -12,22 +13,18 @@ interface IInvoicesData {
   company_email: String,
 }
 
-interface IUsersState {
+interface IInvoicesDataState {
   invoicesData: IInvoicesData[];
   status: FetchingDataStatus;
 }
 
 export const InvoicesData: FC = () => {
-  const [data, setData] = useState<IUsersState["invoicesData"]>([]);
-  const [status, setStatus] = useState<IUsersState["status"]>(FetchingDataStatus.IDLE);
+  const [data, setData] = useState<IInvoicesDataState["invoicesData"]>([]);
+  const [status, setStatus] = useState<IInvoicesDataState["status"]>(FetchingDataStatus.IDLE);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch('http://localhost:4000/dane_do_faktur', {
-      method: 'GET',
-      mode: 'cors',
-      headers: { Accept: 'application/json' }
-    })
+    fetch(API_URL + 'dane_do_faktur', options)
       .then(res => res.json())
       .then((result) => {
         setData(result);

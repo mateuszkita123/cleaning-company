@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from "react";
-import { FetchingDataStatus } from "../../constans";
+import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { options } from "../../app/utils";
 
 interface IUser {
   _id: String,
@@ -19,11 +20,7 @@ export const UsersPage: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch('http://localhost:4000/uzytkownicy', {
-      method: 'GET',
-      mode: 'cors',
-      headers: { Accept: 'application/json' }
-    })
+    fetch(API_URL + 'uzytkownicy', options)
       .then(res => res.json())
       .then((result) => {
         setUsers(result);
