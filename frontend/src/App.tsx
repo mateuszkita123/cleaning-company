@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Login } from './features/authorization/Login';
 import { Register } from './features/authorization/Register';
+import { InvoicesData } from './features/invoicesData/InvoicesData';
 import { Footer, } from './features/partials/Footer';
 import { Header } from './features/partials/Header';
 import { ContactPage } from './features/staticPages/ContactPage';
@@ -19,6 +20,7 @@ function App() {
           <Route path={"/logowanie"} element={<Login />} />
           <Route path={"/rejestracja"} element={<Register />} />
           <Route path={"/uzytkownicy"} element={<UsersPage />} />
+          <Route path={"/dane_do_faktur"} element={<InvoicesData />} />
           <Route
             path="*"
             element={

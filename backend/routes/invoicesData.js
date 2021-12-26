@@ -10,11 +10,7 @@ router.get("/", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      if (req.xhr) {
-        res.json(allInvoicesData);
-      } else {
-        res.render("invoicesData/index", { invoicesData: allInvoicesData, page: 'invoicesData' });
-      }
+      res.json(allInvoicesData);
     }
   });
 });
