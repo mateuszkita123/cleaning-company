@@ -11,11 +11,7 @@ router.get("/", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      if (req.xhr) {
-        res.json(allTeams);
-      } else {
-        res.render("teams/index", { teams: allTeams, page: 'teams' });
-      }
+      res.json(allTeams);
     }
   });
 });
@@ -44,11 +40,8 @@ router.get("/dodaj", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      if (req.xhr) {
-        res.json(allUsers);
-      } else {
-        res.render("teams/new", { users: allUsers.map(elem => elem._id.toString()) });
-      }
+      const users = allUsers.map(elem => elem._id.toString());
+      res.json(users);
     }
   });
 });

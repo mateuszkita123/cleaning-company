@@ -41,7 +41,7 @@ export const InvoicesData: FC = () => {
   return (
     <div className="container">
       <div className="row">
-        <h1 style={{ textAlign: "center" }}>Zarejestrowani użytkownicy</h1>
+        <h1 style={{ textAlign: "center" }}>Dane do faktur</h1>
       </div>
       <div className="row text-center flex-wrap">
         {status === FetchingDataStatus.LOADING && <p>Pobieranie danych</p>}
