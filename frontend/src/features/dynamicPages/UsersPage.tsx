@@ -1,18 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
-
-interface IUser {
-  _id: String,
-  username: String,
-  email: String,
-  role_id: String
-}
-
-interface IUsersState {
-  users: IUser[];
-  status: FetchingDataStatus;
-}
+import { IUsersState } from "../../interfaces";
 
 export const UsersPage: FC = () => {
   const [users, setUsers] = useState<IUsersState["users"]>([]);

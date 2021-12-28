@@ -2,28 +2,8 @@ import { FC, useState, useEffect } from "react";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
+import { IInvoicesData, IInvoicesDataState, IOption, ITeamsState } from "../../interfaces";
 import { Return } from "../links/Return";
-
-interface IInvoicesData {
-  _id: String,
-  first_name: String,
-  last_name: String,
-  company_name: String,
-  company_vat_number: String,
-  company_address: String,
-  company_phone: String,
-  company_email: String,
-}
-
-interface ITeamsState {
-  invoicesData: IInvoicesData[];
-  status: FetchingDataStatus;
-}
-
-interface IOption {
-  value: String;
-  label: String;
-}
 
 interface IOptionForBooleanSelectState {
   selectedOption: IOption | null;
@@ -35,7 +15,7 @@ const selectOptions: IOption[] = [
 ];
 
 export const AddInvoice: FC = () => {
-  const [data, setData] = useState<ITeamsState["invoicesData"]>([]);
+  const [data, setData] = useState<IInvoicesDataState["invoicesData"]>([]);
   const [selectedOption, setSelectedOption] = useState<IOptionForBooleanSelectState["selectedOption"]>(null);
   const [invoicesDataOptions, setInvoicesDataOptions] = useState<IOption[]>([]);
   const [selectedInvoicesDataOption, setSelectedInvoicesDataOption] = useState<IOptionForBooleanSelectState["selectedOption"]>(null);

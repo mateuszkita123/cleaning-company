@@ -3,14 +3,14 @@ import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { Return } from "../links/Return";
 
-interface IUsersState {
-  users: string[];
+interface IUsersIdsState {
+  usersIds: string[];
   status: FetchingDataStatus;
 }
 
 export const AddTeams: FC = () => {
-  const [data, setData] = useState<IUsersState["users"]>([]);
-  const [status, setStatus] = useState<IUsersState["status"]>(FetchingDataStatus.IDLE);
+  const [data, setData] = useState<IUsersIdsState["usersIds"]>([]);
+  const [status, setStatus] = useState<IUsersIdsState["status"]>(FetchingDataStatus.IDLE);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);

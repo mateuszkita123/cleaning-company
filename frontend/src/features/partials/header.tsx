@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 
-interface Props {
+interface HeaderProps {
   currentUser?: { username: String, _id: String },
   success?: String,
   error?: String,
   page?: String
 }
 
-export const Header: FC<Props> = (props) => {
+export const Header: FC<HeaderProps> = (props) => {
   const { currentUser, success, error, page } = props;
 
   return (

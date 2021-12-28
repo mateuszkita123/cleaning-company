@@ -2,18 +2,8 @@ import { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
+import { IInvoicesState } from "../../interfaces";
 import { Return } from "../links/Return";
-
-interface IInvoices {
-  _id: String,
-  is_b2b: boolean,
-  invoice_data_id: Number
-}
-
-interface IInvoicesState {
-  invoices: IInvoices[];
-  status: FetchingDataStatus;
-}
 
 export const Invoices: FC = () => {
   const [data, setData] = useState<IInvoicesState["invoices"]>([]);

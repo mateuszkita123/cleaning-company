@@ -2,18 +2,8 @@ import { FC, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
+import { ITeamsState } from "../../interfaces";
 import { Return } from "../links/Return";
-
-interface ITeams {
-  _id: String,
-  name: String,
-  employee_id: String[]
-}
-
-interface ITeamsState {
-  teams: ITeams[];
-  status: FetchingDataStatus;
-}
 
 export const Teams: FC = () => {
   const [data, setData] = useState<ITeamsState["teams"]>([]);

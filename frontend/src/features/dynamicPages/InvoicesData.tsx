@@ -1,22 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
-
-interface IInvoicesData {
-  _id: String,
-  first_name: String,
-  last_name: String,
-  company_name: String,
-  company_vat_number: String,
-  company_address: String,
-  company_phone: String,
-  company_email: String,
-}
-
-interface IInvoicesDataState {
-  invoicesData: IInvoicesData[];
-  status: FetchingDataStatus;
-}
+import { IInvoicesDataState } from "../../interfaces";
 
 export const InvoicesData: FC = () => {
   const [data, setData] = useState<IInvoicesDataState["invoicesData"]>([]);

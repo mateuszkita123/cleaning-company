@@ -1,18 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
-
-interface ICLient {
-  _id: String,
-  username: String,
-  email: String,
-  role_id: String
-}
-
-interface IClientsState {
-  clients: ICLient[];
-  status: FetchingDataStatus;
-}
+import { IClientsState } from "../../interfaces";
 
 export const Clients: FC = () => {
   const [users, setUsers] = useState<IClientsState["clients"]>([]);
