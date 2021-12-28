@@ -9,7 +9,10 @@ import { ContactPage } from './features/staticPages/ContactPage';
 import { HomePage } from './features/staticPages/HomePage';
 import { UsersPage } from './features/dynamicPages/UsersPage';
 import { Teams } from './features/dynamicPages/Teams';
-import { AddTeams } from './features/dynamicPages/AddTeams';
+import { AddTeams } from './features/dynamicPages/AddTeam';
+import { Invoices } from './features/dynamicPages/Invoices';
+import { Clients } from './features/dynamicPages/Clients';
+import { AddInvoice } from './features/dynamicPages/AddInvoice';
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
           <Route path={"/dane_do_faktur"} element={<InvoicesData />} />
           <Route path={"/zespoly"} element={<Teams />} />
           <Route path={"/zespoly/dodaj"} element={<AddTeams />} />
+          <Route path={"/faktury"} element={<Invoices />} />
+          <Route path={"/faktury/dodaj"} element={<AddInvoice />} />
+          <Route path={"/klienci"} element={<Clients />} />
           <Route
             path="*"
             element={

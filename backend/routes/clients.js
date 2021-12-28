@@ -10,11 +10,7 @@ router.get("/", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      if (req.xhr) {
-        res.json(allClients);
-      } else {
-        res.render("clients/index", { clients: allClients, page: 'clients' });
-      }
+      res.json(allClients);
     }
   });
 });

@@ -1,6 +1,6 @@
 const InvoiceData = require("./models/invoiceData");
 
-const data = [
+const invoicesData = [
   {
     company_name: "Firma123",
     company_vat_number: "64569607",
@@ -9,6 +9,15 @@ const data = [
     company_email: "firma123@test.com",
     first_name: "Adam",
     last_name: "Kowalski"
+  },
+  {
+    company_name: "NowaFirma",
+    company_vat_number: "12345676",
+    company_address: "01-525 Kalisz, Leśna 1/15",
+    company_phone: "+48 123 123 123",
+    company_email: "nowafirma@test.com",
+    first_name: "Marian",
+    last_name: "Nowak"
   }
 ]
 
@@ -18,7 +27,7 @@ function seedDB() {
       console.log(err);
     }
     console.log("removed invoices data!");
-    data.forEach(function (seed) {
+    invoicesData.forEach(function (seed) {
       InvoiceData.create(seed, function (err, invoiceData) {
         if (err) {
           console.log(err)
