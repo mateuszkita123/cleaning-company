@@ -1,4 +1,4 @@
-import { Return } from "../links/Return";
+import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
 export function Login() {
   return (
@@ -17,7 +17,7 @@ export function Login() {
               <button className="btn btn-lg btn-primary btn-block">Zaloguj</button>
             </div>
           </form>
-          <Return />
+          <ReturnToHomePage />
         </div>
       </div>
     </div >

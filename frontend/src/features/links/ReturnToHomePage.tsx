@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
 
-export function Return() {
+export function ReturnToHomePage() {
   return (<Link to="/">Powrót</Link>);
 }

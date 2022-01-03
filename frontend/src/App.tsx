@@ -13,6 +13,8 @@ import { AddTeams } from './features/dynamicPages/AddTeam';
 import { Invoices } from './features/dynamicPages/Invoices';
 import { Clients } from './features/dynamicPages/Clients';
 import { AddInvoice } from './features/dynamicPages/AddInvoice';
+import { Services } from './features/dynamicPages/Services';
+import { AddService } from './features/dynamicPages/AddService';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
           <Route path={"/faktury"} element={<Invoices />} />
           <Route path={"/faktury/dodaj"} element={<AddInvoice />} />
           <Route path={"/klienci"} element={<Clients />} />
+          <Route path={"/uslugi"} element={<Services />} />
+          <Route path={"/uslugi/dodaj"} element={<AddService />} />
           <Route
             path="*"
             element={

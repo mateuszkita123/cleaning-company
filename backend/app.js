@@ -34,6 +34,7 @@ mongoose.connect(databaseUri, { useNewUrlParser: true, useUnifiedTopology: true 
 
 app.use(cors());
 app.options('*', cors());
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));

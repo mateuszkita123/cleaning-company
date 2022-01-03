@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
-import { Return } from "../links/Return";
 
 interface IUsersIdsState {
   usersIds: string[];
@@ -46,7 +46,7 @@ export const AddTeams: FC = () => {
             <button className="btn btn-lg btn-primary btn-block">Zapisz</button>
           </div>
         </form>
-        <Return />
+        <Link to="/faktury">Powrót</Link>
       </div>
     </div>
   );

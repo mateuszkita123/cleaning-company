@@ -1,13 +1,9 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, FormEvent } from "react";
+import { Link } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
-import { options } from "../../app/utils";
-import { IInvoicesData, IInvoicesDataState, IOption, ITeamsState } from "../../interfaces";
-import { Return } from "../links/Return";
-
-interface IOptionForBooleanSelectState {
-  selectedOption: IOption | null;
-}
+import { options, optionsPost } from "../../app/utils";
+import { IInvoicesData, IOption, IOptionForSelectState, ITeamsState } from "../../interfaces";
 
 const selectOptions: IOption[] = [
   { value: 'true', label: 'Tak' },
@@ -15,24 +11,27 @@ const selectOptions: IOption[] = [
 ];
 
 export const AddInvoice: FC = () => {
-  const [data, setData] = useState<IInvoicesDataState["invoicesData"]>([]);
-  const [selectedOption, setSelectedOption] = useState<IOptionForBooleanSelectState["selectedOption"]>(null);
+  const [selectedB2BOption, setSelectedB2BOption] = useState<IOptionForSelectState["selectedOption"]>(null);
+  const [selectedInvoicesDataOption, setSelectedInvoicesDataOption] = useState<IOptionForSelectState["selectedOption"]>(null);
   const [invoicesDataOptions, setInvoicesDataOptions] = useState<IOption[]>([]);
-  const [selectedInvoicesDataOption, setSelectedInvoicesDataOption] = useState<IOptionForBooleanSelectState["selectedOption"]>(null);
   const [status, setStatus] = useState<ITeamsState["status"]>(FetchingDataStatus.IDLE);
 
-  const handleChange = (newValue: SingleValue<IOption>, actionMeta: ActionMeta<IOption>): void => {
-    setSelectedOption(newValue);
-    console.log(`Option selected:`, selectedOption);
+  const handleB2BSelectChange = (newValue: SingleValue<IOption>, actionMeta: ActionMeta<IOption>): void => {
+    setSelectedB2BOption(newValue);
   };
 
-  const handleChange2 = (newValue: SingleValue<IOption>, actionMeta: ActionMeta<IOption>): void => {
+  const handleInvoiceDataSelectChange = (newValue: SingleValue<IOption>, actionMeta: ActionMeta<IOption>): void => {
     setSelectedInvoicesDataOption(newValue);
-    console.log(`Option selected:`, selectedOption);
   };
 
-  const handleClick = () => {
-    console.log(`handleClick`);
+  const handleClick = (event: FormEvent): void => {
+    event.preventDefault();
+    if (selectedB2BOption !== null && selectedInvoicesDataOption !== null) {
+      const body = JSON.stringify({ is_b2b: selectedB2BOption["value"] === 'true', invoice_data_id: selectedInvoicesDataOption["value"] })
+      fetch(API_URL + 'faktury/dodaj', { ...optionsPost, body: body })
+        .then(res => res.json())
+        .then((result) => console.log(result));
+    }
   }
 
   useEffect(() => {
@@ -40,8 +39,7 @@ export const AddInvoice: FC = () => {
     fetch(API_URL + 'dane_do_faktur', options)
       .then(res => res.json())
       .then((result) => {
-        setData(result);
-        const invoicesDataIds = result.map((elem: IInvoicesData) => ({ label: elem._id, value: elem._id }));
+        const invoicesDataIds = result.map((element: IInvoicesData) => ({ label: element._id, value: element._id }));
         setInvoicesDataOptions(invoicesDataIds);
       })
       .catch(error => {
@@ -61,8 +59,8 @@ export const AddInvoice: FC = () => {
           <div className="form-group">
             <label>Faktura dla firmy</label>
             <Select
-              value={selectedOption}
-              onChange={handleChange}
+              value={selectedB2BOption}
+              onChange={handleB2BSelectChange}
               options={selectOptions}
             />
           </div>
@@ -70,15 +68,15 @@ export const AddInvoice: FC = () => {
             <label>Dane do faktury</label>
             <Select
               value={selectedInvoicesDataOption}
-              onChange={handleChange2}
+              onChange={handleInvoiceDataSelectChange}
               options={invoicesDataOptions}
             />
           </div>
           <div className="form-group">
-            <button className="btn btn-lg btn-primary btn-block" onClick={handleClick}>Zapisz</button>
+            <button className="btn btn-lg btn-primary btn-block" onClick={event => handleClick(event)}>Zapisz</button>
           </div>
         </form>
-        <Return />
+        <Link to="/faktury">Powrót</Link>
       </div>
     </div>
   );

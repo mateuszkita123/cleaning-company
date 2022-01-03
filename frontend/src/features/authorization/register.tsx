@@ -1,4 +1,4 @@
-import { Return } from "../links/Return";
+import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
 export function Register() {
   return (
@@ -22,7 +22,7 @@ export function Register() {
               </button>
             </div>
           </form>
-          <Return />
+          <ReturnToHomePage />
         </div>
       </div>
     </div>

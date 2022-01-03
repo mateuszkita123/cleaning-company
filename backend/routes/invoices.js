@@ -12,31 +12,34 @@ router.get("/", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      if (req.xhr) {
-        res.json(allInvoices);
-      } else {
-        res.render("invoices/index", { invoices: allInvoices, page: 'invoices' });
-      }
+      res.json(allInvoices);
     }
   });
 });
 
-
 //CREATE - add a new team to DB
 router.post("/dodaj", function (req, res) {
   // get data from form and add to reports array
-  const id = req.body.id;
+  const is_b2b = req.body.is_b2b;
+  const invoice_data_id = req.body.invoice_data_id;
+  const newInvoice = {
+    is_b2b: is_b2b,
+    invoice_data_id: invoice_data_id
+  }
 
-  console.log("newInvoice: ", req.body);
   // Create a new team and save to DB
-  // Invoice.create(newInvoice, function (err, newlyCreated) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     //redirect back to teams page
-  //     res.redirect("/faktury");
-  //   }
-  // });
+  if (is_b2b !== undefined && invoice_data_id !== undefined) {
+    Invoice.create(newInvoice, function (err, newlyCreated) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("newlyCreated: ", newlyCreated);
+      }
+    });
+  } else {
+    const response = { status: "ERROR" };
+    res.json(response);
+  }
 });
 
 //NEW - show form to create new report

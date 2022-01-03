@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IInvoicesState } from "../../interfaces";
-import { Return } from "../links/Return";
+import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
 export const Invoices: FC = () => {
   const [data, setData] = useState<IInvoicesState["invoices"]>([]);
@@ -36,7 +36,7 @@ export const Invoices: FC = () => {
           {status !== FetchingDataStatus.FAILED ? (<table className="table">
             <thead>
               <tr>
-                <th>Id zespołu</th>
+                <th>Id</th>
                 <th>Firma</th>
                 <th>Id danych do faktury</th>
                 <th>Akcje</th>
@@ -46,7 +46,7 @@ export const Invoices: FC = () => {
               {data.map((element) => (
                 <tr key={element._id.toString()}>
                   <th>{element._id}</th>
-                  <th>{element.is_b2b}</th>
+                  <th>{element.is_b2b ? "Tak" : "Nie"}</th>
                   <th>{element.invoice_data_id}</th>
                   <th>usuń, szczegóły, edytuj, wyślij wiadomość</th>
                 </tr>))}
@@ -57,7 +57,7 @@ export const Invoices: FC = () => {
       <div className="container">
         <p>
           <Link className="btn btn-primary btn-lg" to="/faktury/dodaj">Wystaw fakturę</Link>
-          <Return />
+          <ReturnToHomePage />
         </p>
       </div>
     </>
