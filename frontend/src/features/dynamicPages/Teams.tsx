@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { ITeamsState } from "../../interfaces";
+import { ActionButtons } from "../links/ActionButtons";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
 export const Teams: FC = () => {
@@ -48,7 +49,7 @@ export const Teams: FC = () => {
                   <th>{element._id}</th>
                   <th>{element.name}</th>
                   <th>{element.employee_id[0]}</th>
-                  <th>usuń, szczegóły, edytuj, wyślij wiadomość</th>
+                  <th><ActionButtons /></th>
                 </tr>))}
             </tbody>
           </table>) : <p>Nie udało się pobrać danych</p>}

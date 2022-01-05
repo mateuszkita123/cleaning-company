@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IServicesState } from "../../interfaces";
+import { ActionButtons } from "../links/ActionButtons";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
 export const Services: FC = () => {
@@ -36,7 +37,6 @@ export const Services: FC = () => {
           {status !== FetchingDataStatus.FAILED ? (<table className="table">
             <thead>
               <tr>
-                <th>Id</th>
                 <th>Adres</th>
                 <th>Powierzchnia</th>
                 <th>Cena jednostkowa</th>
@@ -51,17 +51,15 @@ export const Services: FC = () => {
             <tbody>
               {data.map((element) => (
                 <tr key={element._id.toString()}>
-                  <th>{element._id}</th>
                   <th>{element.service_address}</th>
                   <th>{element.service_area}</th>
                   <th>{element.service_unit_price}</th>
                   <th>{element.description}</th>
                   <th>{element.status}</th>
-                  <th>{element.service_address}</th>
                   <th>{element.teams_id}</th>
                   <th>{element.user_id}</th>
                   <th>{element.invoice_id}</th>
-                  <th>usuń, szczegóły, edytuj, wyślij wiadomość</th>
+                  <th><ActionButtons /></th>
                 </tr>))
               }
             </tbody>

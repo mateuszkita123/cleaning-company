@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IUsersState } from "../../interfaces";
+import { ActionButtons } from "../links/ActionButtons";
 
 export const UsersPage: FC = () => {
   const [users, setUsers] = useState<IUsersState["users"]>([]);
@@ -37,6 +38,7 @@ export const UsersPage: FC = () => {
               <th>Nazwa użytkownika</th>
               <th>Email</th>
               <th>Rola</th>
+              <th>Akcje</th>
             </tr>
           </thead>
           <tbody>
@@ -46,6 +48,7 @@ export const UsersPage: FC = () => {
                 <th>{user.username}</th>
                 <th>{user.email}</th>
                 <th>{user.role_id}</th>
+                <th><ActionButtons /></th>
               </tr>))}
           </tbody>
         </table>) : <p>Nie udało się pobrać danych</p>}

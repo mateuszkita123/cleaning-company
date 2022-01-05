@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IInvoicesState } from "../../interfaces";
+import { ActionButtons } from "../links/ActionButtons";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
 export const Invoices: FC = () => {
@@ -48,7 +49,7 @@ export const Invoices: FC = () => {
                   <th>{element._id}</th>
                   <th>{element.is_b2b ? "Tak" : "Nie"}</th>
                   <th>{element.invoice_data_id}</th>
-                  <th>usuń, szczegóły, edytuj, wyślij wiadomość</th>
+                  <th><ActionButtons /></th>
                 </tr>))}
             </tbody>
           </table>) : <p>Nie udało się pobrać danych</p>}

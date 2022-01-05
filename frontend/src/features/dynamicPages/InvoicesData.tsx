@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IInvoicesDataState } from "../../interfaces";
+import { ActionButtons } from "../links/ActionButtons";
 
 export const InvoicesData: FC = () => {
   const [data, setData] = useState<IInvoicesDataState["invoicesData"]>([]);
@@ -41,6 +42,7 @@ export const InvoicesData: FC = () => {
               <th>Adres</th>
               <th>Telefon</th>
               <th>Email</th>
+              <th>Akcje</th>
             </tr>
           </thead>
           <tbody>
@@ -54,6 +56,7 @@ export const InvoicesData: FC = () => {
                 <th>{element.company_address}</th>
                 <th>{element.company_phone}</th>
                 <th>{element.company_email}</th>
+                <th><ActionButtons /></th>
               </tr>))}
           </tbody>
         </table>) : <p>Nie udało się pobrać danych</p>}
