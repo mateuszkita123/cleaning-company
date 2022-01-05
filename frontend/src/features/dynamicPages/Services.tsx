@@ -38,8 +38,9 @@ export const Services: FC = () => {
             <thead>
               <tr>
                 <th>Adres</th>
-                <th>Powierzchnia</th>
-                <th>Cena jednostkowa</th>
+                <th>Powierzchnia [m<sup>2</sup>]</th>
+                <th>Cena jednostkowa [PLN/m<sup>2</sup>]</th>
+                <th>Cena całkowita [PLN]</th>
                 <th>Opis</th>
                 <th>Status</th>
                 <th>Id zespołów</th>
@@ -54,6 +55,7 @@ export const Services: FC = () => {
                   <th>{element.service_address}</th>
                   <th>{element.service_area}</th>
                   <th>{element.service_unit_price}</th>
+                  <th>{element.service_area.valueOf() * element.service_unit_price.valueOf()}</th>
                   <th>{element.description}</th>
                   <th>{element.status}</th>
                   <th>{element.teams_id}</th>

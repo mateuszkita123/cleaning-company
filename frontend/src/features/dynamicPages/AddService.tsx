@@ -111,12 +111,12 @@ export const AddService: FC = () => {
             <input required value={address} onChange={handleAddressChange} className="form-control" type="text" name="address" id="address" placeholder="Kod pocztowy, miejscowowść, ulica oraz numer domu/lokalu" />
           </div>
           <div className="form-group">
-            <label htmlFor="area">Powierzchnia</label>
-            <input required value={area} onChange={handleAreaChange} className="form-control" type="number" name="area" id="area" placeholder="m2" />
+            <label htmlFor="area">Powierzchnia [m<sup>2</sup>]</label>
+            <input required value={area} onChange={handleAreaChange} className="form-control" type="number" name="area" id="area" placeholder="m<sup>2</sup>" />
           </div>
           <div className="form-group">
-            <label htmlFor="unitPrice">Cena jednostkowa</label>
-            <input required value={unitPrice} onChange={handleUnitPriceChange} className="form-control" type="number" name="unitPrice" id="unitPrice" placeholder="PLN/m2" />
+            <label htmlFor="unitPrice">Cena jednostkowa [PLN/m<sup>2</sup>]</label>
+            <input required value={unitPrice} onChange={handleUnitPriceChange} className="form-control" type="number" name="unitPrice" id="unitPrice" placeholder="PLN/m<sup>2</sup>" />
           </div>
           <div className="form-group">
             <label htmlFor="description">Opis</label>
