@@ -1,9 +1,10 @@
-import { FC, useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { FC, useState, useEffect, FormEvent, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options, optionsPost } from "../../app/utils";
 import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState } from "../../interfaces";
+import { ValidationToast } from "../links/ValidationToast";
 
 interface IAddService {
   teams: ITeam[];
@@ -28,6 +29,7 @@ export const AddService: FC = () => {
   const [invoicesDataOptions, setInvoicesDataOptions] = useState<IOption[]>([]);
   const [usersDataOptions, setUsersDataOptions] = useState<IOption[]>([]);
   const [teamsDataOptions, setTeamsDataOptions] = useState<IOption[]>([]);
+  const [validationVisible, setValidationVisible] = useState<boolean>(false);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
@@ -80,6 +82,7 @@ export const AddService: FC = () => {
 
   const handleClick = (event: FormEvent): void => {
     event.preventDefault();
+    setValidationVisible(false);
     if (address && area && unitPrice && description && selectedInvoiceOption !== null && selectedUserOption !== null && selectedTeamOption !== null) {
       const body = JSON.stringify({
         invoice: selectedInvoiceOption["value"],
@@ -93,6 +96,8 @@ export const AddService: FC = () => {
       fetch(API_URL + 'uslugi/dodaj', { ...optionsPost, body: body })
         .then(res => res.json())
         .then((result) => console.log(result));
+    } else {
+      setValidationVisible(true);
     }
   }
 
@@ -143,6 +148,9 @@ export const AddService: FC = () => {
           </div>
           <div className="form-group">
             <button className="btn btn-lg btn-primary btn-block" onClick={event => handleClick(event)}>Zapisz</button>
+          </div>
+          <div id="validationToastContainer">
+            {validationVisible ? <ValidationToast message={"Należy uzupełnić wymagane pola"} /> : null}
           </div>
         </form>
         <Link to="/uslugi">Powrót</Link>

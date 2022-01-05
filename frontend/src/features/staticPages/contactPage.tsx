@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { ReturnToHomePage } from '../links/ReturnToHomePage';
 
 export const ContactPage: FC = () => {
   return (<div className="container">
@@ -19,6 +20,7 @@ export const ContactPage: FC = () => {
             <button type="submit">Wyślij</button>
           </p>
         </form>
+        <ReturnToHomePage />
       </div>
     </div>
   </div >)
