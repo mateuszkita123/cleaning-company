@@ -1,14 +1,21 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext, useCallback } from "react";
+import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
-import { options } from "../../app/utils";
+import { options, postOptionsWithCredentials } from "../../app/utils";
+import { UserContext } from "../../context/UserContext";
 import { IServicesState } from "../../interfaces";
+import { Login } from "../authorization/Login";
 import { ActionButtons } from "../links/ActionButtons";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);
   const [status, setStatus] = useState<IServicesState["status"]>(FetchingDataStatus.IDLE);
+  const { userContext, setUserContext } = useContext(UserContext);
+
+  console.warn("Services userContext: ", userContext);
+  console.warn("!userContext.token: ", !userContext.token);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
@@ -26,7 +33,7 @@ export const Services: FC = () => {
       });
   }, []);
 
-  return (
+  return userContext.token ? (
     <>
       <div className="container">
         <div className="row">
@@ -34,7 +41,7 @@ export const Services: FC = () => {
         </div>
         <div className="row text-center flex-wrap">
           {status === FetchingDataStatus.LOADING && <p>Pobieranie danych</p>}
-          {status !== FetchingDataStatus.FAILED ? (<table className="table">
+          {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
             <thead>
               <tr>
                 <th>Adres</th>
@@ -65,7 +72,7 @@ export const Services: FC = () => {
                 </tr>))
               }
             </tbody>
-          </table>) : <p>Nie udało się pobrać danych</p>}
+          </Table>) : <p>Nie udało się pobrać danych</p>}
         </div>
       </div>
       <div className="container">
@@ -75,5 +82,7 @@ export const Services: FC = () => {
         </p>
       </div>
     </>
+  ) : (
+    <Login />
   );
 }

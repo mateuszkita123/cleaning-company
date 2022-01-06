@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from "react";
+import { Table } from "react-bootstrap";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IInvoicesDataState } from "../../interfaces";
@@ -31,7 +32,7 @@ export const InvoicesData: FC = () => {
       </div>
       <div className="row text-center flex-wrap">
         {status === FetchingDataStatus.LOADING && <p>Pobieranie danych</p>}
-        {status !== FetchingDataStatus.FAILED ? (<table className="table">
+        {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
           <thead>
             <tr>
               <th>Id</th>
@@ -59,7 +60,7 @@ export const InvoicesData: FC = () => {
                 <th><ActionButtons /></th>
               </tr>))}
           </tbody>
-        </table>) : <p>Nie udało się pobrać danych</p>}
+        </Table>) : <p>Nie udało się pobrać danych</p>}
       </div>
     </div>
   );

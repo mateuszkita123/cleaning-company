@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, FormEvent, ReactNode } from "react";
+import { FC, useState, useEffect, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, FetchingDataStatus } from "../../app/constans";
@@ -64,19 +64,19 @@ export const AddService: FC = () => {
     setSelectedTeamOption(newValue);
   };
 
-  const handleAddressChange = (event: React.FormEvent<HTMLInputElement>): void => {
+  const handleAddressChange = (event: FormEvent<HTMLInputElement>): void => {
     setAddress(event.currentTarget.value);
   }
 
-  const handleAreaChange = (event: React.FormEvent<HTMLInputElement>): void => {
+  const handleAreaChange = (event: FormEvent<HTMLInputElement>): void => {
     setArea(event.currentTarget.value);
   }
 
-  const handleUnitPriceChange = (event: React.FormEvent<HTMLInputElement>): void => {
+  const handleUnitPriceChange = (event: FormEvent<HTMLInputElement>): void => {
     setUnitPrice(event.currentTarget.value);
   }
 
-  const handleDescriptionChange = (event: React.FormEvent<HTMLTextAreaElement>): void => {
+  const handleDescriptionChange = (event: FormEvent<HTMLTextAreaElement>): void => {
     setDescription(event.currentTarget.value);
   }
 

@@ -1,5 +1,7 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../../app/constans';
+import { UserContext } from '../../context/UserContext';
 
 interface HeaderProps {
   currentUser?: { username: String, _id: String },
@@ -10,6 +12,20 @@ interface HeaderProps {
 
 export const Header: FC<HeaderProps> = (props) => {
   const { currentUser, success, error, page } = props;
+  const { userContext, setUserContext } = useContext(UserContext);
+
+  const logoutHandler = () => {
+    fetch(API_URL + "users/logout", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+    }).then(async response => {
+      setUserContext({ ...userContext, details: undefined, token: null })
+      window.localStorage.setItem("logout", Date.now().toString())
+    })
+  }
 
   return (
     <>
@@ -44,7 +60,7 @@ export const Header: FC<HeaderProps> = (props) => {
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
-              {!currentUser ? (<>
+              {!userContext.token ? (<>
                 <li className={typeof page !== 'undefined' && page === 'login' ? 'active nav-item' : 'nav-item'} style={{ marginRight: "0.5em" }}>
                   <Link className="nav-link" to="/logowanie">Logowanie</Link>
                 </li>
@@ -53,10 +69,10 @@ export const Header: FC<HeaderProps> = (props) => {
                 </li>
               </>) : (<>
                 <li style={{ marginRight: "0.5em" }}>
-                  <Link className="nav-link" to={"/konto/" + currentUser._id}>Zalogowano jako {currentUser.username}</Link>
+                  <Link className="nav-link" to={"/konto/id"}>Zalogowano jako EMAIL</Link>
                 </li>
                 <li>
-                  <Link className="nav-link" to="/logout">Wyloguj</Link>
+                  <Link className="nav-link" to="" onClick={logoutHandler}>Wyloguj</Link>
                 </li></>)}
             </ul>
           </div>

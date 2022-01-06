@@ -87,3 +87,17 @@ export interface IOption {
 export interface IOptionForSelectState {
   selectedOption: IOption | null;
 }
+
+export interface IUserContextData {
+  token?: string | null,
+  details?: IUser;
+}
+
+export interface IUserContext {
+  userContext: IUserContextData;
+  setUserContext: (oldValues: IUserContextData) => void
+}
+
+export interface IReactChildProps {
+  children: JSX.Element,
+};

@@ -9,3 +9,9 @@ export const optionsPost: RequestInit = {
   mode: 'cors',
   headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
 };
+
+export const postOptionsWithCredentials: RequestInit = {
+  method: "POST",
+  credentials: "include",
+  headers: { "Content-Type": "application/json" }
+}
