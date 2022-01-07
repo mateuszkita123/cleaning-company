@@ -4,7 +4,12 @@ const User = require("../models/user");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser } = require("../authenticate")
+const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser, customVerifyUser } = require("../authenticate")
+
+if (process.env.NODE_ENV !== "production") {
+  // Load environment variables from .env file in non prod environments
+  require("dotenv").config()
+}
 
 //INDEX - show all users
 router.get("/", function (req, res) {
@@ -74,9 +79,9 @@ router.post("/logowanie", passport.authenticate("local"), (req, res, next) => {
   )
 });
 
-router.post("/refreshToken", (req, res, next) => {
-  const { signedCookies = {} } = req
-  const { refreshToken } = signedCookies
+router.post("/refreshToken", verifyUser, (req, res, next) => {
+  const { signedCookies = {} } = req;
+  const { refreshToken } = signedCookies;
 
   if (refreshToken) {
     try {
@@ -125,13 +130,24 @@ router.post("/refreshToken", (req, res, next) => {
   }
 });
 
-router.get("/me", verifyUser, (req, res, next) => {
-  res.send(req.user)
+router.get("/me", (req, res, next) => {
+  const token = req.get("Authorization");
+
+  console.log("/me REQUEST");
+  console.log("req.user: ", req.user);
+  console.log("token: ", token);
+
+  // TODO find user by token
+
+  // res.send(req.user)
 })
 
 router.get("/wyloguj", verifyUser, (req, res, next) => {
-  const { signedCookies = {} } = req
-  const { refreshToken } = signedCookies
+  console.log("wyloguj REQUEST");
+  console.log("req.user: ", req.user);
+
+  const { signedCookies = {} } = req;
+  const { refreshToken } = signedCookies;
   User.findById(req.user._id).then(
     user => {
       const tokenIndex = user.refreshToken.findIndex(

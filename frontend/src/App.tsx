@@ -1,6 +1,5 @@
 import { useContext, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
 import { Login } from './features/authorization/Login';
 import { Register } from './features/authorization/Register';
 import { InvoicesData } from './features/dynamicPages/InvoicesData';
@@ -19,35 +18,34 @@ import { AddService } from './features/dynamicPages/AddService';
 import { API_URL } from './app/constans';
 import { postOptionsWithCredentials } from './app/utils';
 import { UserContext } from './context/UserContext';
-import { Loader } from './features/links/Loader';
 import { Account } from './features/dynamicPages/Account';
+import './App.css';
 
 function App() {
   const { userContext, setUserContext } = useContext(UserContext);
 
   const verifyUser = useCallback(() => {
-    fetch(API_URL + "users/refreshToken", postOptionsWithCredentials).then(async response => {
-      if (response.ok) {
-        const data = await response.json();
-        setUserContext({ ...userContext, token: data.token });
-      } else {
-        setUserContext({ ...userContext, token: null });
-      }
-      // call refreshToken every 5 minutes to renew the authentication token.
-      setTimeout(verifyUser, 5 * 60 * 1000);
-    })
+    fetch(API_URL + "users/refreshToken", postOptionsWithCredentials)
+      .then(async response => {
+        if (response.ok) {
+          const data = await response.json();
+          console.warn("setUserContext token=data.token because of ok response from /refreshToken");
+          setUserContext({ ...userContext, token: data.token });
+        } else {
+          console.warn("setUserContext token=null because of NOT ok response from /refreshToken");
+          setUserContext({ ...userContext, token: null });
+        }
+        // call refreshToken every 5 minutes to renew the authentication token.
+        setTimeout(verifyUser, 5 * 60 * 1000);
+      })
   }, [setUserContext]);
 
   useEffect(() => {
     verifyUser();
   }, [verifyUser]);
 
-  /**
- * Sync logout across tabs
- */
   const syncLogout = useCallback(event => {
     if (event.key === "logout") {
-      // If using react-router-dom, you may call history.push("/")
       window.location.reload();
     }
   }, []);
@@ -63,37 +61,30 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Header />
-        {userContext.token === null ? (
-          <Routes>
-            <Route path={"/"} element={<HomePage />} />
-            <Route path={"/kontakt"} element={<ContactPage />} />
-            <Route path={"/logowanie"} element={<Login />} />
-            <Route path={"/rejestracja"} element={<Register />} />
-            <Route path={"/uzytkownicy"} element={<UsersPage />} />
-            <Route path={"/dane_do_faktur"} element={<InvoicesData />} />
-            <Route path={"/zespoly"} element={<Teams />} />
-            <Route path={"/zespoly/dodaj"} element={<AddTeams />} />
-            <Route path={"/faktury"} element={<Invoices />} />
-            <Route path={"/faktury/dodaj"} element={<AddInvoice />} />
-            <Route path={"/klienci"} element={<Clients />} />
-            <Route path={"/uslugi"} element={<Services />} />
-            <Route path={"/uslugi/dodaj"} element={<AddService />} />
-            <Route
-              path="*"
-              element={
-                <main style={{ padding: "1rem" }}>
-                  <p>Strona nie istnieje!</p>
-                </main>
-              }
-            />
-          </Routes>
-        ) : userContext.token ? (
-          (
-            <Account />
-          )
-        ) : (
-          <Loader />
-        )}
+        <Routes>
+          <Route path={"/"} element={<HomePage />} />
+          <Route path={"/me"} element={<Account />} />
+          <Route path={"/kontakt"} element={<ContactPage />} />
+          <Route path={"/logowanie"} element={<Login />} />
+          <Route path={"/rejestracja"} element={<Register />} />
+          <Route path={"/uzytkownicy"} element={<UsersPage />} />
+          <Route path={"/dane_do_faktur"} element={<InvoicesData />} />
+          <Route path={"/zespoly"} element={<Teams />} />
+          <Route path={"/zespoly/dodaj"} element={<AddTeams />} />
+          <Route path={"/faktury"} element={<Invoices />} />
+          <Route path={"/faktury/dodaj"} element={<AddInvoice />} />
+          <Route path={"/klienci"} element={<Clients />} />
+          <Route path={"/uslugi"} element={<Services />} />
+          <Route path={"/uslugi/dodaj"} element={<AddService />} />
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>Strona nie istnieje!</p>
+              </main>
+            }
+          />
+        </Routes>
         < Footer />
       </div>
     </BrowserRouter>

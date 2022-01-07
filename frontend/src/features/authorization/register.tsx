@@ -1,6 +1,6 @@
 import { useRef, FormEvent, useContext, useState } from "react";
 import { Form, FormGroup, Button, Alert } from "react-bootstrap";
-import { API_URL } from "../../app/constans";
+import { API_URL, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
 import { postOptionsWithCredentials } from "../../app/utils";
 import { UserContext } from "../../context/UserContext";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
@@ -16,17 +16,14 @@ export function Register() {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setError("")
-
-    const genericErrorMessage = "Coś poszło nie tak."
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
 
     const firstName = firstNameRef.current?.value;
     const lastName = lastNameRef.current?.value;
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-
     const body = JSON.stringify({ firstName, lastName, username: email, password });
 
     fetch(API_URL + "users/rejestracja", { ...postOptionsWithCredentials, body: body })
@@ -34,24 +31,26 @@ export function Register() {
         setIsSubmitting(false)
         if (!response.ok) {
           if (response.status === 400) {
-            setError("Wypełnij poprawnie wszystkie pola!");
+            setError(INVALID_DATA_MESSAGE);
           } else if (response.status === 401) {
-            setError("Nieprawidłowy email lub hasło!");
+            setError(INVALID_CREDENTIALS_MESSAGE);
           } else if (response.status === 500) {
             console.log(response);
             const data = await response.json();
-            if (data.message) setError(data.message || genericErrorMessage)
+            if (data.message) setError(data.message || GENERIC_ERROR_MESSAGE)
           } else {
-            setError(genericErrorMessage);
+            setError(GENERIC_ERROR_MESSAGE);
           }
         } else {
           const data = await response.json();
+          console.log("data: ", data);
+          console.warn("setUserContext token=data.token because of ok response from /users/rejestracja");
           setUserContext({ ...userContext, token: data.token });
         }
       })
       .catch(error => {
         setIsSubmitting(false);
-        setError(genericErrorMessage);
+        setError(GENERIC_ERROR_MESSAGE);
       })
   }
 

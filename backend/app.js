@@ -1,12 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const methodOverride = require("method-override");
 const cookieParser = require("cookie-parser");
-const flash = require("connect-flash");
 const passport = require("passport");
-const moment = require('moment');
 const cors = require('cors');
-require('moment/locale/pl');
+const https = require('https');
+const fs = require('fs');
 
 const seedDB = require("./seeds");
 const indexRoutes = require("./routes/index");
@@ -19,6 +17,10 @@ const teamsRoutes = require("./routes/teams");
 const accountRoutes = require("./routes/account");
 const clientsRoutes = require("./routes/clients");
 
+const privateKey = fs.readFileSync('sslcert/server.key', 'utf8');
+const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate };
 const app = express();
 
 if (process.env.NODE_ENV !== "production") {
@@ -26,8 +28,9 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
 }
 require("./utils/connectdb")
-require("./strategies/JwtStrategy")
+
 require("./strategies/LocalStrategy")
+require("./strategies/JwtStrategy")
 require("./authenticate")
 
 const whitelist = process.env.WHITELISTED_DOMAINS
@@ -42,39 +45,18 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"))
     }
   },
-
+  // allowedHeaders: ["Access-Control-Allow-Credentials", "withCredentials", "Access-Control-Request-Headers", "Access-Control-Allow-Origin", "Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
   credentials: true,
 };
 
-app.use(cors(corsOptions));
-app.use(passport.initialize());
-app.options('*', cors());
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
-app.use(methodOverride('_method'));
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.locals.moment = moment;
-
 seedDB();
 
-app.use(require("express-session")({
-  secret: "Cleaning Master firma sprzątająca",
-  resave: false,
-  saveUninitialized: false
-}));
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
+app.use(passport.initialize());
 
-app.use(flash());
-app.use(passport.session());
-
-app.use(function (req, res, next) {
-  res.locals.currentUser = req.user;
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
-  next();
-});
+app.use(bodyParser.json());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use("/", indexRoutes);
 app.use("/users", userRoutes);
@@ -86,7 +68,9 @@ app.use("/zespoly", teamsRoutes);
 app.use("/uzytkownicy", usersRoutes);
 app.use("/dane_do_faktur", invoicesDataRoutes);
 
-const server = app.listen(process.env.PORT || 4000, process.env.IP, () => {
+const httpsServer = https.createServer(credentials, app);
+
+const server = httpsServer.listen(process.env.PORT || 8081, process.env.IP, () => {
   const port = server.address().port
 
   console.log(`Serwer nasłuchuje na porcie ${port}`);

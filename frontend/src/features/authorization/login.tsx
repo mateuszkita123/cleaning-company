@@ -1,6 +1,6 @@
 import { useRef, FormEvent, useContext, useState } from "react";
 import { FormGroup, Button, Form, Alert } from "react-bootstrap";
-import { API_URL } from "../../app/constans";
+import { API_URL, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
 import { postOptionsWithCredentials } from "../../app/utils";
 import { UserContext } from "../../context/UserContext";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
@@ -10,21 +10,16 @@ export function Login() {
   const [error, setError] = useState("");
   const { userContext, setUserContext } = useContext(UserContext);
 
-  console.log(userContext, setUserContext);
-
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
-  const email = emailRef.current?.value;
-  const password = passwordRef.current?.value;
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
 
-    const genericErrorMessage = "Coś poszło nie tak.";
-
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
     const body = JSON.stringify({ username: email, password });
 
     fetch(API_URL + "users/logowanie", { ...postOptionsWithCredentials, body: body })
@@ -32,30 +27,31 @@ export function Login() {
         setIsSubmitting(false)
         if (!response.ok) {
           if (response.status === 400) {
-            setError("Wypełnij poprawnie wszystkie pola!")
+            setError(INVALID_DATA_MESSAGE);
           } else if (response.status === 401) {
-            setError("Nieprawidłowy email lub hasło!")
+            setError(INVALID_CREDENTIALS_MESSAGE);
           } else {
-            setError(genericErrorMessage)
+            setError(GENERIC_ERROR_MESSAGE);
           }
         } else {
           const data = await response.json();
           console.warn("data: ", data);
-          console.warn("userContext: ", userContext);
+          console.warn("setUserContext token=data.token because of ok response from /users/logowanie");
           setUserContext({ ...userContext, token: data.token });
         }
       })
       .catch(error => {
-        setIsSubmitting(false)
-        setError(genericErrorMessage)
+        setIsSubmitting(false);
+        setError(GENERIC_ERROR_MESSAGE);
       })
+      .finally(() => console.error("Login userContext: ", userContext));
 
-    if (email && password) {
-      console.log("email: ", email);
-      console.log("password: ", password);
-    } else {
-      console.error("enter email and password!");
-    }
+    // if (email && password) {
+    //   console.log("email: ", email);
+    //   console.log("password: ", password);
+    // } else {
+    //   console.error("enter email and password!");
+    // }
   }
 
   return (

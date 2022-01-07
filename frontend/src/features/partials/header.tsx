@@ -22,6 +22,7 @@ export const Header: FC<HeaderProps> = (props) => {
         Authorization: `Bearer ${userContext.token}`,
       },
     }).then(async response => {
+      console.warn("setUserContext token=null because of ok response from /users/logout");
       setUserContext({ ...userContext, details: undefined, token: null })
       window.localStorage.setItem("logout", Date.now().toString())
     })

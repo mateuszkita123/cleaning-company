@@ -17,6 +17,9 @@ export interface IUser {
   username: String;
   email: String;
   role_id: String;
+  firstName: String;
+  lastName: String;
+  points: Number;
 }
 
 export interface IUsersState {
@@ -89,15 +92,15 @@ export interface IOptionForSelectState {
 }
 
 export interface IUserContextData {
-  token?: string | null,
-  details?: IUser;
+  token?: string | null;
+  details?: IUser | null;
 }
 
-export interface IUserContext {
+export type TUserContext = {
   userContext: IUserContextData;
   setUserContext: (oldValues: IUserContextData) => void
-}
+};
 
 export interface IReactChildProps {
-  children: JSX.Element,
+  children: JSX.Element
 };
