@@ -2,8 +2,9 @@ import { FetchingDataStatus } from "../app/constans";
 
 interface ICLient {
   _id: String;
+  firstName: String;
+  lastName: String;
   username: String;
-  email: String;
   role_id: String;
 }
 

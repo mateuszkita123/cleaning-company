@@ -19,6 +19,7 @@ import { API_URL } from './app/constans';
 import { UserContext } from './context/UserContext';
 import { Account } from './features/dynamicPages/Account';
 import './App.css';
+import { ReturnToHomePage } from './features/links/ReturnToHomePage';
 
 function App() {
   const { userContext, setUserContext } = useContext(UserContext);
@@ -84,6 +85,7 @@ function App() {
             element={
               <main style={{ padding: "1rem" }}>
                 <p>Strona nie istnieje!</p>
+                <ReturnToHomePage />
               </main>
             }
           />

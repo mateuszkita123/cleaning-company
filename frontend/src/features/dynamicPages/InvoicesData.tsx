@@ -35,7 +35,6 @@ export const InvoicesData: FC = () => {
         {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
           <thead>
             <tr>
-              <th>Id</th>
               <th>Imię</th>
               <th>Nazwisko</th>
               <th>Nazwa firmy</th>
@@ -49,7 +48,6 @@ export const InvoicesData: FC = () => {
           <tbody>
             {data.map((element) => (
               <tr key={element._id.toString()}>
-                <th>{element._id}</th>
                 <th>{element.first_name}</th>
                 <th>{element.last_name}</th>
                 <th>{element.company_name}</th>

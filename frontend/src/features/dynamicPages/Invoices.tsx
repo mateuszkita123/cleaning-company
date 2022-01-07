@@ -38,7 +38,6 @@ export const Invoices: FC = () => {
           {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
             <thead>
               <tr>
-                <th>Id</th>
                 <th>Firma</th>
                 <th>Id danych do faktury</th>
                 <th>Akcje</th>
@@ -47,7 +46,6 @@ export const Invoices: FC = () => {
             <tbody>
               {data.map((element) => (
                 <tr key={element._id.toString()}>
-                  <th>{element._id}</th>
                   <th>{element.is_b2b ? "Tak" : "Nie"}</th>
                   <th>{element.invoice_data_id}</th>
                   <th><ActionButtons /></th>

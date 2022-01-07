@@ -14,7 +14,7 @@ const ActionButton: React.FC<ComponentProps> = ({ icon, path, content, className
   let navigate = useNavigate();
 
   return (
-    <div className={`${className}`} onClick={() => navigate(path)}>
+    <div style={{ cursor: "pointer" }} className={`${className || "action-button"}`} onClick={() => navigate(path)}>
       <ActionIcon className={`${fontClassName}`} icon={icon} path={path} />
       {content}
     </div>)

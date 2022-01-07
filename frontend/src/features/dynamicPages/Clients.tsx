@@ -35,8 +35,7 @@ export const Clients: FC = () => {
         {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Nazwa użytkownika</th>
+              <th>Imię i nazwisko</th>
               <th>Email</th>
               <th>Akcje</th>
             </tr>
@@ -44,9 +43,8 @@ export const Clients: FC = () => {
           <tbody>
             {users.map((user) => (
               <tr key={user._id.toString()}>
-                <th>{user._id}</th>
+                <th>{user.firstName} {user.lastName}</th>
                 <th>{user.username}</th>
-                <th>{user.email}</th>
                 <th><ActionButtons /></th>
               </tr>))}
           </tbody>

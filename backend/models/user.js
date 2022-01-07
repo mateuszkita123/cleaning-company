@@ -23,33 +23,17 @@ const User = new Schema(
       type: String,
       default: "local",
     },
-    points: {
-      type: Number,
-      default: 50,
-    },
     refreshToken: {
       type: [Session],
     },
-    // username: {
-    //   type: String,
-    //   default: "",
-    // },
-    // password: {
-    //   type: String,
-    //   default: "",
-    // },
-    // email: {
-    //   type: String,
-    //   default: "",
-    // },
-    // role_id: {
-    //   type: String,
-    //   default: 'Klient'
-    // },
-    // invoice_data_id: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "InvoiceData"
-    // }
+    role_id: {
+      type: String,
+      default: 'Klient',
+    },
+    invoice_data_id: {
+      type: Schema.Types.ObjectId,
+      ref: "InvoiceData",
+    }
   }
 );
 

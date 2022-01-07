@@ -35,8 +35,7 @@ export const UsersPage: FC = () => {
         {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Nazwa użytkownika</th>
+              <th>Imię i nazwisko</th>
               <th>Email</th>
               <th>Rola</th>
               <th>Akcje</th>
@@ -45,9 +44,8 @@ export const UsersPage: FC = () => {
           <tbody>
             {users.map((user) => (
               <tr key={user._id.toString()}>
-                <th>{user._id}</th>
+                <th>{user.firstName} {user.lastName}</th>
                 <th>{user.username}</th>
-                <th>{user.email}</th>
                 <th>{user.role_id}</th>
                 <th><ActionButtons /></th>
               </tr>))}

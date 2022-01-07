@@ -112,11 +112,11 @@ export const AddService: FC = () => {
           </div>
           <div className="form-group">
             <label htmlFor="area">Powierzchnia [m<sup>2</sup>]</label>
-            <input required value={area} onChange={handleAreaChange} className="form-control" type="number" name="area" id="area" placeholder="m<sup>2</sup>" />
+            <input required value={area} onChange={handleAreaChange} className="form-control" type="number" name="area" id="area" placeholder="Powierzchnia" />
           </div>
           <div className="form-group">
             <label htmlFor="unitPrice">Cena jednostkowa [PLN/m<sup>2</sup>]</label>
-            <input required value={unitPrice} onChange={handleUnitPriceChange} className="form-control" type="number" name="unitPrice" id="unitPrice" placeholder="PLN/m<sup>2</sup>" />
+            <input required value={unitPrice} onChange={handleUnitPriceChange} className="form-control" type="number" name="unitPrice" id="unitPrice" placeholder="Cena za metr kwadratowy" />
           </div>
           <div className="form-group">
             <label htmlFor="description">Opis</label>

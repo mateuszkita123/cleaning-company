@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect } from "react"
 import { Card, Button } from "react-bootstrap"
+import { Link } from "react-router-dom"
 import { API_URL } from "../../app/constans"
 import { getRequestOptionsWithToken } from "../../app/utils"
 import { UserContext } from "../../context/UserContext"
@@ -53,6 +54,20 @@ export const Account = () => {
     setUserContext({ ...userContext, details: undefined })
   }
 
+  const logoutHandler = () => {
+    fetch(API_URL + "users/logout", {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      },
+    }).then(async response => {
+      console.warn("setUserContext token=null because of ok response from /users/logout");
+      setUserContext({ ...userContext, details: undefined, token: null })
+      window.localStorage.setItem("logout", Date.now().toString())
+    })
+  }
+
   return userContext.details === null ? (
     <div>Error Loading User details</div>
   ) : !userContext.details ? (
@@ -64,21 +79,23 @@ export const Account = () => {
         <Card.Body>
           <Card.Title>Card Title</Card.Title>
           <Card.Text>
-            <p>
-              Welcome&nbsp;
-              <strong>
-                {userContext.details.firstName}
-                {userContext.details.lastName &&
-                  " " + userContext.details.lastName}
-              </strong>!
-            </p>
-            <p>
-              Your reward points: <strong>{userContext.details.points}</strong>
-            </p>
+            Welcome&nbsp;
+            <strong>
+              {userContext.details.firstName}
+              {userContext.details.lastName &&
+                " " + userContext.details.lastName}
+            </strong>!
+            <br />
+            Your reward points: <strong>{userContext.details.points}</strong>
+            <br />
+            Rola: <strong>{userContext.details.role_id}</strong>
           </Card.Text>
-          <Button variant="primary" onClick={refetchHandler}>Go somewhere</Button>
+          <Button variant="primary" onClick={logoutHandler}>Wyloguj</Button>
         </Card.Body>
       </Card>
+      <Link to="/dane_do_faktury">Dane do faktury</Link>
+      <Link to="/dane_do_faktury">Wystawione faktury</Link>
+      <Link to="/dane_do_faktury">Zarezerwowane usługi</Link>
     </>
   )
 }

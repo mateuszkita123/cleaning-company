@@ -38,7 +38,6 @@ export const Teams: FC = () => {
           {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
             <thead>
               <tr>
-                <th>Id zespołu</th>
                 <th>Nazwa</th>
                 <th>Id pracowników</th>
                 <th>Akcje</th>
@@ -47,7 +46,6 @@ export const Teams: FC = () => {
             <tbody>
               {data.map((element) => (
                 <tr key={element._id.toString()}>
-                  <th>{element._id}</th>
                   <th>{element.name}</th>
                   <th>{element.employee_id[0]}</th>
                   <th><ActionButtons /></th>
