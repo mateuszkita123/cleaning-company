@@ -4,23 +4,12 @@ const User = require("../models/user");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser, customVerifyUser } = require("../authenticate")
+const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser } = require("../authenticate")
 
 if (process.env.NODE_ENV !== "production") {
   // Load environment variables from .env file in non prod environments
   require("dotenv").config()
 }
-
-//INDEX - show all users
-router.get("/", function (req, res) {
-  User.find({}, function (err, allUsers) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(allUsers);
-    }
-  });
-});
 
 router.post("/rejestracja", (req, res, next) => {
   // Verify that first name is not empty
@@ -79,7 +68,7 @@ router.post("/logowanie", passport.authenticate("local"), (req, res, next) => {
   )
 });
 
-router.post("/refreshToken", verifyUser, (req, res, next) => {
+router.post("/refreshToken", (req, res, next) => {
   const { signedCookies = {} } = req;
   const { refreshToken } = signedCookies;
 
@@ -130,12 +119,14 @@ router.post("/refreshToken", verifyUser, (req, res, next) => {
   }
 });
 
-router.get("/me", (req, res, next) => {
-  const token = req.get("Authorization");
+router.get("/me", verifyUser, (req, res, next) => {
+  res.send(req.user);
 
-  console.log("/me REQUEST");
-  console.log("req.user: ", req.user);
-  console.log("token: ", token);
+  // const token = req.get("Authorization");
+
+  // console.log("/me REQUEST");
+  // console.log("req.user: ", req.user);
+  // console.log("token: ", token);
 
   // TODO find user by token
 

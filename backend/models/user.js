@@ -50,10 +50,6 @@ const User = new Schema(
     //   type: Schema.Types.ObjectId,
     //   ref: "InvoiceData"
     // }
-  },
-  {
-    usePushEach: true,
-    timestamps: true
   }
 );
 

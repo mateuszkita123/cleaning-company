@@ -16,7 +16,6 @@ import { AddInvoice } from './features/dynamicPages/AddInvoice';
 import { Services } from './features/dynamicPages/Services';
 import { AddService } from './features/dynamicPages/AddService';
 import { API_URL } from './app/constans';
-import { postOptionsWithCredentials } from './app/utils';
 import { UserContext } from './context/UserContext';
 import { Account } from './features/dynamicPages/Account';
 import './App.css';
@@ -25,7 +24,11 @@ function App() {
   const { userContext, setUserContext } = useContext(UserContext);
 
   const verifyUser = useCallback(() => {
-    fetch(API_URL + "users/refreshToken", postOptionsWithCredentials)
+    fetch(API_URL + "users/refreshToken", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+    })
       .then(async response => {
         if (response.ok) {
           const data = await response.json();
@@ -36,7 +39,7 @@ function App() {
           setUserContext({ ...userContext, token: null });
         }
         // call refreshToken every 5 minutes to renew the authentication token.
-        setTimeout(verifyUser, 5 * 60 * 1000);
+        setTimeout(verifyUser, 1 * 60 * 1000);
       })
   }, [setUserContext]);
 

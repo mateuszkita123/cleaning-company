@@ -22,7 +22,12 @@ export function Login() {
     const password = passwordRef.current?.value;
     const body = JSON.stringify({ username: email, password });
 
-    fetch(API_URL + "users/logowanie", { ...postOptionsWithCredentials, body: body })
+    fetch(API_URL + "users/logowanie", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: body,
+    })
       .then(async response => {
         setIsSubmitting(false)
         if (!response.ok) {

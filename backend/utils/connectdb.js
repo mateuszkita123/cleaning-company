@@ -5,13 +5,14 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
 }
 
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 const databaseUri = process.env.MONGODB_URI || process.env.MONGO_DB_CONNECTION_STRING;
 
 mongoose.connect(databaseUri,
   {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   })
-  .then(() => console.log(`Database connected`))
+  .then((db) => console.log(`Database connected`))
   .catch(err => console.log(`Database connection error: ${err.message}`));

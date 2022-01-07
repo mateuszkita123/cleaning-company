@@ -26,7 +26,12 @@ export function Register() {
     const password = passwordRef.current?.value;
     const body = JSON.stringify({ firstName, lastName, username: email, password });
 
-    fetch(API_URL + "users/rejestracja", { ...postOptionsWithCredentials, body: body })
+    fetch(API_URL + "users/rejestracja", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: body,
+    })
       .then(async response => {
         setIsSubmitting(false)
         if (!response.ok) {

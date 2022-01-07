@@ -2,6 +2,8 @@ import { FC, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { API_URL } from '../../app/constans';
 import { UserContext } from '../../context/UserContext';
+import { NotSignedIn } from './NotSignedIn';
+import { SignedIn } from './SignedIn';
 
 interface HeaderProps {
   currentUser?: { username: String, _id: String },
@@ -14,25 +16,15 @@ export const Header: FC<HeaderProps> = (props) => {
   const { currentUser, success, error, page } = props;
   const { userContext, setUserContext } = useContext(UserContext);
 
-  const logoutHandler = () => {
-    fetch(API_URL + "users/logout", {
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userContext.token}`,
-      },
-    }).then(async response => {
-      console.warn("setUserContext token=null because of ok response from /users/logout");
-      setUserContext({ ...userContext, details: undefined, token: null })
-      window.localStorage.setItem("logout", Date.now().toString())
-    })
-  }
-
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ background: "#e3f2fd" }}>
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">Cleaning Master</Link>
+          <a className="navbar-brand" href="/">
+            <img alt="Cleaning Master logo" src="/images/logo.png" width="30" className="d-inline-block align-text-top" />
+            {' '}
+            Cleaning Master
+          </a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -61,20 +53,7 @@ export const Header: FC<HeaderProps> = (props) => {
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
-              {!userContext.token ? (<>
-                <li className={typeof page !== 'undefined' && page === 'login' ? 'active nav-item' : 'nav-item'} style={{ marginRight: "0.5em" }}>
-                  <Link className="nav-link" to="/logowanie">Logowanie</Link>
-                </li>
-                <li className={typeof page !== 'undefined' && page === 'register' ? 'active nav-item' : 'nav-item'}>
-                  <Link className="nav-link" to="/rejestracja">Rejestracja</Link>
-                </li>
-              </>) : (<>
-                <li style={{ marginRight: "0.5em" }}>
-                  <Link className="nav-link" to={"/konto/id"}>Zalogowano jako EMAIL</Link>
-                </li>
-                <li>
-                  <Link className="nav-link" to="" onClick={logoutHandler}>Wyloguj</Link>
-                </li></>)}
+              {!userContext.token ? (<NotSignedIn />) : (<SignedIn />)}
             </ul>
           </div>
         </div>

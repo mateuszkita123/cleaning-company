@@ -28,7 +28,8 @@ router.get("/dodaj", async function (req, res) {
     } else {
       response.teams = [...allTeams];
     }
-  }).clone().catch(function (err) { console.log(err) });
+  })
+  // .clone().catch(function (err) { console.log(err) });
 
   await User.find({}, function (err, allUsers) {
     if (err) {
@@ -36,7 +37,8 @@ router.get("/dodaj", async function (req, res) {
     } else {
       response.users = [...allUsers];
     }
-  }).clone().catch(function (err) { console.log(err) });
+  })
+  // .clone().catch(function (err) { console.log(err) });
 
   await Invoice.find({}, function (err, allInvoices) {
     if (err) {
@@ -45,7 +47,8 @@ router.get("/dodaj", async function (req, res) {
       response.invoices = [...allInvoices];
       res.json(response);
     }
-  }).clone().catch(function (err) { console.log(err) });
+  })
+  // .clone().catch(function (err) { console.log(err) });
 });
 
 //CREATE - add a new service to DB

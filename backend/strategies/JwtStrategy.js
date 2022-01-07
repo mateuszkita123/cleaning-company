@@ -8,9 +8,9 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config()
 }
 
-const opts = {}
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken()
-opts.secretOrKey = process.env.JWT_SECRET
+const opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = process.env.JWT_SECRET;
 
 // Used by the authenticated requests to deserialize the user,
 // i.e., to fetch user details from the JWT.

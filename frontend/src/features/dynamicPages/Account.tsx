@@ -10,25 +10,34 @@ export const Account = () => {
 
   const fetchUserDetails = useCallback(() => {
     console.log("userContext.token: ", userContext.token);
-    if (!!userContext.token) {
-      fetch(API_URL + "users/me", getRequestOptionsWithToken(userContext.token))
-        .then(async response => {
-          if (response.ok) {
-            const data = await response.json()
-            setUserContext({ ...userContext, details: data })
+    // if (!!userContext.token) {
+    fetch(API_URL + "users/me", {
+      method: "GET",
+      credentials: "include",
+      // Pass authentication token as bearer token in header
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userContext.token}`,
+      }
+    })
+      .then(async response => {
+        if (response.ok) {
+          const data = await response.json();
+          setUserContext({ ...userContext, details: data });
+          console.log("data: ", data);
+        } else {
+          if (response.status === 401) {
+            // Edge case: when the token has expired.
+            // This could happen if the refreshToken calls have failed due to network error or
+            // User has had the tab open from previous day and tries to click on the Fetch button
+            // TODO enable reload
+            // window.location.reload();
           } else {
-            if (response.status === 401) {
-              // Edge case: when the token has expired.
-              // This could happen if the refreshToken calls have failed due to network error or
-              // User has had the tab open from previous day and tries to click on the Fetch button
-              // TODO enable reload
-              // window.location.reload()
-            } else {
-              setUserContext({ ...userContext, details: null })
-            }
+            setUserContext({ ...userContext, details: null });
           }
-        })
-    }
+        }
+      })
+    // }
   }, [setUserContext, userContext.token])
 
   useEffect(() => {

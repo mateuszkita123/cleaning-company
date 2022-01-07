@@ -1,4 +1,4 @@
-export const API_URL = 'https://localhost:4000/';
+export const API_URL = 'http://localhost:8081/';
 
 export enum FetchingDataStatus {
   IDLE = 'idle',
