@@ -29,7 +29,6 @@ router.get("/dodaj", async function (req, res) {
       response.teams = [...allTeams];
     }
   })
-  // .clone().catch(function (err) { console.log(err) });
 
   await User.find({}, function (err, allUsers) {
     if (err) {
@@ -38,7 +37,6 @@ router.get("/dodaj", async function (req, res) {
       response.users = [...allUsers];
     }
   })
-  // .clone().catch(function (err) { console.log(err) });
 
   await Invoice.find({}, function (err, allInvoices) {
     if (err) {
@@ -48,22 +46,16 @@ router.get("/dodaj", async function (req, res) {
       res.json(response);
     }
   })
-  // .clone().catch(function (err) { console.log(err) });
 });
 
 //CREATE - add a new service to DB
 router.post("/dodaj", function (req, res) {
-  // get data from form and add to reports array
   const { invoice, user, team, address, area, unitPrice, description } = req.body;
   const newService = { invoice_id: invoice, user_id: user, teams_id: [team], service_address: address, service_area: area, service_unit_price: unitPrice, description: description, status: "CREATED" };
 
-  // Create a new team and save to DB
   Service.create(newService, function (err, newlyCreated) {
     if (err) {
       console.log(err);
-    } else {
-      //redirect back to services page
-      res.redirect("/uslugi");
     }
   });
 });

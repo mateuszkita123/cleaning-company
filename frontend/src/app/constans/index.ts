@@ -6,6 +6,12 @@ export enum FetchingDataStatus {
   FAILED = 'failed'
 }
 
+export enum UserRoles {
+  ADMIN = "Administrator",
+  USER = "Pracownik",
+  CLIENT = "Klient"
+}
+
 export const GENERIC_ERROR_MESSAGE = "Coś poszło nie tak.";
 export const INVALID_DATA_MESSAGE = "Pola nie zostały poprawnie wypełnione!";
 export const INVALID_CREDENTIALS_MESSAGE = "Nieprawidłowy email lub hasło!";

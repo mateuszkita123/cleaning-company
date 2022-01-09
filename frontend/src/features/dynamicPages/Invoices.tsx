@@ -48,7 +48,7 @@ export const Invoices: FC = () => {
                 <tr key={element._id.toString()}>
                   <th>{element.is_b2b ? "Tak" : "Nie"}</th>
                   <th>{element.invoice_data_id}</th>
-                  <th><ActionButtons /></th>
+                  <th><ActionButtons id={element._id} /></th>
                 </tr>))}
             </tbody>
           </Table>) : <p>Nie udało się pobrać danych</p>}

@@ -1,15 +1,17 @@
-import { FetchingDataStatus } from "../app/constans";
+import { FetchingDataStatus, UserRoles } from "../app/constans";
 
-interface ICLient {
+export type TEntityId = IClient["_id"] | IUser["_id"] | ITeam["_id"] | IInvoice["_id"] | IInvoicesData["_id"] | IService["_id"]
+
+export interface IClient {
   _id: String;
   firstName: String;
   lastName: String;
   username: String;
-  role_id: String;
+  role_id: UserRoles.CLIENT;
 }
 
 export interface IClientsState {
-  clients: ICLient[];
+  clients: IClient[];
   status: FetchingDataStatus;
 }
 
@@ -17,10 +19,9 @@ export interface IUser {
   _id: String;
   username: String;
   email: String;
-  role_id: String;
+  role_id: UserRoles;
   firstName: String;
   lastName: String;
-  points: Number;
 }
 
 export interface IUsersState {
@@ -29,9 +30,9 @@ export interface IUsersState {
 }
 
 export interface ITeam {
-  _id: String;
-  name: String;
-  employee_id: String[];
+  _id: string;
+  name: string;
+  employee_id: string[];
 }
 
 export interface ITeamsState {
@@ -99,9 +100,9 @@ export interface IUserContextData {
 
 export type TUserContext = {
   userContext: IUserContextData;
-  setUserContext: (oldValues: IUserContextData) => void
+  setUserContext: (oldValues: IUserContextData) => void;
 };
 
 export interface IReactChildProps {
-  children: JSX.Element
+  children: JSX.Element;
 };

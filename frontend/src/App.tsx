@@ -1,25 +1,27 @@
 import { useContext, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Login } from './features/authorization/Login';
-import { Register } from './features/authorization/Register';
-import { InvoicesData } from './features/dynamicPages/InvoicesData';
+
 import { Footer, } from './features/partials/Footer';
 import { Header } from './features/partials/Header';
+import { API_URL, UserRoles } from './app/constans';
+import { UserContext } from './context/UserContext';
+import { Login } from './features/authorization/Login';
+import { Register } from './features/authorization/Register';
+import { Account } from './features/dynamicPages/Account';
+import { AddInvoice } from './features/dynamicPages/AddInvoice';
+import { AddService } from './features/dynamicPages/AddService';
+import { AddTeams } from './features/dynamicPages/AddTeam';
+import { Clients } from './features/dynamicPages/Clients';
+import { Invoices } from './features/dynamicPages/Invoices';
+import { InvoicesData } from './features/dynamicPages/InvoicesData';
+import { Services } from './features/dynamicPages/Services';
+import { Teams } from './features/dynamicPages/Teams';
+import { UsersPage } from './features/dynamicPages/UsersPage';
 import { ContactPage } from './features/staticPages/ContactPage';
 import { HomePage } from './features/staticPages/HomePage';
-import { UsersPage } from './features/dynamicPages/UsersPage';
-import { Teams } from './features/dynamicPages/Teams';
-import { AddTeams } from './features/dynamicPages/AddTeam';
-import { Invoices } from './features/dynamicPages/Invoices';
-import { Clients } from './features/dynamicPages/Clients';
-import { AddInvoice } from './features/dynamicPages/AddInvoice';
-import { Services } from './features/dynamicPages/Services';
-import { AddService } from './features/dynamicPages/AddService';
-import { API_URL } from './app/constans';
-import { UserContext } from './context/UserContext';
-import { Account } from './features/dynamicPages/Account';
+import { PageNotFound } from './features/staticPages/PageNotFound';
+import { PrivateRoutes } from './features/authorization/PrivateRoutes';
 import './App.css';
-import { ReturnToHomePage } from './features/links/ReturnToHomePage';
 
 function App() {
   const { userContext, setUserContext } = useContext(UserContext);
@@ -40,7 +42,7 @@ function App() {
           setUserContext({ ...userContext, token: null });
         }
         // call refreshToken every 5 minutes to renew the authentication token.
-        setTimeout(verifyUser, 1 * 60 * 1000);
+        setTimeout(verifyUser, 5 * 60 * 1000);
       })
   }, [setUserContext]);
 
@@ -66,31 +68,29 @@ function App() {
       <div className="App">
         <Header />
         <Routes>
-          <Route path={"/"} element={<HomePage />} />
-          <Route path={"/me"} element={<Account />} />
-          <Route path={"/kontakt"} element={<ContactPage />} />
-          <Route path={"/logowanie"} element={<Login />} />
-          <Route path={"/rejestracja"} element={<Register />} />
-          <Route path={"/uzytkownicy"} element={<UsersPage />} />
-          <Route path={"/dane_do_faktur"} element={<InvoicesData />} />
-          <Route path={"/zespoly"} element={<Teams />} />
-          <Route path={"/zespoly/dodaj"} element={<AddTeams />} />
-          <Route path={"/faktury"} element={<Invoices />} />
-          <Route path={"/faktury/dodaj"} element={<AddInvoice />} />
-          <Route path={"/klienci"} element={<Clients />} />
-          <Route path={"/uslugi"} element={<Services />} />
-          <Route path={"/uslugi/dodaj"} element={<AddService />} />
-          <Route
-            path="*"
-            element={
-              <main style={{ padding: "1rem" }}>
-                <p>Strona nie istnieje!</p>
-                <ReturnToHomePage />
-              </main>
-            }
-          />
+          <Route index element={<HomePage />} />
+          <Route path={"kontakt"} element={<ContactPage />} />
+          <Route path={"logowanie"} element={<Login />} />
+          <Route path={"rejestracja"} element={<Register />} />
+          <Route path="/" element={<PrivateRoutes role={UserRoles.ADMIN} />} >
+            <Route path={"me"} element={<Account />} />
+            <Route path={"uzytkownicy"} element={<UsersPage />} />
+            <Route path={"dane_do_faktur"} element={<InvoicesData />} />
+            <Route path={"zespoly"} element={<Teams />}>
+              <Route path={"dodaj"} element={<AddTeams />} />
+            </Route>
+            <Route path={"faktury"} element={<Invoices />} >
+              <Route path={"dodaj"} element={<AddInvoice />} />
+            </Route>
+            <Route path={"uslugi"} element={<Services />} >
+              <Route path={"dodaj"} element={<AddService />} />
+              <Route path={"edytuj/:serviceId"} element={<AddService />} />
+            </Route>
+            <Route path={"klienci"} element={<Clients />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
-        < Footer />
+        <Footer />
       </div>
     </BrowserRouter>
   );

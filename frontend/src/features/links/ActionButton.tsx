@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import ActionIcon, { ActionIconProps } from "./ActionIcon";
 
 interface ActionButtonProps {
-  content: string,
-  fontClassName?: string
+  content: string;
+  fontClassName?: string;
 }
 
 type ComponentProps = ActionButtonProps & ActionIconProps;

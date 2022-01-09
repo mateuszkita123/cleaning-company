@@ -121,22 +121,9 @@ router.post("/refreshToken", (req, res, next) => {
 
 router.get("/me", verifyUser, (req, res, next) => {
   res.send(req.user);
-
-  // const token = req.get("Authorization");
-
-  // console.log("/me REQUEST");
-  // console.log("req.user: ", req.user);
-  // console.log("token: ", token);
-
-  // TODO find user by token
-
-  // res.send(req.user)
 })
 
 router.get("/wyloguj", verifyUser, (req, res, next) => {
-  console.log("wyloguj REQUEST");
-  console.log("req.user: ", req.user);
-
   const { signedCookies = {} } = req;
   const { refreshToken } = signedCookies;
   User.findById(req.user._id).then(

@@ -36,14 +36,14 @@ export function SignedIn() {
   }
 
   const logoutHandler = () => {
-    fetch(API_URL + "users/logout", {
+    fetch(API_URL + "users/wyloguj", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userContext.token}`,
       },
     }).then(async response => {
-      console.warn("setUserContext token=null because of ok response from /users/logout");
+      console.warn("setUserContext token=null because of ok response from /users/wyloguj");
       setUserContext({ ...userContext, details: undefined, token: null })
       window.localStorage.setItem("logout", Date.now().toString())
     })

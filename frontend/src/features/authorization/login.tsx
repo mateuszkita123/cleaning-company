@@ -1,7 +1,7 @@
 import { useRef, FormEvent, useContext, useState } from "react";
 import { FormGroup, Button, Form, Alert } from "react-bootstrap";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { API_URL, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
-import { postOptionsWithCredentials } from "../../app/utils";
 import { UserContext } from "../../context/UserContext";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
 
@@ -10,6 +10,7 @@ export function Login() {
   const [error, setError] = useState("");
   const { userContext, setUserContext } = useContext(UserContext);
 
+  const location = useLocation();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -49,7 +50,6 @@ export function Login() {
         setIsSubmitting(false);
         setError(GENERIC_ERROR_MESSAGE);
       })
-      .finally(() => console.error("Login userContext: ", userContext));
 
     // if (email && password) {
     //   console.log("email: ", email);
@@ -59,7 +59,7 @@ export function Login() {
     // }
   }
 
-  return (
+  return (!userContext.token ? (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
       <h1 style={{ textAlign: "center", marginTop: "0.8em" }}>Logowanie</h1>
@@ -91,7 +91,11 @@ export function Login() {
         {' '}
         <ReturnToHomePage />
       </Form>
+      <p>Nie masz jeszcze konta?</p>
+      <Link to="/rejestracja">Zarejestruj się</Link>
     </>
+  ) : (
+    <Navigate to="/me" replace state={{ from: location }} />
+  )
   );
 }
-

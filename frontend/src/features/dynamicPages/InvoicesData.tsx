@@ -55,7 +55,7 @@ export const InvoicesData: FC = () => {
                 <th>{element.company_address}</th>
                 <th>{element.company_phone}</th>
                 <th>{element.company_email}</th>
-                <th><ActionButtons /></th>
+                <th><ActionButtons id={element._id} /></th>
               </tr>))}
           </tbody>
         </Table>) : <p>Nie udało się pobrać danych</p>}

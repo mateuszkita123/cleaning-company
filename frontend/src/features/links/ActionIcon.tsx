@@ -11,7 +11,7 @@ export interface ActionIconProps {
 
 // by default ActionIcon has mr-2 class to get initial right margin
 const ActionIcon: React.FC<ActionIconProps> = ({ icon, path, className }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <FontAwesomeIcon

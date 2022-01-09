@@ -51,7 +51,6 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"))
     }
   },
-  sameSite: "none",
   credentials: true,
 };
 

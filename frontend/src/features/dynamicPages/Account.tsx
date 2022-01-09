@@ -55,14 +55,14 @@ export const Account = () => {
   }
 
   const logoutHandler = () => {
-    fetch(API_URL + "users/logout", {
+    fetch(API_URL + "users/wyloguj", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${userContext.token}`,
       },
     }).then(async response => {
-      console.warn("setUserContext token=null because of ok response from /users/logout");
+      console.warn("setUserContext token=null because of ok response from /users/wyloguj");
       setUserContext({ ...userContext, details: undefined, token: null })
       window.localStorage.setItem("logout", Date.now().toString())
     })
@@ -77,25 +77,23 @@ export const Account = () => {
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" />
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
+          <Card.Title>Konto użytkownika</Card.Title>
           <Card.Text>
-            Welcome&nbsp;
+            Witaj&nbsp;
             <strong>
               {userContext.details.firstName}
               {userContext.details.lastName &&
                 " " + userContext.details.lastName}
             </strong>!
             <br />
-            Your reward points: <strong>{userContext.details.points}</strong>
-            <br />
             Rola: <strong>{userContext.details.role_id}</strong>
           </Card.Text>
           <Button variant="primary" onClick={logoutHandler}>Wyloguj</Button>
         </Card.Body>
       </Card>
-      <Link to="/dane_do_faktury">Dane do faktury</Link>
-      <Link to="/dane_do_faktury">Wystawione faktury</Link>
-      <Link to="/dane_do_faktury">Zarezerwowane usługi</Link>
+      <Link to="/dane_do_faktur">Dane do faktury</Link>
+      <Link to="/faktury">Wystawione faktury</Link>
+      <Link to="/uslugi">Zarezerwowane usługi</Link>
     </>
   )
 }

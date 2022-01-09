@@ -47,7 +47,7 @@ export const UsersPage: FC = () => {
                 <th>{user.firstName} {user.lastName}</th>
                 <th>{user.username}</th>
                 <th>{user.role_id}</th>
-                <th><ActionButtons /></th>
+                <th><ActionButtons id={user._id} /></th>
               </tr>))}
           </tbody>
         </Table>) : <p>Nie udało się pobrać danych</p>}
