@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IClientsState } from "../../interfaces";
 import { ActionButtons } from "../links/ActionButtons";
@@ -11,7 +11,7 @@ export const Clients: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + 'klienci', options)
+    fetch(API_URL + Endpoints.CLIENTS, options)
       .then(res => res.json())
       .then((result) => {
         setUsers(result);
@@ -45,7 +45,7 @@ export const Clients: FC = () => {
               <tr key={user._id.toString()}>
                 <th>{user.firstName} {user.lastName}</th>
                 <th>{user.username}</th>
-                <th><ActionButtons id={user._id} /></th>
+                <th><ActionButtons id={user._id} endpoint={Endpoints.USERS} /></th>
               </tr>))}
           </tbody>
         </Table>) : <p>Nie udało się pobrać danych</p>}

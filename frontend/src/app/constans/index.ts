@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8081/';
+export const API_URL = 'http://localhost:8081';
 
 export enum FetchingDataStatus {
   IDLE = 'idle',
@@ -10,6 +10,20 @@ export enum UserRoles {
   ADMIN = "Administrator",
   USER = "Pracownik",
   CLIENT = "Klient"
+}
+
+export enum Endpoints {
+  INVOICES_DATA = "/dane_do_faktur",
+  INVOICES = "/faktury",
+  ADD_INVOICES = "/faktury",
+  USERS = "/users",
+  ACCOUNT = "/me",
+  SERVICES = "/uslugi",
+  ADD_SERVICES = "/uslugi/dodaj",
+  CLIENTS = "/klienci",
+  TEAMS = "/zespoly",
+  ADD_TEAMS = "/zespoly/dodaj",
+  ALL_USERS = "/uzytkownicy",
 }
 
 export const GENERIC_ERROR_MESSAGE = "Coś poszło nie tak.";

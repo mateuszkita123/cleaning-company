@@ -27,7 +27,7 @@ function App() {
   const { userContext, setUserContext } = useContext(UserContext);
 
   const verifyUser = useCallback(() => {
-    fetch(API_URL + "users/refreshToken", {
+    fetch(API_URL + "/users/refreshToken", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

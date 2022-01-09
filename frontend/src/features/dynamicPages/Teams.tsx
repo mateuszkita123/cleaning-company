@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { ITeamsState } from "../../interfaces";
 import { ActionButtons } from "../links/ActionButtons";
@@ -14,7 +14,7 @@ export const Teams: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + 'zespoly', options)
+    fetch(API_URL + Endpoints.TEAMS, options)
       .then(res => res.json())
       .then((result) => {
         setData(result);
@@ -28,7 +28,7 @@ export const Teams: FC = () => {
       });
   }, []);
 
-  return location.pathname === "/zespoly" ? (
+  return location.pathname === Endpoints.TEAMS ? (
     <>
       <div className="container">
         <div className="row">
@@ -49,7 +49,7 @@ export const Teams: FC = () => {
                 <tr key={element._id.toString()}>
                   <th>{element.name}</th>
                   <th>{element.employee_id[0]}</th>
-                  <th><ActionButtons id={element._id} /></th>
+                  <th><ActionButtons id={element._id} endpoint={Endpoints.TEAMS} /></th>
                 </tr>))}
             </tbody>
           </Table>) : <p>Nie udało się pobrać danych</p>}
@@ -57,7 +57,7 @@ export const Teams: FC = () => {
       </div>
       <div className="container">
         <p>
-          <Link className="btn btn-primary btn-lg" to="/zespoly/dodaj">Utwórz zespół</Link>
+          <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_TEAMS}>Utwórz zespół</Link>
           <ReturnToHomePage />
         </p>
       </div>

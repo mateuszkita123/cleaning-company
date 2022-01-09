@@ -6,15 +6,21 @@ import ActionIcon, { ActionIconProps } from "./ActionIcon";
 interface ActionButtonProps {
   content: string;
   fontClassName?: string;
+  customHandler?: () => void;
 }
 
 type ComponentProps = ActionButtonProps & ActionIconProps;
 
-const ActionButton: React.FC<ComponentProps> = ({ icon, path, content, className, fontClassName }) => {
-  let navigate = useNavigate();
+const ActionButton: React.FC<ComponentProps> = ({ customHandler, icon, path, content, className, fontClassName }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    console.log("clicked!");
+    console.log("!!customHandler: ", !!customHandler);
+    !!customHandler ? customHandler() : navigate(path);
+  }
 
   return (
-    <div style={{ cursor: "pointer" }} className={`${className || "action-button"}`} onClick={() => navigate(path)}>
+    <div style={{ cursor: "pointer" }} className={`${className || "action-button"}`} onClick={handleClick}>
       <ActionIcon className={`${fontClassName}`} icon={icon} path={path} />
       {content}
     </div>)

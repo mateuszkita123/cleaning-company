@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
-import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { API_URL, FetchingDataStatus, Endpoints } from "../../app/constans";
 import { options, optionsPost } from "../../app/utils";
 import { IInvoicesData, IOption, IOptionForSelectState, ITeamsState } from "../../interfaces";
 
@@ -28,7 +28,7 @@ export const AddInvoice: FC = () => {
     event.preventDefault();
     if (selectedB2BOption !== null && selectedInvoicesDataOption !== null) {
       const body = JSON.stringify({ is_b2b: selectedB2BOption["value"] === 'true', invoice_data_id: selectedInvoicesDataOption["value"] })
-      fetch(API_URL + 'faktury/dodaj', { ...optionsPost, body: body })
+      fetch(API_URL + Endpoints.ADD_INVOICES, { ...optionsPost, body: body })
         .then(res => res.json())
         .then((result) => console.log(result));
     }
@@ -36,7 +36,7 @@ export const AddInvoice: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + 'dane_do_faktur', options)
+    fetch(API_URL + Endpoints.INVOICES_DATA, options)
       .then(res => res.json())
       .then((result) => {
         const invoicesDataIds = result.map((element: IInvoicesData) => ({ label: element._id, value: element._id }));
@@ -76,7 +76,7 @@ export const AddInvoice: FC = () => {
             <button className="btn btn-lg btn-primary btn-block" onClick={event => handleClick(event)}>Zapisz</button>
           </div>
         </form>
-        <Link to="/faktury">Powrót</Link>
+        <Link to={Endpoints.INVOICES}>Powrót</Link>
       </div>
     </div>
   );

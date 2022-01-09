@@ -1,20 +1,17 @@
 import { FC, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { API_URL } from '../../app/constans';
+import { Endpoints } from '../../app/constans';
 import { UserContext } from '../../context/UserContext';
 import { NotSignedIn } from './NotSignedIn';
 import { SignedIn } from './SignedIn';
 
 interface HeaderProps {
-  currentUser?: { username: String, _id: String },
-  success?: String,
-  error?: String,
   page?: String
 }
 
 export const Header: FC<HeaderProps> = (props) => {
-  const { currentUser, success, error, page } = props;
-  const { userContext, setUserContext } = useContext(UserContext);
+  const { page } = props;
+  const { userContext } = useContext(UserContext);
 
   return (
     <>
@@ -40,7 +37,7 @@ export const Header: FC<HeaderProps> = (props) => {
                 <Link className="nav-link" to="/uzytkownicy">Użytkownicy</Link>
               </li>
               <li className={typeof page !== 'undefined' && page === 'invoicesData' ? 'active' : 'nav-item'}>
-                <Link className="nav-link" to="/dane_do_faktur">Dane do faktur</Link>
+                <Link className="nav-link" to={Endpoints.INVOICES_DATA}>Dane do faktur</Link>
               </li>
               <li className={typeof page !== 'undefined' && page === 'invoices' ? 'active' : 'nav-item'}>
                 <Link className="nav-link" to="/faktury">Faktury</Link>
@@ -58,20 +55,6 @@ export const Header: FC<HeaderProps> = (props) => {
           </div>
         </div>
       </nav>
-
-      <div className="container">
-        {error && error.length > 0 ? (<div className="alert alert-danger">
-          <p>
-            {error}
-          </p>
-        </div>) : null}
-        {success && success.length > 0 ? (<div className="alert alert-success">
-          <p>
-            {success}
-          </p>
-        </div>) : null}
-      </div>
-      <div className="container"></div>
     </>
   );
 }

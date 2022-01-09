@@ -1,7 +1,7 @@
-import { FC, useState, useEffect, useContext, useCallback } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
 import { options } from "../../app/utils";
 import { UserContext } from "../../context/UserContext";
 import { IServicesState } from "../../interfaces";
@@ -11,8 +11,7 @@ import { ReturnToHomePage } from "../links/ReturnToHomePage";
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);
   const [status, setStatus] = useState<IServicesState["status"]>(FetchingDataStatus.IDLE);
-  const [error, setError] = useState("");
-  const { userContext, setUserContext } = useContext(UserContext);
+  const { userContext } = useContext(UserContext);
   const location = useLocation();
 
   console.warn("Services userContext: ", userContext);
@@ -20,7 +19,7 @@ export const Services: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + 'uslugi', options)
+    fetch(API_URL + Endpoints.SERVICES, options)
       .then(res => res.json())
       .then((result) => {
         setData(result);
@@ -34,7 +33,7 @@ export const Services: FC = () => {
       });
   }, []);
 
-  return location.pathname === "/uslugi" ? (
+  return location.pathname === Endpoints.SERVICES ? (
     <>
       <div className="container">
         <div className="row">
@@ -69,7 +68,7 @@ export const Services: FC = () => {
                   <th>{element.teams_id}</th>
                   <th>{element.user_id}</th>
                   <th>{element.invoice_id}</th>
-                  <th><ActionButtons id={element._id} /></th>
+                  <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
                 </tr>))
               }
             </tbody>
@@ -78,7 +77,7 @@ export const Services: FC = () => {
       </div>
       <div className="container">
         <p>
-          <Link className="btn btn-primary btn-lg" to="/uslugi/dodaj">Zarezerwuj usługę</Link>
+          <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
           <ReturnToHomePage />
         </p>
       </div>

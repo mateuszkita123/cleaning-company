@@ -23,7 +23,7 @@ export function Login() {
     const password = passwordRef.current?.value;
     const body = JSON.stringify({ username: email, password });
 
-    fetch(API_URL + "users/logowanie", {
+    fetch(API_URL + "/users/logowanie", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

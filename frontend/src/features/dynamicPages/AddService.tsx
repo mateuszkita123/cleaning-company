@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
-import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
 import { options, optionsPost } from "../../app/utils";
 import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState } from "../../interfaces";
 import { ValidationToast } from "../links/ValidationToast";
@@ -33,7 +33,7 @@ export const AddService: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + 'uslugi/dodaj', options)
+    fetch(API_URL + Endpoints.ADD_SERVICES, options)
       .then(res => res.json())
       .then((result) => {
         const invoices = result?.invoices.map((element: IInvoice) => ({ label: element._id, value: element._id })) || [];
@@ -93,7 +93,7 @@ export const AddService: FC = () => {
         unitPrice: unitPrice,
         description: description
       })
-      fetch(API_URL + 'uslugi/dodaj', { ...optionsPost, body: body })
+      fetch(API_URL + Endpoints.ADD_SERVICES, { ...optionsPost, body: body })
         .then(res => res.json())
         .then((result) => console.log(result));
     } else {
@@ -153,7 +153,7 @@ export const AddService: FC = () => {
             {validationVisible ? <ValidationToast message={"Należy uzupełnić wymagane pola"} /> : null}
           </div>
         </form>
-        <Link to="/uslugi">Powrót</Link>
+        <Link to={Endpoints.SERVICES}>Powrót</Link>
       </div>
     </div>
   );

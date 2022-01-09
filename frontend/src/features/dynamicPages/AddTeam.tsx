@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
 import { options, optionsPost } from "../../app/utils";
 import { IClient, ITeam } from "../../interfaces";
 
@@ -17,7 +17,7 @@ export const AddTeams: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + 'zespoly/dodaj', options)
+    fetch(API_URL + Endpoints.ADD_TEAMS, options)
       .then(res => res.json())
       .then((result) => {
         setData(result);
@@ -43,7 +43,7 @@ export const AddTeams: FC = () => {
       const body = JSON.stringify({
         name: name
       })
-      fetch(API_URL + 'zespoly/dodaj', { ...optionsPost, body: body })
+      fetch(API_URL + Endpoints.ADD_TEAMS, { ...optionsPost, body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);
@@ -74,7 +74,7 @@ export const AddTeams: FC = () => {
             <button className="btn btn-lg btn-primary btn-block" onClick={event => handleClick(event)}>Zapisz</button>
           </div>
         </form>
-        <Link to="/faktury">Powrót</Link>
+        <Link to={Endpoints.TEAMS}>Powrót</Link>
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { API_URL, FetchingDataStatus } from "../../app/constans";
+import { Outlet, useLocation } from "react-router-dom";
+import { API_URL, FetchingDataStatus, Endpoints } from "../../app/constans";
 import { options } from "../../app/utils";
 import { IInvoicesDataState } from "../../interfaces";
 import { ActionButtons } from "../links/ActionButtons";
@@ -8,10 +9,11 @@ import { ActionButtons } from "../links/ActionButtons";
 export const InvoicesData: FC = () => {
   const [data, setData] = useState<IInvoicesDataState["invoicesData"]>([]);
   const [status, setStatus] = useState<IInvoicesDataState["status"]>(FetchingDataStatus.IDLE);
+  const location = useLocation();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + 'dane_do_faktur', options)
+    fetch(API_URL + Endpoints.INVOICES_DATA, options)
       .then(res => res.json())
       .then((result) => {
         setData(result);
@@ -25,7 +27,7 @@ export const InvoicesData: FC = () => {
       });
   }, []);
 
-  return (
+  return location.pathname === Endpoints.INVOICES_DATA ? (
     <div className="container">
       <div className="row">
         <h1 style={{ textAlign: "center" }}>Dane do faktur</h1>
@@ -55,11 +57,13 @@ export const InvoicesData: FC = () => {
                 <th>{element.company_address}</th>
                 <th>{element.company_phone}</th>
                 <th>{element.company_email}</th>
-                <th><ActionButtons id={element._id} /></th>
+                <th><ActionButtons id={element._id} endpoint={Endpoints.INVOICES_DATA} /></th>
               </tr>))}
           </tbody>
         </Table>) : <p>Nie udało się pobrać danych</p>}
       </div>
     </div>
-  );
+  ) : (
+    <Outlet />
+  )
 }

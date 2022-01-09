@@ -1,8 +1,7 @@
 import { useCallback, useContext, useEffect } from "react"
 import { Card, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
-import { API_URL } from "../../app/constans"
-import { getRequestOptionsWithToken } from "../../app/utils"
+import { API_URL, Endpoints } from "../../app/constans"
 import { UserContext } from "../../context/UserContext"
 import { Loader } from "../links/Loader"
 
@@ -12,7 +11,7 @@ export const Account = () => {
   const fetchUserDetails = useCallback(() => {
     console.log("userContext.token: ", userContext.token);
     // if (!!userContext.token) {
-    fetch(API_URL + "users/me", {
+    fetch(API_URL + "/users/me", {
       method: "GET",
       credentials: "include",
       // Pass authentication token as bearer token in header
@@ -55,7 +54,7 @@ export const Account = () => {
   }
 
   const logoutHandler = () => {
-    fetch(API_URL + "users/wyloguj", {
+    fetch(API_URL + "/users/wyloguj", {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
@@ -91,9 +90,9 @@ export const Account = () => {
           <Button variant="primary" onClick={logoutHandler}>Wyloguj</Button>
         </Card.Body>
       </Card>
-      <Link to="/dane_do_faktur">Dane do faktury</Link>
-      <Link to="/faktury">Wystawione faktury</Link>
-      <Link to="/uslugi">Zarezerwowane usługi</Link>
+      <Link to={Endpoints.INVOICES_DATA}>Dane do faktury</Link>
+      <Link to={Endpoints.INVOICES}>Wystawione faktury</Link>
+      <Link to={Endpoints.SERVICES}>Zarezerwowane usługi</Link>
     </>
   )
 }

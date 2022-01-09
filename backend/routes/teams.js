@@ -48,4 +48,18 @@ router.post("/dodaj", function (req, res) {
   });
 });
 
+// TODO add middleware - handling user roles
+router.delete("/", function (req, res) {
+  const id = req.body.id;
+
+  Team.findOneAndDelete({ _id: id }, (err) => {
+    if (err) {
+      res.send({ status: err });
+    } else {
+      res.status(200);
+      res.send({ status: "Success" });
+    }
+  })
+});
+
 module.exports = router;
