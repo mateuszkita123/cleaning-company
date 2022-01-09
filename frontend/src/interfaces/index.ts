@@ -10,6 +10,13 @@ export interface IClient {
   role_id: UserRoles.CLIENT;
 }
 
+export interface IEmployee {
+  _id: String;
+  firstName: String;
+  lastName: String;
+  role_id: UserRoles.USER;
+}
+
 export interface IClientsState {
   clients: IClient[];
   status: FetchingDataStatus;
@@ -32,7 +39,7 @@ export interface IUsersState {
 export interface ITeam {
   _id: string;
   name: string;
-  employee_id: string[];
+  employee_id: IEmployee[];
 }
 
 export interface ITeamsState {
@@ -91,6 +98,10 @@ export interface IOption {
 
 export interface IOptionForSelectState {
   selectedOption: IOption | null;
+}
+
+export interface IOptionForMultiSelectState {
+  selectedOptions: IOption[] | null;
 }
 
 export interface IUserContextData {

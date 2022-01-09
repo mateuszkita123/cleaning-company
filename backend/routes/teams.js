@@ -8,13 +8,21 @@ const { UserRoles } = require("../constans");
 
 //INDEX - show all teams
 router.get("/", function (req, res) {
-  Team.find({}, function (err, allTeams) {
+  Team.find({}).populate({
+    path: "employee_id"
+  }).exec((err, allTeams) => {
     if (err) {
       console.log(err);
     } else {
-      res.json(allTeams);
+      console.log("allTeams: ", allTeams);
+
+      const allTeamsData = allTeams.map(team => ({ _id: team._id.toString(), name: team.name, employee_id: team.employee_id.map(employee => ({ _id: employee._id, firstName: employee.firstName, lastName: employee.lastName })) }));
+
+      console.log("allTeamsData: ", allTeamsData);
+
+      res.json(allTeamsData);
     }
-  });
+  })
 });
 
 //NEW - show form to create new report
@@ -23,7 +31,7 @@ router.get("/dodaj", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      const users = allUsers.map(elem => elem._id.toString());
+      const users = allUsers.map(elem => ({ _id: elem._id.toString(), firstName: elem.firstName, lastName: elem.lastName }));
       res.json(users);
     }
   });
@@ -31,9 +39,9 @@ router.get("/dodaj", function (req, res) {
 
 //CREATE - add a new team to DB
 router.post("/dodaj", function (req, res) {
-  const id = req.body.id;
+  const ids = req.body.ids;
   const name = req.body.name;
-  const employee_ids = id ? [id] : [];
+  const employee_ids = ids?.length > 0 ? ids : [];
   const newTeam = { name: name, employee_id: employee_ids };
 
   console.log("newTeam: ", newTeam);

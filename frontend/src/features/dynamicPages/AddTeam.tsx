@@ -1,26 +1,36 @@
-import { FC, useState, useEffect, FormEvent } from "react";
+import { FC, useState, useEffect, FormEvent, useRef } from "react";
+import { Alert, Button, Form, FormGroup } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import Select, { MultiValue, ActionMeta } from "react-select";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
 import { options, optionsPost } from "../../app/utils";
-import { IClient, ITeam } from "../../interfaces";
+import { IUser, IOption, IOptionForMultiSelectState, } from "../../interfaces";
+import { ReturnToHomePage } from "../links/ReturnToHomePage";
+
+type TEmployeeOptionType = Pick<IUser, "_id" | "firstName" | "lastName">;
 
 interface IUsersIdsState {
-  usersIds: IClient["_id"][];
+  employees: TEmployeeOptionType[];
   status: FetchingDataStatus;
 }
 
 export const AddTeams: FC = () => {
-  const [data, setData] = useState<IUsersIdsState["usersIds"]>([]);
   const [status, setStatus] = useState<IUsersIdsState["status"]>(FetchingDataStatus.IDLE);
-  const [name, setName] = useState<ITeam["name"]>("");
+  const [usersDataOptions, setUsersDataOptions] = useState<IOption[]>([]);
+  const [selectedUserOptions, setSelectedUserOptions] = useState<IOptionForMultiSelectState["selectedOptions"]>(null);
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
+  const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
     fetch(API_URL + Endpoints.ADD_TEAMS, options)
       .then(res => res.json())
-      .then((result) => {
-        setData(result);
+      .then((result: IUsersIdsState["employees"]) => {
+        const options = result.map((element) => ({ value: element._id, label: `${element.firstName} ${element.lastName}` }));
+        setUsersDataOptions(options);
       })
       .catch(error => {
         console.log("Błąd: ", error);
@@ -31,24 +41,27 @@ export const AddTeams: FC = () => {
       });
   }, []);
 
-  const handleNameChange = (event: FormEvent<HTMLInputElement>): void => {
-    console.log("name: ", name);
-    setName(event.currentTarget.value);
-  }
-
-  const handleClick = (event: FormEvent): void => {
+  const handleSubmit = (event: FormEvent): void => {
     event.preventDefault();
     // setValidationVisible(false);
+    const name = nameRef.current?.value;
+
     if (name) {
+      const ids = selectedUserOptions?.map((element) => element.value);
+
       const body = JSON.stringify({
-        name: name
+        name: name,
+        ids: ids
       })
+
+      console.warn("body: ", body);
+
       fetch(API_URL + Endpoints.ADD_TEAMS, { ...optionsPost, body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);
           if (result.status === "Success") {
-            navigate("/zespoly");
+            navigate(Endpoints.TEAMS);
           }
         });
     } else {
@@ -56,26 +69,44 @@ export const AddTeams: FC = () => {
     }
   }
 
+  const handleUserDataSelectChange = (newValue: MultiValue<IOption>, _: ActionMeta<IOption>): void => {
+    setSelectedUserOptions([...newValue]);
+  }
+
   return (
-    <div className="row">
-      <h1 style={{ textAlign: "center" }}>Tworzenie zespołu</h1>
-      <div style={{ width: "50%", margin: "25px auto" }}>
-        <form>
-          <div className="form-group">
-            <label htmlFor="title">Nazwa</label>
-            <input required onChange={handleNameChange} value={name} className="form-control" type="text" name="teamName" id="teamName" placeholder="Np. miotlarze" />
-          </div>
-          <div className="form-group">
-            <label htmlFor="image">Id pracownika</label>
-            {data.map((element) => (<p key={element.toString()}>{element}</p>))}
-            <input className="form-control" type="text" name="id" id="id" placeholder="Id pracownika" />
-          </div>
-          <div className="form-group">
-            <button className="btn btn-lg btn-primary btn-block" onClick={event => handleClick(event)}>Zapisz</button>
-          </div>
-        </form>
-        <Link to={Endpoints.TEAMS}>Powrót</Link>
-      </div>
-    </div>
+    <>
+      {error && <Alert variant="danger">{error}</Alert>}
+      <h1 style={{ textAlign: "center", marginTop: "0.8em" }}>Tworzenie zespołu</h1>
+      <Form onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "90%", margin: "0.8em auto" }}>
+        <FormGroup
+          className="text-start mb-3"
+          controlId="formBasicEmail">
+          <Form.Label className="fw-bold">Nazwa zespołu</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Np. Miotełki"
+            ref={nameRef} />
+        </FormGroup>
+        <Form.Label className="fw-bold">Pracownicy</Form.Label>
+        <Select
+          isMulti
+          name="employees"
+          options={usersDataOptions}
+          className="basic-multi-select"
+          classNamePrefix="select"
+          onChange={handleUserDataSelectChange}
+          value={selectedUserOptions}
+        />
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={isSubmitting}>
+          {isSubmitting ? "Zapisywanie..." : "Zapisz"}
+        </Button>
+        {' '}
+        <ReturnToHomePage />
+      </Form>
+      <Link to={Endpoints.TEAMS}>Powrót</Link>
+    </>
   )
 }

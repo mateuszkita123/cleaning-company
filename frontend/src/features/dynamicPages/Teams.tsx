@@ -40,7 +40,7 @@ export const Teams: FC = () => {
             <thead>
               <tr>
                 <th>Nazwa</th>
-                <th>Id pracowników</th>
+                <th>Pracownicy</th>
                 <th>Akcje</th>
               </tr>
             </thead>
@@ -48,7 +48,7 @@ export const Teams: FC = () => {
               {data.map((element) => (
                 <tr key={element._id.toString()}>
                   <th>{element.name}</th>
-                  <th>{element.employee_id[0]}</th>
+                  <th>{element.employee_id.map(employee => (<p>{`${employee.firstName} ${employee.lastName}`}</p>))}</th>
                   <th><ActionButtons id={element._id} endpoint={Endpoints.TEAMS} /></th>
                 </tr>))}
             </tbody>
