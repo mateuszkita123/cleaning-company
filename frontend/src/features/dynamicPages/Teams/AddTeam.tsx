@@ -2,10 +2,10 @@ import { FC, useState, useEffect, FormEvent, useRef } from "react";
 import { Alert, Button, Form, FormGroup } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
-import { options, optionsPost } from "../../app/utils";
-import { IUser, IOption, IOptionForMultiSelectState, } from "../../interfaces";
-import { ReturnToHomePage } from "../links/ReturnToHomePage";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { optionsPost } from "../../../app/utils";
+import { IUser, IOption, IOptionForMultiSelectState, } from "../../../interfaces";
+import { fetchUserDataOptions, mapResults } from "./TeamsApi";
 
 type TEmployeeOptionType = Pick<IUser, "_id" | "firstName" | "lastName">;
 
@@ -26,19 +26,13 @@ export const AddTeams: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.ADD_TEAMS, options)
-      .then(res => res.json())
-      .then((result: IUsersIdsState["employees"]) => {
-        const options = result.map((element) => ({ value: element._id, label: `${element.firstName} ${element.lastName}` }));
-        setUsersDataOptions(options);
-      })
-      .catch(error => {
-        console.log("Błąd: ", error);
-        setStatus(FetchingDataStatus.FAILED);
-      })
-      .finally(() => {
-        setStatus(FetchingDataStatus.IDLE);
-      });
+
+    async function fetchMyAPI() {
+      const response = await fetchUserDataOptions<TEmployeeOptionType[]>(setStatus);
+      setUsersDataOptions(mapResults(response));
+    }
+
+    fetchMyAPI()
   }, []);
 
   const handleSubmit = (event: FormEvent): void => {
@@ -76,8 +70,8 @@ export const AddTeams: FC = () => {
   return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-      <h1 style={{ textAlign: "center", marginTop: "0.8em" }}>Tworzenie zespołu</h1>
-      <Form onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "90%", margin: "0.8em auto" }}>
+      <h1 id="table-heading">Tworzenie zespołu</h1>
+      <Form className="text-start" onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "90%", margin: "0.8em auto" }}>
         <FormGroup
           className="text-start mb-3"
           controlId="formBasicEmail">
@@ -92,21 +86,22 @@ export const AddTeams: FC = () => {
           isMulti
           name="employees"
           options={usersDataOptions}
-          className="basic-multi-select"
+          className="mb-3 basic-multi-select"
           classNamePrefix="select"
           onChange={handleUserDataSelectChange}
           value={selectedUserOptions}
         />
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={isSubmitting}>
-          {isSubmitting ? "Zapisywanie..." : "Zapisz"}
-        </Button>
-        {' '}
-        <ReturnToHomePage />
+        <div className="text-center">
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={isSubmitting}>
+            {isSubmitting ? "Zapisywanie..." : "Zapisz"}
+          </Button>
+          {' '}
+          <Link to={Endpoints.TEAMS}>Powrót</Link>
+        </div>
       </Form>
-      <Link to={Endpoints.TEAMS}>Powrót</Link>
     </>
   )
 }

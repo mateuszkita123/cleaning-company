@@ -10,17 +10,18 @@ import { Register } from './features/authorization/Register';
 import { Account } from './features/dynamicPages/Account';
 import { AddInvoice } from './features/dynamicPages/AddInvoice';
 import { AddService } from './features/dynamicPages/AddService';
-import { AddTeams } from './features/dynamicPages/AddTeam';
+import { AddTeams } from './features/dynamicPages/Teams/AddTeam';
 import { Clients } from './features/dynamicPages/Clients';
 import { Invoices } from './features/dynamicPages/Invoices';
 import { InvoicesData } from './features/dynamicPages/InvoicesData';
 import { Services } from './features/dynamicPages/Services';
-import { Teams } from './features/dynamicPages/Teams';
+import { Teams } from './features/dynamicPages/Teams/Teams';
 import { UsersPage } from './features/dynamicPages/UsersPage';
 import { ContactPage } from './features/staticPages/ContactPage';
 import { HomePage } from './features/staticPages/HomePage';
 import { PageNotFound } from './features/staticPages/PageNotFound';
 import { PrivateRoutes } from './features/authorization/PrivateRoutes';
+import { EditTeams } from './features/dynamicPages/Teams/EditTeams';
 import './App.css';
 
 function App() {
@@ -78,13 +79,14 @@ function App() {
             <Route path={"dane_do_faktur"} element={<InvoicesData />} />
             <Route path={"zespoly"} element={<Teams />}>
               <Route path={"dodaj"} element={<AddTeams />} />
+              <Route path={"edytuj/:id"} element={<EditTeams />} />
             </Route>
             <Route path={"faktury"} element={<Invoices />} >
               <Route path={"dodaj"} element={<AddInvoice />} />
             </Route>
             <Route path={"uslugi"} element={<Services />} >
               <Route path={"dodaj"} element={<AddService />} />
-              <Route path={"edytuj/:serviceId"} element={<AddService />} />
+              <Route path={"edytuj/:id"} element={<AddService />} />
             </Route>
             <Route path={"klienci"} element={<Clients />} />
           </Route>

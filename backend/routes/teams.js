@@ -37,6 +37,38 @@ router.get("/dodaj", function (req, res) {
   });
 });
 
+router.get("/edytuj/:id", function (req, res) {
+
+  Team.find({ _id: req.params.id }).populate({
+    path: "employee_id"
+  }).exec((err, allTeams) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("allTeams: ", allTeams);
+
+      const allTeamsData = allTeams.map(team => ({ _id: team._id.toString(), name: team.name, employee_id: team.employee_id.map(employee => ({ _id: employee._id, firstName: employee.firstName, lastName: employee.lastName })) }));
+
+      console.log("allTeamsData: ", allTeamsData);
+
+      res.json(allTeamsData[0]);
+    }
+  })
+
+
+  // Team.find({ _id: req.params.id }, function (err, allTeams) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log("allTeams: ", allTeams);
+  //     const teams = allTeams.map(elem => ({ _id: elem._id.toString(), name: elem.name, employee_ids: elem.employee_id }));
+  //     console.log("teams: ", teams);
+  //     // res.status(200);
+  //     res.json(teams[0]);
+  //   }
+  // });
+});
+
 //CREATE - add a new team to DB
 router.post("/dodaj", function (req, res) {
   const ids = req.body.ids;
