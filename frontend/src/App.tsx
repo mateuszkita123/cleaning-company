@@ -1,27 +1,30 @@
 import { useContext, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { UserContext } from './context/UserContext';
+import { API_URL, UserRoles } from './app/constans';
 import { Footer, } from './features/partials/Footer';
 import { Header } from './features/partials/Header';
-import { API_URL, UserRoles } from './app/constans';
-import { UserContext } from './context/UserContext';
 import { Login } from './features/authorization/Login';
 import { Register } from './features/authorization/Register';
 import { Account } from './features/dynamicPages/Account';
-import { AddInvoice } from './features/dynamicPages/AddInvoice';
-import { AddService } from './features/dynamicPages/AddService';
-import { AddTeams } from './features/dynamicPages/Teams/AddTeam';
+import { Invoices } from './features/dynamicPages/Invoices/Invoices';
+import { AddInvoice } from './features/dynamicPages/Invoices/AddInvoice';
+import { EditInvoice } from './features/dynamicPages/Invoices/EditInvoice';
 import { Clients } from './features/dynamicPages/Clients';
-import { Invoices } from './features/dynamicPages/Invoices';
-import { InvoicesData } from './features/dynamicPages/InvoicesData';
-import { Services } from './features/dynamicPages/Services';
-import { Teams } from './features/dynamicPages/Teams/Teams';
+import { Services } from './features/dynamicPages/Services/Services';
+import { AddService } from './features/dynamicPages/Services/AddService';
 import { UsersPage } from './features/dynamicPages/UsersPage';
 import { ContactPage } from './features/staticPages/ContactPage';
 import { HomePage } from './features/staticPages/HomePage';
 import { PageNotFound } from './features/staticPages/PageNotFound';
 import { PrivateRoutes } from './features/authorization/PrivateRoutes';
+import { Teams } from './features/dynamicPages/Teams/Teams';
+import { AddTeams } from './features/dynamicPages/Teams/AddTeam';
 import { EditTeams } from './features/dynamicPages/Teams/EditTeams';
+import { InvoicesData } from './features/dynamicPages/InvoicesData/InvoicesData';
+import { AddInvoiceData } from './features/dynamicPages/InvoicesData/AddInvoiceData';
+import { EditInvoiceData } from './features/dynamicPages/InvoicesData/EditInvoicesData';
 import './App.css';
 
 function App() {
@@ -42,8 +45,8 @@ function App() {
           console.warn("setUserContext token=null because of NOT ok response from /refreshToken");
           setUserContext({ ...userContext, token: null });
         }
-        // call refreshToken every 5 minutes to renew the authentication token.
-        setTimeout(verifyUser, 5 * 60 * 1000);
+        // call refreshToken every 60 minutes to renew the authentication token.
+        setTimeout(verifyUser, 60 * 60 * 1000);
       })
   }, [setUserContext]);
 
@@ -76,13 +79,17 @@ function App() {
           <Route path="/" element={<PrivateRoutes role={UserRoles.ADMIN} />} >
             <Route path={"me"} element={<Account />} />
             <Route path={"uzytkownicy"} element={<UsersPage />} />
-            <Route path={"dane_do_faktur"} element={<InvoicesData />} />
+            <Route path={"dane_do_faktur"} element={<InvoicesData />}>
+              <Route path={"dodaj"} element={<AddInvoiceData />} />
+              <Route path={"edytuj/:id"} element={<EditInvoiceData />} />
+            </Route>
             <Route path={"zespoly"} element={<Teams />}>
               <Route path={"dodaj"} element={<AddTeams />} />
               <Route path={"edytuj/:id"} element={<EditTeams />} />
             </Route>
             <Route path={"faktury"} element={<Invoices />} >
               <Route path={"dodaj"} element={<AddInvoice />} />
+              <Route path={"edytuj/:id"} element={<EditInvoice />} />
             </Route>
             <Route path={"uslugi"} element={<Services />} >
               <Route path={"dodaj"} element={<AddService />} />

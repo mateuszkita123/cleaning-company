@@ -60,13 +60,13 @@ export interface IInvoicesState {
 
 export interface IInvoicesData {
   _id: String;
-  first_name: String;
-  last_name: String;
-  company_name: String;
-  company_vat_number: String;
-  company_address: String;
-  company_phone: String;
-  company_email: String;
+  first_name: string;
+  last_name: string;
+  company_name: string;
+  company_vat_number: string;
+  company_address: string;
+  company_phone: string;
+  company_email: string;
 }
 
 export interface IInvoicesDataState {

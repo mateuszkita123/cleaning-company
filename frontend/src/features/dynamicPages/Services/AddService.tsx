@@ -1,10 +1,10 @@
 import { FC, useState, useEffect, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
-import { options, optionsPost } from "../../app/utils";
-import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState } from "../../interfaces";
-import { ValidationToast } from "../links/ValidationToast";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { options, optionsPost } from "../../../app/utils";
+import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState } from "../../../interfaces";
+import { ValidationToast } from "../../links/ValidationToast";
 
 interface IAddService {
   teams: ITeam[];

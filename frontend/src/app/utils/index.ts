@@ -23,6 +23,15 @@ export const optionsPost: RequestInit = {
   headers: { 'withCredentials': "true", Accept: 'application/json;charset=UTF-8', 'Content-Type': 'application/json' },
 };
 
+
+export const optionsPut: RequestInit = {
+  method: 'PUT',
+  mode: "cors",
+  credentials: "include",
+  headers: { 'withCredentials': "true", Accept: 'application/json;charset=UTF-8', 'Content-Type': 'application/json' },
+};
+
+
 export const postOptionsWithCredentials: RequestInit = {
   method: "POST",
   mode: "cors",

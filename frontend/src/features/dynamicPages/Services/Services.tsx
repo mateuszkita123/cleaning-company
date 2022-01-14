@@ -1,12 +1,12 @@
 import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
-import { options } from "../../app/utils";
-import { UserContext } from "../../context/UserContext";
-import { IServicesState } from "../../interfaces";
-import { ActionButtons } from "../links/ActionButtons";
-import { ReturnToHomePage } from "../links/ReturnToHomePage";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { options } from "../../../app/utils";
+import { UserContext } from "../../../context/UserContext";
+import { IServicesState } from "../../../interfaces";
+import { ActionButtons } from "../../links/ActionButtons";
+import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);

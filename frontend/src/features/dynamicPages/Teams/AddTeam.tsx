@@ -5,6 +5,7 @@ import Select, { MultiValue, ActionMeta } from "react-select";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { optionsPost } from "../../../app/utils";
 import { IUser, IOption, IOptionForMultiSelectState, } from "../../../interfaces";
+import { SaveButton } from "../../links/SaveButton";
 import { fetchUserDataOptions, mapResults } from "./TeamsApi";
 
 type TEmployeeOptionType = Pick<IUser, "_id" | "firstName" | "lastName">;
@@ -37,18 +38,16 @@ export const AddTeams: FC = () => {
 
   const handleSubmit = (event: FormEvent): void => {
     event.preventDefault();
-    // setValidationVisible(false);
+    setIsSubmitting(true);
+    setError("");
     const name = nameRef.current?.value;
 
     if (name) {
       const ids = selectedUserOptions?.map((element) => element.value);
-
       const body = JSON.stringify({
         name: name,
         ids: ids
       })
-
-      console.warn("body: ", body);
 
       fetch(API_URL + Endpoints.ADD_TEAMS, { ...optionsPost, body: body })
         .then(res => res.json())
@@ -59,7 +58,8 @@ export const AddTeams: FC = () => {
           }
         });
     } else {
-      // setValidationVisible(true);
+      setError("Nazwa zespołu jest wymagana!");
+      setIsSubmitting(false);
     }
   }
 
@@ -71,7 +71,7 @@ export const AddTeams: FC = () => {
     <>
       {error && <Alert variant="danger">{error}</Alert>}
       <h1 id="table-heading">Tworzenie zespołu</h1>
-      <Form className="text-start" onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "90%", margin: "0.8em auto" }}>
+      <form className="text-start custom-form" onSubmit={handleSubmit}>
         <FormGroup
           className="text-start mb-3"
           controlId="formBasicEmail">
@@ -91,17 +91,8 @@ export const AddTeams: FC = () => {
           onChange={handleUserDataSelectChange}
           value={selectedUserOptions}
         />
-        <div className="text-center">
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={isSubmitting}>
-            {isSubmitting ? "Zapisywanie..." : "Zapisz"}
-          </Button>
-          {' '}
-          <Link to={Endpoints.TEAMS}>Powrót</Link>
-        </div>
-      </Form>
+        <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.TEAMS} />
+      </form>
     </>
   )
 }

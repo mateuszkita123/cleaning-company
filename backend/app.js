@@ -3,15 +3,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const cors = require('cors');
-// const https = require('https');
-// const fs = require('fs');
-
-
-
-// const privateKey = fs.readFileSync('sslcert/server.key', 'utf8');
-// const certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
-
-// const credentials = { key: privateKey, cert: certificate };
 
 if (process.env.NODE_ENV !== "production") {
   // Load environment variables from .env file in non prod environments
@@ -69,8 +60,6 @@ app.use("/dane_do_faktur", invoicesDataRoutes);
 app.use("/", indexRoutes);
 
 seedDB();
-
-// const httpsServer = https.createServer(credentials, app);
 
 const server = app.listen(process.env.PORT || 8081, process.env.IP, () => {
   const port = server.address().port

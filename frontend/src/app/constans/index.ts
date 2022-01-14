@@ -14,6 +14,8 @@ export enum UserRoles {
 
 export enum Endpoints {
   INVOICES_DATA = "/dane_do_faktur",
+  ADD_INVOICES_DATA = "/dane_do_faktur/dodaj",
+  EDIT_INVOICES_DATA = "/dane_do_faktur/edytuj",
   INVOICES = "/faktury",
   ADD_INVOICES = "/faktury",
   USERS = "/users",

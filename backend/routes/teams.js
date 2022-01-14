@@ -6,6 +6,15 @@ const Team = require("../models/team");
 const User = require("../models/user");
 const { UserRoles } = require("../constans");
 
+// TODO add middleware - handling user roles
+
+const getTeamDataFromRequest = (req) => {
+  const ids = req.body.ids;
+  const name = req.body.name;
+  const employee_ids = ids?.length > 0 ? ids : [];
+  return ({ name: name, employee_id: employee_ids });
+}
+
 //INDEX - show all teams
 router.get("/", function (req, res) {
   Team.find({}).populate({
@@ -25,7 +34,7 @@ router.get("/", function (req, res) {
   })
 });
 
-//NEW - show form to create new report
+//NEW - show form to create new team
 router.get("/dodaj", function (req, res) {
   User.find({ role_id: UserRoles.USER }, function (err, allUsers) {
     if (err) {
@@ -37,8 +46,24 @@ router.get("/dodaj", function (req, res) {
   });
 });
 
-router.get("/edytuj/:id", function (req, res) {
+//CREATE - add a new team to DB
+router.post("/dodaj", function (req, res) {
+  const newTeam = getTeamDataFromRequest(req);
 
+  console.log("newTeam: ", newTeam);
+  // Create a new team and save to DB
+  Team.create(newTeam, function (err, newlyCreated) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200);
+      res.send({ status: "Success" });
+    }
+  });
+});
+
+
+router.get("/edytuj/:id", function (req, res) {
   Team.find({ _id: req.params.id }).populate({
     path: "employee_id"
   }).exec((err, allTeams) => {
@@ -54,31 +79,14 @@ router.get("/edytuj/:id", function (req, res) {
       res.json(allTeamsData[0]);
     }
   })
-
-
-  // Team.find({ _id: req.params.id }, function (err, allTeams) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log("allTeams: ", allTeams);
-  //     const teams = allTeams.map(elem => ({ _id: elem._id.toString(), name: elem.name, employee_ids: elem.employee_id }));
-  //     console.log("teams: ", teams);
-  //     // res.status(200);
-  //     res.json(teams[0]);
-  //   }
-  // });
 });
 
-//CREATE - add a new team to DB
-router.post("/dodaj", function (req, res) {
-  const ids = req.body.ids;
-  const name = req.body.name;
-  const employee_ids = ids?.length > 0 ? ids : [];
-  const newTeam = { name: name, employee_id: employee_ids };
+// UPDATE - updates selected team
+router.put("/edytuj/:id", function (req, res) {
+  const newTeam = getTeamDataFromRequest(req);
 
   console.log("newTeam: ", newTeam);
-  // Create a new team and save to DB
-  Team.create(newTeam, function (err, newlyCreated) {
+  Team.findByIdAndUpdate(req.params.id, { $set: newTeam }, function (err, team) {
     if (err) {
       console.log(err);
     } else {
@@ -88,7 +96,7 @@ router.post("/dodaj", function (req, res) {
   });
 });
 
-// TODO add middleware - handling user roles
+// DELETE - deletes selected team
 router.delete("/", function (req, res) {
   const id = req.body.id;
 

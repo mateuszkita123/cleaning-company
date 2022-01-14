@@ -3,9 +3,10 @@ import { Alert, Button, Form, FormGroup } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { options, optionsPost } from "../../../app/utils";
+import { options, optionsPut } from "../../../app/utils";
 import { IOption, IOptionForMultiSelectState, ITeam, IUser, } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
+import { SaveButton } from "../../links/SaveButton";
 import { fetchUserDataOptions, mapResults } from "./TeamsApi";
 
 interface IComponentState {
@@ -14,11 +15,6 @@ interface IComponentState {
 }
 
 type TEmployeeOptionType = Pick<IUser, "_id" | "firstName" | "lastName">;
-
-interface IUsersIdsState {
-  employees: TEmployeeOptionType[];
-  status: FetchingDataStatus;
-}
 
 export const EditTeams: FC = () => {
   const [data, setData] = useState<IComponentState["team"]>({});
@@ -29,8 +25,6 @@ export const EditTeams: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
@@ -58,10 +52,14 @@ export const EditTeams: FC = () => {
 
   const handleSubmit = (event: FormEvent): void => {
     event.preventDefault();
-    // setValidationVisible(false);
-    const name = nameRef.current?.value;
+    setError("");
+    setIsSubmitting(true);
+    const name = data.name;
 
-    if (name) {
+    console.log("submitting: ", name);
+    console.log("data: ", data);
+
+    if (data.name) {
       const ids = selectedUserOptions?.map((element) => element.value);
 
       const body = JSON.stringify({
@@ -71,16 +69,22 @@ export const EditTeams: FC = () => {
 
       console.warn("body: ", body);
 
-      fetch(API_URL + Endpoints.ADD_TEAMS, { ...optionsPost, body: body })
+      fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, { ...optionsPut, body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);
+          setIsSubmitting(false);
           if (result.status === "Success") {
             navigate(Endpoints.TEAMS);
           }
+        })
+        .catch(error => {
+          setIsSubmitting(false);
+          console.error(error)
         });
     } else {
-      // setValidationVisible(true);
+      setError("Nazwa zespołu jest wymagana!");
+      setIsSubmitting(false);
     }
   }
 
@@ -98,7 +102,7 @@ export const EditTeams: FC = () => {
       {status !== FetchingDataStatus.LOADING ? (
         <>
           <h1 className="table-heading">Edycja zespołu</h1>
-          <Form className="text-start" onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "90%", margin: "0.8em auto" }}>
+          <form className="text-start custom-form" onSubmit={handleSubmit}>
             <FormGroup
               className="text-start mb-3"
               controlId="formBasicEmail">
@@ -119,17 +123,8 @@ export const EditTeams: FC = () => {
               onChange={handleUserDataSelectChange}
               value={selectedUserOptions}
             />
-            <div className="text-center">
-              <Button
-                variant="primary"
-                type="submit"
-                disabled={isSubmitting}>
-                {isSubmitting ? "Zapisywanie..." : "Zapisz"}
-              </Button>
-              {' '}
-              <Link to={Endpoints.TEAMS}>Powrót</Link>
-            </div>
-          </Form>
+            <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.TEAMS} />
+          </form>
         </>
       ) : (<Loader />)}
     </>

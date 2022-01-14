@@ -49,6 +49,7 @@ export function Login() {
       .catch(error => {
         setIsSubmitting(false);
         setError(GENERIC_ERROR_MESSAGE);
+        console.error(error);
       })
 
     // if (email && password) {

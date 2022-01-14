@@ -1,11 +1,11 @@
 import { FC, useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
-import { options } from "../../app/utils";
-import { IInvoicesState } from "../../interfaces";
-import { ActionButtons } from "../links/ActionButtons";
-import { ReturnToHomePage } from "../links/ReturnToHomePage";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { options } from "../../../app/utils";
+import { IInvoicesState } from "../../../interfaces";
+import { ActionButtons } from "../../links/ActionButtons";
+import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 
 export const Invoices: FC = () => {
   const [data, setData] = useState<IInvoicesState["invoices"]>([]);
