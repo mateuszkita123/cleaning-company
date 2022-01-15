@@ -2,24 +2,26 @@ import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { options } from "../../../app/utils";
+import { optionsGet } from "../../../app/utils";
 import { UserContext } from "../../../context/UserContext";
 import { IServicesState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
+import { Loader } from "../../links/Loader";
 import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);
   const [status, setStatus] = useState<IServicesState["status"]>(FetchingDataStatus.IDLE);
+  const [refreshId, setRefreshId] = useState("");
   const { userContext } = useContext(UserContext);
   const location = useLocation();
 
-  console.warn("Services userContext: ", userContext);
-  console.warn("!userContext.token: ", !userContext.token);
+  // console.warn("Services userContext: ", userContext);
+  // console.warn("!userContext.token: ", !userContext.token);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.SERVICES, options)
+    fetch(API_URL + Endpoints.SERVICES, optionsGet)
       .then(res => res.json())
       .then((result) => {
         setData(result);
@@ -31,14 +33,17 @@ export const Services: FC = () => {
       .finally(() => {
         setStatus(FetchingDataStatus.IDLE);
       });
-  }, []);
+  }, [refreshId]);
+
+  if (status === FetchingDataStatus.LOADING && data.length === 0) {
+    return <Loader />
+  }
 
   return location.pathname === Endpoints.SERVICES ? (
     <>
       <div className="container">
         <h1 className="table-heading">Zarezerwowane usługi</h1>
         <div className="row text-center flex-wrap">
-          {status === FetchingDataStatus.LOADING && <p>Pobieranie danych</p>}
           {status !== FetchingDataStatus.FAILED ? (
             <Table responsive striped bordered hover>
               <thead>
@@ -67,7 +72,7 @@ export const Services: FC = () => {
                     <th>{element.teams_id}</th>
                     <th>{element.user_id}</th>
                     <th>{element.invoice_id}</th>
-                    <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
+                    <th><ActionButtons setRefreshId={setRefreshId} id={element._id} endpoint={Endpoints.SERVICES} /></th>
                   </tr>))
                 }
               </tbody>
@@ -78,6 +83,7 @@ export const Services: FC = () => {
       <div className="container">
         <p>
           <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
+          {' '}
           <ReturnToHomePage />
         </p>
       </div>

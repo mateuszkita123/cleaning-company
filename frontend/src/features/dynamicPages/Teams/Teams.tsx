@@ -2,19 +2,21 @@ import { FC, useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { options } from "../../../app/utils";
+import { optionsGet } from "../../../app/utils";
 import { ITeamsState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
+import { Loader } from "../../links/Loader";
 import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 
 export const Teams: FC = () => {
   const [data, setData] = useState<ITeamsState["teams"]>([]);
   const [status, setStatus] = useState<ITeamsState["status"]>(FetchingDataStatus.IDLE);
+  const [refreshId, setRefreshId] = useState("");
   const location = useLocation();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.TEAMS, options)
+    fetch(API_URL + Endpoints.TEAMS, optionsGet)
       .then(res => res.json())
       .then((result) => {
         setData(result);
@@ -26,14 +28,17 @@ export const Teams: FC = () => {
       .finally(() => {
         setStatus(FetchingDataStatus.IDLE);
       });
-  }, []);
+  }, [refreshId]);
+
+  if (status === FetchingDataStatus.LOADING && data.length === 0) {
+    return <Loader />
+  }
 
   return location.pathname === Endpoints.TEAMS ? (
     <>
       <div className="container">
         <h1 className="table-heading">Zespoły pracowników</h1>
         <div className="row text-center flex-wrap">
-          {status === FetchingDataStatus.LOADING && <p>Pobieranie danych</p>}
           {status !== FetchingDataStatus.FAILED ? (
             <Table responsive striped bordered hover>
               <thead>
@@ -48,7 +53,7 @@ export const Teams: FC = () => {
                   <tr key={element._id.toString()}>
                     <th>{element.name}</th>
                     <th>{element.employee_id.map(employee => (<p>{`${employee.firstName} ${employee.lastName}`}</p>))}</th>
-                    <th><ActionButtons id={element._id} endpoint={Endpoints.TEAMS} /></th>
+                    <th><ActionButtons setRefreshId={setRefreshId} id={element._id} endpoint={Endpoints.TEAMS} /></th>
                   </tr>))}
               </tbody>
             </Table>

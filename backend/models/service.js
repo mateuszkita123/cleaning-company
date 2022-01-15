@@ -5,7 +5,10 @@ const ServiceSchema = new mongoose.Schema(
     service_address: String,
     service_area: Number,
     service_unit_price: Number,
-    status: String,
+    status: {
+      type: String,
+      default: 'CREATED',
+    },
     description: String,
     teams_id: [{
       type: mongoose.Schema.Types.ObjectId,

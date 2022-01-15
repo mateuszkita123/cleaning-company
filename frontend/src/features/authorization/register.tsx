@@ -1,9 +1,10 @@
 import { useRef, FormEvent, useContext, useState } from "react";
 import { Form, FormGroup, Button, Alert } from "react-bootstrap";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { API_URL, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
+import { API_URL, Endpoints, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
 import { UserContext } from "../../context/UserContext";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
+import { SaveButton } from "../links/SaveButton";
 
 export function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,20 +61,11 @@ export function Register() {
       })
   }
 
-  // if (email && password && firstName && lastName) {
-  //   console.log("email: ", email);
-  //   console.log("password: ", password);
-  //   console.log("firstName: ", firstName);
-  //   console.log("lastName: ", lastName);
-  // } else {
-  //   console.error("please enter data!");
-  // }
-
   return (!userContext.token ? (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-      <h1 style={{ textAlign: "center", marginTop: "0.8em" }}>Rejestracja</h1>
-      <Form onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "90%", margin: "0.8em auto" }}>
+      <h1 id="table-heading">Rejestracja</h1>
+      <form className="text-start custom-form" onSubmit={handleSubmit}>
         <FormGroup
           className="text-start mb-3"
           controlId="formBasicFirstName">
@@ -110,15 +102,8 @@ export function Register() {
             placeholder="Wpisz swoje hasło"
             ref={passwordRef} />
         </Form.Group>
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={isSubmitting}>
-          {isSubmitting ? "Rejestruję..." : "Zarejestruj"}
-        </Button>
-        {' '}
-        <ReturnToHomePage />
-      </Form>
+        <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.ACCOUNT} />
+      </form>
       <p>Masz już konto?</p>
       <Link to="/logowanie">Zaloguj się</Link>
     </>

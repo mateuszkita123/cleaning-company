@@ -1,5 +1,6 @@
 import { FC, useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { Alert, Form, FormGroup } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { optionsPost } from "../../../app/utils";
@@ -35,6 +36,7 @@ export const AddService: FC = () => {
   const [invoicesDataOptions, setInvoicesDataOptions] = useState<IOption[]>([]);
   const [usersDataOptions, setUsersDataOptions] = useState<IOption[]>([]);
   const [teamsDataOptions, setTeamsDataOptions] = useState<IOption[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
@@ -82,7 +84,10 @@ export const AddService: FC = () => {
 
       fetch(API_URL + Endpoints.ADD_SERVICES, { ...optionsPost, body: body })
         .then(res => res.json())
-        .then(result => console.log(result))
+        .then(result => {
+          console.log(result);
+          // navigate(Endpoints.SERVICES);
+        })
         .catch(error => {
           console.log(error);
         })

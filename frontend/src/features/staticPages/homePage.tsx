@@ -8,7 +8,7 @@ export const HomePage: FC = () => {
   return (<>
     <header className="jumbotron">
       <div className="container">
-        <h1><img alt="Cleaning Master logo" src="/images/logo.png" width="100px" /> Cleaning Master</h1>
+        <h1 className="table-heading"><img alt="Cleaning Master logo" src="/images/logo.png" width="100px" /> Cleaning Master</h1>
         <p>Jesteśmy liderem na rynku sprzątającym.</p>
         <p>Zachęcamy do skorzystania z naszych usługi i kontaktu.</p>
         <p>

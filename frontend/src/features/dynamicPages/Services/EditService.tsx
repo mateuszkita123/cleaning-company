@@ -3,7 +3,7 @@ import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { options, optionsPost } from "../../../app/utils";
+import { optionsGet, optionsPut } from "../../../app/utils";
 import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState, IService } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -25,11 +25,15 @@ interface IComponentState {
   status: FetchingDataStatus;
 }
 
+const statuses = ["CREATED", "PAID", "ASSIGNED_TO_TEAM", "IN_PROGRESS", "DONE"];
+const statusSelectOptions = statuses.map(elem => ({ value: elem, label: elem }));
+
 export const EditService: FC = () => {
   const [data, setData] = useState<IComponentState["data"]>({});
   const [status, setStatus] = useState<IComponentState["status"]>(FetchingDataStatus.IDLE);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedStatusOption, setSelectedStatusOption] = useState<IOptionForSelectState["selectedOption"]>(null);
   const [selectedInvoiceOption, setSelectedInvoiceOption] = useState<IOptionForSelectState["selectedOption"]>(null);
   const [selectedUserOption, setSelectedUserOption] = useState<IOptionForSelectState["selectedOption"]>(null);
   const [selectedTeamOption, setSelectedTeamOption] = useState<IOptionForSelectState["selectedOption"]>(null);
@@ -42,7 +46,7 @@ export const EditService: FC = () => {
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
 
-    fetch(`${API_URL}${Endpoints.EDIT_SERVICES}/${id}`, options)
+    fetch(`${API_URL}${Endpoints.EDIT_SERVICES}/${id}`, optionsGet)
       .then(res => res.json())
       .then((result) => {
         console.log("data: ", result);
@@ -50,15 +54,17 @@ export const EditService: FC = () => {
         const userOption: IOption = ({ label: result?.user_id, value: result?.user_id });
         const teamOption: IOption = ({ label: result?.teams_id[0], value: result?.teams_id[0] });
         const invoiceOption: IOption = ({ label: result?.invoice_id, value: result?.invoice_id });
+        const statusOption: IOption = ({ label: result?.status, value: result?.status });
         setSelectedUserOption(userOption);
         setSelectedTeamOption(teamOption);
         setSelectedInvoiceOption(invoiceOption);
+        setSelectedStatusOption(statusOption);
 
         async function fetchMyAPI() {
           const result = await fetchOptionsForServices<IAddService>(setStatus);
-          const invoices = result?.invoices.map((element: IInvoice) => ({ label: element._id, value: element._id })) || [];
-          const users = result?.users.map((element: IUser) => ({ label: element.username, value: element._id })) || [];
-          const teams = result?.teams.map((element: ITeam) => ({ label: element.name, value: element._id })) || [];
+          const invoices = result?.invoices.map((element: IInvoice) => ({ label: element._id, value: element._id }));
+          const users = result?.users.map((element: IUser) => ({ label: element.username, value: element._id }));
+          const teams = result?.teams.map((element: ITeam) => ({ label: element.name, value: element._id }));
           setInvoicesDataOptions(invoices);
           setUsersDataOptions(users);
           setTeamsDataOptions(teams);
@@ -93,20 +99,24 @@ export const EditService: FC = () => {
 
     const { service_address, service_area, service_unit_price, description } = data;
 
-    if (service_address && service_area && service_unit_price && description && selectedInvoiceOption !== null && selectedUserOption !== null && selectedTeamOption !== null) {
+    if (service_address && service_area && service_unit_price && description && selectedInvoiceOption !== null && selectedUserOption !== null && selectedTeamOption !== null && selectedStatusOption !== null) {
       const body = JSON.stringify({
-        invoice: selectedInvoiceOption["value"],
-        user: selectedUserOption["value"],
-        team: selectedTeamOption["value"],
-        address: service_address,
-        area: service_area,
-        unitPrice: service_unit_price,
-        description: description
+        invoice_id: selectedInvoiceOption["value"],
+        user_id: selectedUserOption["value"],
+        teams_id: selectedTeamOption["value"],
+        service_address: service_address,
+        service_area: service_area,
+        service_unit_price: service_unit_price,
+        description: description,
+        status: selectedStatusOption["value"]
       })
 
-      fetch(API_URL + Endpoints.ADD_SERVICES, { ...optionsPost, body: body })
+      fetch(`${API_URL}${Endpoints.EDIT_SERVICES}/${id}`, { ...optionsPut, body: body })
         .then(res => res.json())
-        .then(result => console.log(result))
+        .then(result => {
+          console.log(result);
+          navigate(Endpoints.SERVICES);
+        })
         .catch(error => {
           console.log(error);
         })
@@ -168,6 +178,15 @@ export const EditService: FC = () => {
             placeholder="Opis"
             onChange={e => handleChange(e, "description")}
             value={data.description}
+          />
+        </FormGroup>
+        <FormGroup
+          className="text-start mb-3">
+          <Form.Label className="fw-bold">Status</Form.Label>
+          <Select
+            value={selectedStatusOption}
+            onChange={(newValue, actionMeta) => handleSingleSelectChange(newValue, actionMeta, setSelectedStatusOption)}
+            options={statusSelectOptions}
           />
         </FormGroup>
         <Form.Label className="fw-bold">Faktura</Form.Label>

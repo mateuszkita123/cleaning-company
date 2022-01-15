@@ -81,16 +81,19 @@ export const AddTeams: FC = () => {
             placeholder="Np. Miotełki"
             ref={nameRef} />
         </FormGroup>
-        <Form.Label className="fw-bold">Pracownicy</Form.Label>
-        <Select
-          isMulti
-          name="employees"
-          options={usersDataOptions}
-          className="mb-3 basic-multi-select"
-          classNamePrefix="select"
-          onChange={handleUserDataSelectChange}
-          value={selectedUserOptions}
-        />
+        <FormGroup
+          className="text-start mb-3">
+          <Form.Label className="fw-bold">Pracownicy</Form.Label>
+          <Select
+            isMulti
+            name="employees"
+            options={usersDataOptions}
+            className="mb-3 basic-multi-select"
+            classNamePrefix="select"
+            onChange={handleUserDataSelectChange}
+            value={selectedUserOptions}
+          />
+        </FormGroup>
         <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.TEAMS} />
       </form>
     </>

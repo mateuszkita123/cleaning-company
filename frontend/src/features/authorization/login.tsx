@@ -1,9 +1,10 @@
 import { useRef, FormEvent, useContext, useState } from "react";
 import { FormGroup, Button, Form, Alert } from "react-bootstrap";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { API_URL, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
+import { API_URL, Endpoints, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
 import { UserContext } from "../../context/UserContext";
 import { ReturnToHomePage } from "../links/ReturnToHomePage";
+import { SaveButton } from "../links/SaveButton";
 
 export function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,7 +42,7 @@ export function Login() {
           }
         } else {
           const data = await response.json();
-          console.warn("data: ", data);
+          // console.warn("data: ", data);
           console.warn("setUserContext token=data.token because of ok response from /users/logowanie");
           setUserContext({ ...userContext, token: data.token });
         }
@@ -51,20 +52,13 @@ export function Login() {
         setError(GENERIC_ERROR_MESSAGE);
         console.error(error);
       })
-
-    // if (email && password) {
-    //   console.log("email: ", email);
-    //   console.log("password: ", password);
-    // } else {
-    //   console.error("enter email and password!");
-    // }
   }
 
   return (!userContext.token ? (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-      <h1 style={{ textAlign: "center", marginTop: "0.8em" }}>Logowanie</h1>
-      <Form onSubmit={handleSubmit} style={{ maxWidth: "400px", width: "90%", margin: "0.8em auto" }}>
+      <h1 id="table-heading">Logowanie</h1>
+      <form className="text-start custom-form" onSubmit={handleSubmit}>
         <FormGroup
           className="text-start mb-3"
           controlId="formBasicEmail">
@@ -83,15 +77,8 @@ export function Login() {
             placeholder="Wpisz swoje hasło"
             ref={passwordRef} />
         </Form.Group>
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={isSubmitting}>
-          {isSubmitting ? "Logowanie..." : "Zaloguj"}
-        </Button>
-        {' '}
-        <ReturnToHomePage />
-      </Form>
+        <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.ACCOUNT} />
+      </form>
       <p>Nie masz jeszcze konta?</p>
       <Link to="/rejestracja">Zarejestruj się</Link>
     </>

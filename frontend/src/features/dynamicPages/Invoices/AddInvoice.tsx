@@ -1,9 +1,9 @@
 import { FC, useState, useEffect, FormEvent } from "react";
-import { Alert, Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Alert, Form, FormGroup } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
-import { options, optionsPost } from "../../../app/utils";
+import { optionsGet, optionsPost } from "../../../app/utils";
 import { IInvoicesData, IOption, IOptionForSelectState, ITeamsState } from "../../../interfaces";
 import { SaveButton } from "../../links/SaveButton";
 
@@ -23,7 +23,7 @@ export const AddInvoice: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.INVOICES_DATA, options)
+    fetch(API_URL + Endpoints.INVOICES_DATA, optionsGet)
       .then(res => res.json())
       .then((result) => {
         const invoicesDataIds = result.map((element: IInvoicesData) => ({ label: element._id, value: element._id }));
@@ -70,18 +70,24 @@ export const AddInvoice: FC = () => {
       {error && <Alert variant="danger">{error}</Alert>}
       <h1 id="table-heading">Tworzenie faktury</h1>
       <form className="text-start custom-form" onSubmit={handleSubmit}>
-        <Form.Label className="fw-bold">Faktura dla firmy</Form.Label>
-        <Select
-          value={selectedB2BOption}
-          onChange={handleB2BSelectChange}
-          options={selectOptions}
-        />
-        <Form.Label className="fw-bold">Dane do faktury</Form.Label>
-        <Select
-          value={selectedInvoicesDataOption}
-          onChange={handleInvoiceDataSelectChange}
-          options={invoicesDataOptions}
-        />
+        <FormGroup
+          className="text-start mb-3">
+          <Form.Label className="fw-bold">Faktura dla firmy</Form.Label>
+          <Select
+            value={selectedB2BOption}
+            onChange={handleB2BSelectChange}
+            options={selectOptions}
+          />
+        </FormGroup>
+        <FormGroup
+          className="text-start mb-3">
+          <Form.Label className="fw-bold">Dane do faktury</Form.Label>
+          <Select
+            value={selectedInvoicesDataOption}
+            onChange={handleInvoiceDataSelectChange}
+            options={invoicesDataOptions}
+          />
+        </FormGroup>
         <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.INVOICES} />
       </form>
     </>

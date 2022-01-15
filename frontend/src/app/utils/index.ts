@@ -1,4 +1,4 @@
-export const options: RequestInit = {
+export const optionsGet: RequestInit = {
   method: 'GET',
   mode: "cors",
   credentials: "include",

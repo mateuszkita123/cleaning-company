@@ -1,5 +1,5 @@
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { options } from "../../../app/utils";
+import { optionsGet } from "../../../app/utils";
 import { IOption, IUser } from "../../../interfaces";
 
 type TEmployeeOptionType = Pick<IUser, "_id" | "firstName" | "lastName">;
@@ -12,7 +12,7 @@ interface IUsersIdsState {
 type TFetchDataArg = (arg: any) => void;
 
 function fetchUserDataOptions<T>(setStatus: TFetchDataArg): Promise<T> {
-  return fetch(API_URL + Endpoints.ADD_TEAMS, options)
+  return fetch(API_URL + Endpoints.ADD_TEAMS, optionsGet)
     .then(res => res.json())
     .catch(error => {
       console.log("Błąd: ", error);

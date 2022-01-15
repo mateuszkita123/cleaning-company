@@ -7,6 +7,22 @@ const Team = require("../models/team");
 const User = require("../models/user");
 const Invoice = require("../models/invoice");
 
+const getServiceDataFromRequest = (req) => {
+
+  const { invoice_id,
+    user_id,
+    teams_id,
+    service_address,
+    service_area,
+    service_unit_price,
+    description,
+    status } = req.body;
+
+  console.log("req.body: ", req.body);
+
+  return ({ invoice_id, user_id, teams_id: [teams_id], service_address, service_area, service_unit_price, description, status });
+}
+
 //INDEX - show all reserved services
 router.get("/", function (req, res) {
   Service.find({}, function (err, allServices) {
@@ -56,6 +72,9 @@ router.post("/dodaj", function (req, res) {
   Service.create(newService, function (err, newlyCreated) {
     if (err) {
       console.log(err);
+    } else {
+      res.status(200);
+      res.send({ status: "Success" });
     }
   });
 });
@@ -65,12 +84,6 @@ router.get("/edytuj/:id", function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      console.log("allServices: ", allServices);
-
-      // const allServicesData = allServices.map(team => ({ _id: team._id.toString(), name: team.name, employee_id: team.employee_id.map(employee => ({ _id: employee._id, firstName: employee.firstName, lastName: employee.lastName })) }));
-
-      // console.log("allTeamsData: ", allTeamsData);
-
       res.json(allServices[0]);
     }
   })
@@ -78,10 +91,9 @@ router.get("/edytuj/:id", function (req, res) {
 
 // UPDATE - updates selected service
 router.put("/edytuj/:id", function (req, res) {
-  const newService = getTeamDataFromRequest(req);
+  const newService = getServiceDataFromRequest(req);
 
-  console.log("newService: ", newService);
-  Team.findByIdAndUpdate(req.params.id, { $set: newService }, function (err, service) {
+  Service.updateOne({ _id: req.params.id }, { $set: newService }, function (err, service) {
     if (err) {
       console.log(err);
     } else {

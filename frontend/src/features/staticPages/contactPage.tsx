@@ -4,7 +4,7 @@ import { ReturnToHomePage } from '../links/ReturnToHomePage';
 export const ContactPage: FC = () => {
   return (<div className="container">
     <div className="row">
-      <h1 style={{ textAlign: "center" }}>Skontaktuj się z nami</h1>
+      <h1 className="table-heading">Skontaktuj się z nami</h1>
       <div style={{ width: "50%", margin: "25px auto" }}>
         <form method="POST">
           <div className="form-group">

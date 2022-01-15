@@ -1,19 +1,19 @@
 import { FC, useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
-import { optionsGet } from "../../app/utils";
-import { IClientsState } from "../../interfaces";
-import { ActionButtons } from "../links/ActionButtons";
-import { Loader } from "../links/Loader";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { optionsGet } from "../../../app/utils";
+import { IUsersState } from "../../../interfaces";
+import { ActionButtons } from "../../links/ActionButtons";
+import { Loader } from "../../links/Loader";
 
-export const Clients: FC = () => {
-  const [data, setData] = useState<IClientsState["clients"]>([]);
-  const [status, setStatus] = useState<IClientsState["status"]>(FetchingDataStatus.IDLE);
+export const UsersPage: FC = () => {
+  const [data, setData] = useState<IUsersState["users"]>([]);
+  const [status, setStatus] = useState<IUsersState["status"]>(FetchingDataStatus.IDLE);
   const [refreshId, setRefreshId] = useState("");
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.CLIENTS, optionsGet)
+    fetch(API_URL + Endpoints.ALL_USERS, optionsGet)
       .then(res => res.json())
       .then((result) => {
         setData(result);
@@ -33,7 +33,7 @@ export const Clients: FC = () => {
 
   return (
     <div className="container">
-      <h1 className="table-heading">Klienci</h1>
+      <h1 className="table-heading">Zarejestrowani użytkownicy</h1>
       <div className="row text-center flex-wrap">
         {status !== FetchingDataStatus.FAILED ? (
           <Table responsive striped bordered hover>
@@ -41,6 +41,7 @@ export const Clients: FC = () => {
               <tr>
                 <th>Imię i nazwisko</th>
                 <th>Email</th>
+                <th>Rola</th>
                 <th>Akcje</th>
               </tr>
             </thead>
@@ -49,7 +50,8 @@ export const Clients: FC = () => {
                 <tr key={user._id.toString()}>
                   <th>{user.firstName} {user.lastName}</th>
                   <th>{user.username}</th>
-                  <th><ActionButtons setRefreshId={setRefreshId} id={user._id} endpoint={Endpoints.USERS} /></th>
+                  <th>{user.role_id}</th>
+                  <th><ActionButtons setRefreshId={setRefreshId} id={user._id} endpoint={Endpoints.ALL_USERS} /></th>
                 </tr>))}
             </tbody>
           </Table>) : <p>Nie udało się pobrać danych</p>}

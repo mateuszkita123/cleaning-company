@@ -1,9 +1,9 @@
 import { FC, useState, useEffect, FormEvent, useRef, ChangeEvent } from "react";
-import { Alert, Button, Form, FormGroup } from "react-bootstrap";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Alert, Form, FormGroup } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { options, optionsPut } from "../../../app/utils";
+import { optionsGet, optionsPut } from "../../../app/utils";
 import { IOption, IOptionForMultiSelectState, ITeam, IUser, } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -28,7 +28,7 @@ export const EditTeams: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, options)
+    fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, optionsGet)
       .then(res => res.json())
       .then((result: IComponentState["team"]) => {
         const selectedEmployees = result?.employee_id?.map((elem) => ({ label: `${elem.firstName} ${elem.lastName}`, value: elem._id })) || [];
@@ -68,8 +68,6 @@ export const EditTeams: FC = () => {
         ids: ids
       })
 
-      console.warn("body: ", body);
-
       fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, { ...optionsPut, body: body })
         .then(res => res.json())
         .then((result) => {
@@ -105,8 +103,7 @@ export const EditTeams: FC = () => {
           <h1 className="table-heading">Edycja zespołu</h1>
           <form className="text-start custom-form" onSubmit={handleSubmit}>
             <FormGroup
-              className="text-start mb-3"
-              controlId="formBasicEmail">
+              className="text-start mb-3">
               <Form.Label className="fw-bold">Nazwa zespołu</Form.Label>
               <Form.Control
                 type="text"
@@ -114,16 +111,19 @@ export const EditTeams: FC = () => {
                 value={data?.name}
                 onChange={handleNameChange} />
             </FormGroup>
-            <Form.Label className="fw-bold">Pracownicy</Form.Label>
-            <Select
-              isMulti
-              name="employees"
-              options={usersDataOptions}
-              className="mb-3 basic-multi-select"
-              classNamePrefix="select"
-              onChange={handleUserDataSelectChange}
-              value={selectedUserOptions}
-            />
+            <FormGroup
+              className="text-start mb-3">
+              <Form.Label className="fw-bold">Pracownicy</Form.Label>
+              <Select
+                isMulti
+                name="employees"
+                options={usersDataOptions}
+                className="mb-3 basic-multi-select"
+                classNamePrefix="select"
+                onChange={handleUserDataSelectChange}
+                value={selectedUserOptions}
+              />
+            </FormGroup>
             <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.TEAMS} />
           </form>
         </>

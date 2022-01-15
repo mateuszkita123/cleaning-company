@@ -2,7 +2,7 @@ import { FC, useState, FormEvent, ChangeEvent, useEffect } from "react";
 import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
-import { options, optionsPut } from "../../../app/utils";
+import { optionsGet, optionsPut } from "../../../app/utils";
 import { IInvoicesData } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -22,7 +22,7 @@ export const EditInvoiceData: FC = () => {
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(`${API_URL}${Endpoints.EDIT_INVOICES_DATA}/${id}`, options)
+    fetch(`${API_URL}${Endpoints.EDIT_INVOICES_DATA}/${id}`, optionsGet)
       .then(res => res.json())
       .then((result) => {
         console.log("result: ", result);
