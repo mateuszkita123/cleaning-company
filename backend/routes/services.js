@@ -60,6 +60,37 @@ router.post("/dodaj", function (req, res) {
   });
 });
 
+router.get("/edytuj/:id", function (req, res) {
+  Service.find({ _id: req.params.id }).exec((err, allServices) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("allServices: ", allServices);
+
+      // const allServicesData = allServices.map(team => ({ _id: team._id.toString(), name: team.name, employee_id: team.employee_id.map(employee => ({ _id: employee._id, firstName: employee.firstName, lastName: employee.lastName })) }));
+
+      // console.log("allTeamsData: ", allTeamsData);
+
+      res.json(allServices[0]);
+    }
+  })
+});
+
+// UPDATE - updates selected service
+router.put("/edytuj/:id", function (req, res) {
+  const newService = getTeamDataFromRequest(req);
+
+  console.log("newService: ", newService);
+  Team.findByIdAndUpdate(req.params.id, { $set: newService }, function (err, service) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200);
+      res.send({ status: "Success" });
+    }
+  });
+});
+
 // TODO add middleware - handling user roles
 router.delete("/", function (req, res) {
   const id = req.body.id;

@@ -1,8 +1,9 @@
 import { FC, useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { Alert, Form, FormGroup } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsPost } from "../../../app/utils";
+import { options, optionsPost } from "../../../app/utils";
 import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState, IService } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -14,7 +15,7 @@ interface IAddService {
   invoices: IInvoice[];
 }
 
-interface IAddServiceState {
+interface IEditServiceState {
   data: IAddService | null;
   status: FetchingDataStatus;
 }
@@ -24,9 +25,9 @@ interface IComponentState {
   status: FetchingDataStatus;
 }
 
-export const AddService: FC = () => {
+export const EditService: FC = () => {
   const [data, setData] = useState<IComponentState["data"]>({});
-  const [status, setStatus] = useState<IAddServiceState["status"]>(FetchingDataStatus.IDLE);
+  const [status, setStatus] = useState<IComponentState["status"]>(FetchingDataStatus.IDLE);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedInvoiceOption, setSelectedInvoiceOption] = useState<IOptionForSelectState["selectedOption"]>(null);
@@ -35,21 +36,44 @@ export const AddService: FC = () => {
   const [invoicesDataOptions, setInvoicesDataOptions] = useState<IOption[]>([]);
   const [usersDataOptions, setUsersDataOptions] = useState<IOption[]>([]);
   const [teamsDataOptions, setTeamsDataOptions] = useState<IOption[]>([]);
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
 
-    async function fetchMyAPI() {
-      const result = await fetchOptionsForServices<IAddService>(setStatus);
-      const invoices = result?.invoices.map((element: IInvoice) => ({ label: element._id, value: element._id })) || [];
-      const users = result?.users.map((element: IUser) => ({ label: element.username, value: element._id })) || [];
-      const teams = result?.teams.map((element: ITeam) => ({ label: element.name, value: element._id })) || [];
-      setInvoicesDataOptions(invoices);
-      setUsersDataOptions(users);
-      setTeamsDataOptions(teams);
-    }
+    fetch(`${API_URL}${Endpoints.EDIT_SERVICES}/${id}`, options)
+      .then(res => res.json())
+      .then((result) => {
+        console.log("data: ", result);
+        setData(result);
+        const userOption: IOption = ({ label: result?.user_id, value: result?.user_id });
+        const teamOption: IOption = ({ label: result?.teams_id[0], value: result?.teams_id[0] });
+        const invoiceOption: IOption = ({ label: result?.invoice_id, value: result?.invoice_id });
+        setSelectedUserOption(userOption);
+        setSelectedTeamOption(teamOption);
+        setSelectedInvoiceOption(invoiceOption);
 
-    fetchMyAPI()
+        async function fetchMyAPI() {
+          const result = await fetchOptionsForServices<IAddService>(setStatus);
+          const invoices = result?.invoices.map((element: IInvoice) => ({ label: element._id, value: element._id })) || [];
+          const users = result?.users.map((element: IUser) => ({ label: element.username, value: element._id })) || [];
+          const teams = result?.teams.map((element: ITeam) => ({ label: element.name, value: element._id })) || [];
+          setInvoicesDataOptions(invoices);
+          setUsersDataOptions(users);
+          setTeamsDataOptions(teams);
+        }
+
+        fetchMyAPI()
+      })
+      .catch(error => {
+        console.log("Błąd: ", error);
+        setStatus(FetchingDataStatus.FAILED);
+      })
+      .finally(() => {
+        setStatus(FetchingDataStatus.IDLE);
+      });
+
   }, []);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: keyof IService): void => {
@@ -102,7 +126,7 @@ export const AddService: FC = () => {
   return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-      <h1 id="table-heading">Rezerwacja usługi</h1>
+      <h1 id="table-heading">Edycja zarezerwowanej usługi</h1>
       <form className="text-start custom-form" onSubmit={handleSubmit}>
         <FormGroup
           className="text-start mb-3">

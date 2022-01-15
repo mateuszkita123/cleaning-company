@@ -29,7 +29,7 @@ export const AddTeams: FC = () => {
     setStatus(FetchingDataStatus.LOADING);
 
     async function fetchMyAPI() {
-      const response = await fetchUserDataOptions<TEmployeeOptionType[]>(setStatus);
+      const response = await fetchUserDataOptions<IUsersIdsState["employees"]>(setStatus);
       setUsersDataOptions(mapResults(response));
     }
 

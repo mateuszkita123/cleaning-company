@@ -3,17 +3,17 @@ import { FetchingDataStatus, UserRoles } from "../app/constans";
 export type TEntityId = IClient["_id"] | IUser["_id"] | ITeam["_id"] | IInvoice["_id"] | IInvoicesData["_id"] | IService["_id"]
 
 export interface IClient {
-  _id: String;
-  firstName: String;
-  lastName: String;
-  username: String;
+  _id: string;
+  firstName: string;
+  lastName: string;
+  username: string;
   role_id: UserRoles.CLIENT;
 }
 
 export interface IEmployee {
-  _id: String;
-  firstName: String;
-  lastName: String;
+  _id: string;
+  firstName: string;
+  lastName: string;
   role_id: UserRoles.USER;
 }
 
@@ -23,12 +23,12 @@ export interface IClientsState {
 }
 
 export interface IUser {
-  _id: String;
-  username: String;
-  email: String;
+  _id: string;
+  username: string;
+  email: string;
   role_id: UserRoles;
-  firstName: String;
-  lastName: String;
+  firstName: string;
+  lastName: string;
 }
 
 export interface IUsersState {
@@ -48,9 +48,9 @@ export interface ITeamsState {
 }
 
 export interface IInvoice {
-  _id: String;
+  _id: string;
   is_b2b: boolean;
-  invoice_data_id: Number;
+  invoice_data_id: string;
 }
 
 export interface IInvoicesState {
@@ -59,7 +59,7 @@ export interface IInvoicesState {
 }
 
 export interface IInvoicesData {
-  _id: String;
+  _id: string;
   first_name: string;
   last_name: string;
   company_name: string;
@@ -74,16 +74,16 @@ export interface IInvoicesDataState {
   status: FetchingDataStatus;
 }
 
-interface IService {
-  _id: String;
-  service_address: String;
-  service_area: Number;
-  service_unit_price: Number;
-  description: String;
-  status: String;
-  teams_id: Pick<ITeam, "_id">[];
-  user_id: Pick<IUser, "_id">;
-  invoice_id: Pick<IInvoice, "_id">;
+export interface IService {
+  _id: string;
+  service_address: string;
+  service_area: number;
+  service_unit_price: number;
+  description: string;
+  status: string;
+  teams_id: ITeam["_id"][];
+  user_id: IUser["_id"];
+  invoice_id: IInvoice["_id"];
 }
 
 export interface IServicesState {
@@ -92,8 +92,8 @@ export interface IServicesState {
 }
 
 export interface IOption {
-  value: String;
-  label: String;
+  value: string;
+  label: string;
 }
 
 export interface IOptionForSelectState {

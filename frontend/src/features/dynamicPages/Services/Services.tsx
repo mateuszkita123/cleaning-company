@@ -36,43 +36,43 @@ export const Services: FC = () => {
   return location.pathname === Endpoints.SERVICES ? (
     <>
       <div className="container">
-        <div className="row">
-          <h1 style={{ textAlign: "center" }}>Zarezerwowane usługi</h1>
-        </div>
+        <h1 className="table-heading">Zarezerwowane usługi</h1>
         <div className="row text-center flex-wrap">
           {status === FetchingDataStatus.LOADING && <p>Pobieranie danych</p>}
-          {status !== FetchingDataStatus.FAILED ? (<Table responsive striped bordered hover>
-            <thead>
-              <tr>
-                <th>Adres</th>
-                <th>Powierzchnia [m<sup>2</sup>]</th>
-                <th>Cena jednostkowa [PLN/m<sup>2</sup>]</th>
-                <th>Cena całkowita [PLN]</th>
-                <th>Opis</th>
-                <th>Status</th>
-                <th>Id zespołów</th>
-                <th>Id użytkownika</th>
-                <th>Id faktury</th>
-                <th>Akcje</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((element) => (
-                <tr key={element._id.toString()}>
-                  <th>{element.service_address}</th>
-                  <th>{element.service_area}</th>
-                  <th>{element.service_unit_price}</th>
-                  <th>{element.service_area.valueOf() * element.service_unit_price.valueOf()}</th>
-                  <th>{element.description}</th>
-                  <th>{element.status}</th>
-                  <th>{element.teams_id}</th>
-                  <th>{element.user_id}</th>
-                  <th>{element.invoice_id}</th>
-                  <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
-                </tr>))
-              }
-            </tbody>
-          </Table>) : <p>Nie udało się pobrać danych</p>}
+          {status !== FetchingDataStatus.FAILED ? (
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Adres</th>
+                  <th>Powierzchnia [m<sup>2</sup>]</th>
+                  <th>Cena jednostkowa [PLN/m<sup>2</sup>]</th>
+                  <th>Cena całkowita [PLN]</th>
+                  <th>Opis</th>
+                  <th>Status</th>
+                  <th>Id zespołów</th>
+                  <th>Id użytkownika</th>
+                  <th>Id faktury</th>
+                  <th>Akcje</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((element) => (
+                  <tr key={element._id.toString()}>
+                    <th>{element.service_address}</th>
+                    <th>{element.service_area}</th>
+                    <th>{element.service_unit_price}</th>
+                    <th>{element.service_area.valueOf() * element.service_unit_price.valueOf()}</th>
+                    <th>{element.description}</th>
+                    <th>{element.status}</th>
+                    <th>{element.teams_id}</th>
+                    <th>{element.user_id}</th>
+                    <th>{element.invoice_id}</th>
+                    <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
+                  </tr>))
+                }
+              </tbody>
+            </Table>
+          ) : <p>Nie udało się pobrać danych</p>}
         </div>
       </div>
       <div className="container">

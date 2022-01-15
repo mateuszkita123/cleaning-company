@@ -14,6 +14,7 @@ import { EditInvoice } from './features/dynamicPages/Invoices/EditInvoice';
 import { Clients } from './features/dynamicPages/Clients';
 import { Services } from './features/dynamicPages/Services/Services';
 import { AddService } from './features/dynamicPages/Services/AddService';
+import { EditService } from './features/dynamicPages/Services/EditService';
 import { UsersPage } from './features/dynamicPages/UsersPage';
 import { ContactPage } from './features/staticPages/ContactPage';
 import { HomePage } from './features/staticPages/HomePage';
@@ -93,7 +94,7 @@ function App() {
             </Route>
             <Route path={"uslugi"} element={<Services />} >
               <Route path={"dodaj"} element={<AddService />} />
-              <Route path={"edytuj/:id"} element={<AddService />} />
+              <Route path={"edytuj/:id"} element={<EditService />} />
             </Route>
             <Route path={"klienci"} element={<Clients />} />
           </Route>

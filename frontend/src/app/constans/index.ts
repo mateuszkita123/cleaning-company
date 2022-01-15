@@ -22,6 +22,7 @@ export enum Endpoints {
   ACCOUNT = "/me",
   SERVICES = "/uslugi",
   ADD_SERVICES = "/uslugi/dodaj",
+  EDIT_SERVICES = "/uslugi/edytuj",
   CLIENTS = "/klienci",
   TEAMS = "/zespoly",
   ADD_TEAMS = "/zespoly/dodaj",

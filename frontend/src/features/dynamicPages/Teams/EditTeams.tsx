@@ -34,6 +34,7 @@ export const EditTeams: FC = () => {
         const selectedEmployees = result?.employee_id?.map((elem) => ({ label: `${elem.firstName} ${elem.lastName}`, value: elem._id })) || [];
         setData(result);
         setSelectedUserOptions(selectedEmployees);
+
         async function fetchMyAPI() {
           const response = await fetchUserDataOptions<TEmployeeOptionType[]>(setStatus);
           setUsersDataOptions(mapResults(response));

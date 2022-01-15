@@ -62,7 +62,6 @@ router.post("/dodaj", function (req, res) {
   });
 });
 
-
 router.get("/edytuj/:id", function (req, res) {
   Team.find({ _id: req.params.id }).populate({
     path: "employee_id"
