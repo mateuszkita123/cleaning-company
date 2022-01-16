@@ -126,3 +126,8 @@ export type TRefreshContext = {
 export interface IReactChildProps {
   children: JSX.Element;
 };
+
+export interface IReactChildPropsUserContext {
+  children: JSX.Element;
+  initialState: IUserContextData;
+};

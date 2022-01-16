@@ -1,5 +1,5 @@
 import { createContext, useState, FC, useMemo } from "react"
-import { IReactChildProps, TUserContext } from "../interfaces";
+import { IReactChildPropsUserContext, TUserContext } from "../interfaces";
 
 const UserContext = createContext<TUserContext>({
   userContext: {},
@@ -8,9 +8,7 @@ const UserContext = createContext<TUserContext>({
 
 UserContext.displayName = 'UserContext';
 
-const initialState = {};
-
-const UserProvider: FC<IReactChildProps> = (props) => {
+const UserProvider: FC<IReactChildPropsUserContext> = ({ initialState: initialState, ...props }) => {
   const [userContext, setUserContext] = useState(initialState);
 
   const value = useMemo(

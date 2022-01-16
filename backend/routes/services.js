@@ -7,7 +7,7 @@ const Team = require("../models/team");
 const User = require("../models/user");
 const Invoice = require("../models/invoice");
 
-const { verifyUser, hasClientPermissions, hasAdminPermissions } = require("../authenticate")
+const { verifyUser, hasEmployeePermissions, hasAdminPermissions } = require("../authenticate")
 
 const getServiceDataFromRequest = (req) => {
 
@@ -26,7 +26,7 @@ const getServiceDataFromRequest = (req) => {
 }
 
 //INDEX - show all reserved services
-router.get("/", verifyUser, hasClientPermissions, function (req, res) {
+router.get("/", verifyUser, hasEmployeePermissions, function (req, res) {
   Service.find({}, function (err, allServices) {
     if (err) {
       console.log(err);
@@ -37,7 +37,7 @@ router.get("/", verifyUser, hasClientPermissions, function (req, res) {
 });
 
 //NEW - show form to create new report
-router.get("/dodaj", verifyUser, hasClientPermissions, async function (req, res) {
+router.get("/dodaj", verifyUser, hasEmployeePermissions, async function (req, res) {
   const response = { teams: [], users: [], invoices: [] };
 
   await Team.find({}, function (err, allTeams) {
@@ -67,7 +67,7 @@ router.get("/dodaj", verifyUser, hasClientPermissions, async function (req, res)
 });
 
 //CREATE - add a new service to DB
-router.post("/dodaj", verifyUser, hasClientPermissions, function (req, res) {
+router.post("/dodaj", verifyUser, hasEmployeePermissions, function (req, res) {
   const { invoice, user, team, address, area, unitPrice, description } = req.body;
   const newService = { invoice_id: invoice, user_id: user, teams_id: [team], service_address: address, service_area: area, service_unit_price: unitPrice, description: description, status: "CREATED" };
 
@@ -81,7 +81,7 @@ router.post("/dodaj", verifyUser, hasClientPermissions, function (req, res) {
   });
 });
 
-router.get("/edytuj/:id", verifyUser, hasClientPermissions, function (req, res) {
+router.get("/edytuj/:id", verifyUser, hasEmployeePermissions, function (req, res) {
   Service.find({ _id: req.params.id }).exec((err, allServices) => {
     if (err) {
       console.log(err);
@@ -93,7 +93,7 @@ router.get("/edytuj/:id", verifyUser, hasClientPermissions, function (req, res) 
 
 // UPDATE - updates selected service
 // TODO add middleware to check is service belongs to user
-router.put("/edytuj/:id", verifyUser, hasClientPermissions, function (req, res) {
+router.put("/edytuj/:id", verifyUser, hasEmployeePermissions, function (req, res) {
   const newService = getServiceDataFromRequest(req);
 
   Service.updateOne({ _id: req.params.id }, { $set: newService }, function (err, service) {

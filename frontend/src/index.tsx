@@ -10,10 +10,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserProvider } from './context/UserContext';
 import { RefreshProvider } from './context/RefreshContext';
 
+const initialState = {};
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <UserProvider>
+      <UserProvider initialState={initialState}>
         <RefreshProvider>
           <App />
         </RefreshProvider>

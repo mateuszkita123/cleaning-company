@@ -29,40 +29,58 @@ export function Register() {
     const password = passwordRef.current?.value;
     const confirmedPassword = confirmedPasswordRef.current?.value;
 
-    if (firstName && lastName && email && password && confirmedPassword) {
-      if (!!password && password === confirmedPassword) {
-        const body = JSON.stringify({ firstName, lastName, username: email, password });
-        fetch(API_URL + "/users/rejestracja", {
-          ...postWithoutCredentialsOptions,
-          body: body,
-        })
-          .then(async response => {
-            setIsSubmitting(false)
-            if (!response.ok) {
-              if (response.status === 400) {
-                setError(INVALID_DATA_MESSAGE);
-              } else if (response.status === 401) {
-                setError(INVALID_CREDENTIALS_MESSAGE);
-              } else if (response.status === 500) {
-                console.log(response);
-                const data = await response.json();
-                if (data.message) setError(data.message || GENERIC_ERROR_MESSAGE)
+    if (
+      firstName !== undefined &&
+      lastName !== undefined &&
+      email !== undefined &&
+      password !== undefined &&
+      confirmedPassword !== undefined
+    ) {
+      if (
+        firstName?.length < 35 &&
+        lastName?.length < 35 &&
+        email?.length < 35 &&
+        password?.length < 35 &&
+        confirmedPassword?.length < 35
+      ) {
+        if (!!password && password === confirmedPassword) {
+          const body = JSON.stringify({ firstName, lastName, username: email, password });
+          fetch(API_URL + "/users/rejestracja", {
+            ...postWithoutCredentialsOptions,
+            body: body,
+          })
+            .then(async response => {
+              setIsSubmitting(false)
+              if (!response.ok) {
+                if (response.status === 400) {
+                  setError(INVALID_DATA_MESSAGE);
+                } else if (response.status === 401) {
+                  setError(INVALID_CREDENTIALS_MESSAGE);
+                } else if (response.status === 500) {
+                  console.log(response);
+                  const data = await response.json();
+                  if (data.message) setError(data.message || GENERIC_ERROR_MESSAGE)
+                } else {
+                  setError(GENERIC_ERROR_MESSAGE);
+                }
               } else {
-                setError(GENERIC_ERROR_MESSAGE);
+                const data = await response.json();
+                console.log("data: ", data);
+                console.warn("setUserContext token=data.token because of ok response from /users/rejestracja");
+                setUserContext({ ...userContext, token: data.token });
               }
-            } else {
-              const data = await response.json();
-              console.log("data: ", data);
-              console.warn("setUserContext token=data.token because of ok response from /users/rejestracja");
-              setUserContext({ ...userContext, token: data.token });
-            }
-          })
-          .catch(error => {
-            setIsSubmitting(false);
-            setError(GENERIC_ERROR_MESSAGE);
-          })
+            })
+            .catch(error => {
+              console.error(error);
+              setIsSubmitting(false);
+              setError(GENERIC_ERROR_MESSAGE);
+            })
+        } else {
+          setError("Podane hasła nie pasują do siebie!");
+          setIsSubmitting(false);
+        }
       } else {
-        setError("Podane hasła nie pasują do siebie!");
+        setError("Wpisana długość nie powinna przekraczać 35 znaków!");
         setIsSubmitting(false);
       }
     } else {
@@ -71,7 +89,11 @@ export function Register() {
     }
   }
 
-  return (!userContext.token ? (
+  if (userContext.token) {
+    return <Navigate to="/me" replace state={{ from: location }} />;
+  }
+
+  return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
       <h1 id="table-heading">Rejestracja</h1>
@@ -126,8 +148,5 @@ export function Register() {
       <p>Masz już konto?</p>
       <Link to="/logowanie">Zaloguj się</Link>
     </>
-  ) : (
-    <Navigate to="/me" replace state={{ from: location }} />
   )
-  );
 }
