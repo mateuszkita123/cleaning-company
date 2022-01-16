@@ -1,15 +1,16 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../app/constans";
-import { optionsGet } from "../../app/utils";
-import { IClientsState } from "../../interfaces";
-import { ActionButtons } from "../links/ActionButtons";
-import { Loader } from "../links/Loader";
+import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { optionsGet } from "../../../app/utils";
+import { RefreshContext } from "../../../context/RefreshContext";
+import { IClientsState } from "../../../interfaces";
+import { ActionButtons } from "../../links/ActionButtons";
+import { Loader } from "../../links/Loader";
 
 export const Clients: FC = () => {
   const [data, setData] = useState<IClientsState["clients"]>([]);
   const [status, setStatus] = useState<IClientsState["status"]>(FetchingDataStatus.IDLE);
-  const [refreshId, setRefreshId] = useState("");
+  const { refreshContext } = useContext(RefreshContext);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
@@ -25,7 +26,7 @@ export const Clients: FC = () => {
       .finally(() => {
         setStatus(FetchingDataStatus.IDLE);
       });
-  }, [refreshId]);
+  }, [refreshContext.refreshId]);
 
   if (status === FetchingDataStatus.LOADING && data.length === 0) {
     return <Loader />
@@ -49,7 +50,7 @@ export const Clients: FC = () => {
                 <tr key={user._id.toString()}>
                   <th>{user.firstName} {user.lastName}</th>
                   <th>{user.username}</th>
-                  <th><ActionButtons setRefreshId={setRefreshId} id={user._id} endpoint={Endpoints.USERS} /></th>
+                  <th><ActionButtons id={user._id} endpoint={Endpoints.USERS} /></th>
                 </tr>))}
             </tbody>
           </Table>) : <p>Nie udało się pobrać danych</p>}

@@ -1,9 +1,11 @@
-import { FC, useState, useEffect, FormEvent, useRef } from "react";
-import { Alert, Button, Form, FormGroup } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { FC, useState, useEffect, FormEvent, useRef, useContext } from "react";
+import { Alert, Form, FormGroup } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
+import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { optionsPost } from "../../../app/utils";
+import { RefreshContext } from "../../../context/RefreshContext";
 import { IUser, IOption, IOptionForMultiSelectState, } from "../../../interfaces";
 import { SaveButton } from "../../links/SaveButton";
 import { fetchUserDataOptions, mapResults } from "./TeamsApi";
@@ -21,6 +23,7 @@ export const AddTeams: FC = () => {
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOptionForMultiSelectState["selectedOptions"]>(null);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setRefreshContext } = useContext(RefreshContext);
   const navigate = useNavigate();
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -53,6 +56,7 @@ export const AddTeams: FC = () => {
         .then(res => res.json())
         .then((result) => {
           console.log(result);
+          setRefreshContext({ refreshId: uuidv4() });
           if (result.status === "Success") {
             navigate(Endpoints.TEAMS);
           }

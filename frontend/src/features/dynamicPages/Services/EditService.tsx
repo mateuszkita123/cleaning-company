@@ -1,9 +1,11 @@
-import { FC, useState, useEffect, FormEvent, ChangeEvent } from "react";
+import { FC, useState, useEffect, FormEvent, ChangeEvent, useContext } from "react";
 import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
+import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { optionsGet, optionsPut } from "../../../app/utils";
+import { RefreshContext } from "../../../context/RefreshContext";
 import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState, IService } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -13,11 +15,6 @@ interface IAddService {
   teams: ITeam[];
   users: IUser[];
   invoices: IInvoice[];
-}
-
-interface IEditServiceState {
-  data: IAddService | null;
-  status: FetchingDataStatus;
 }
 
 interface IComponentState {
@@ -40,6 +37,7 @@ export const EditService: FC = () => {
   const [invoicesDataOptions, setInvoicesDataOptions] = useState<IOption[]>([]);
   const [usersDataOptions, setUsersDataOptions] = useState<IOption[]>([]);
   const [teamsDataOptions, setTeamsDataOptions] = useState<IOption[]>([]);
+  const { setRefreshContext } = useContext(RefreshContext);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -115,6 +113,7 @@ export const EditService: FC = () => {
         .then(res => res.json())
         .then(result => {
           console.log(result);
+          setRefreshContext({ refreshId: uuidv4() });
           navigate(Endpoints.SERVICES);
         })
         .catch(error => {

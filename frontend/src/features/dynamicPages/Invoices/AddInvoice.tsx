@@ -1,9 +1,11 @@
-import { FC, useState, useEffect, FormEvent } from "react";
+import { FC, useState, useEffect, FormEvent, useContext } from "react";
 import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
+import { v4 as uuidv4 } from "uuid";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
 import { optionsGet, optionsPost } from "../../../app/utils";
+import { RefreshContext } from "../../../context/RefreshContext";
 import { IInvoicesData, IOption, IOptionForSelectState, ITeamsState } from "../../../interfaces";
 import { SaveButton } from "../../links/SaveButton";
 
@@ -19,6 +21,7 @@ export const AddInvoice: FC = () => {
   const [status, setStatus] = useState<ITeamsState["status"]>(FetchingDataStatus.IDLE);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setRefreshContext } = useContext(RefreshContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,6 +60,7 @@ export const AddInvoice: FC = () => {
         .then(res => res.json())
         .then((result) => {
           console.log(result);
+          setRefreshContext({ refreshId: uuidv4() });
           navigate(Endpoints.INVOICES);
         });
     } else {

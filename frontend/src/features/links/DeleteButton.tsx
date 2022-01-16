@@ -1,17 +1,18 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL } from "../../app/constans";
+import { RefreshContext } from "../../context/RefreshContext";
 import { TEntityId } from "../../interfaces";
 import ActionButton from "./ActionButton";
 
 interface IDeleteButtonsProps {
   id: TEntityId;
   endpoint: string;
-  setRefreshId: Dispatch<SetStateAction<string>>;
 }
 
-export const DeleteButton: FC<IDeleteButtonsProps> = ({ id, endpoint, setRefreshId }) => {
+export const DeleteButton: FC<IDeleteButtonsProps> = ({ id, endpoint }) => {
+  const { setRefreshContext } = useContext(RefreshContext);
   const location = useLocation();
   const { pathname } = location;
 
@@ -26,16 +27,14 @@ export const DeleteButton: FC<IDeleteButtonsProps> = ({ id, endpoint, setRefresh
       .then(res => res.json())
       .then((result) => {
         console.log(result);
+        setRefreshContext({ refreshId: uuidv4() });
         if (result.status === "Success") {
           console.log("SUKCES!");
         }
       })
       .catch(error => {
         console.error(error);
-      })
-      .finally(() => {
-        setRefreshId(uuidv4().toString());
-      })
+      });
   }
 
   return (

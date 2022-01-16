@@ -114,6 +114,15 @@ export type TUserContext = {
   setUserContext: (oldValues: IUserContextData) => void;
 };
 
+export interface IRefreshContextData {
+  refreshId: string;
+}
+
+export type TRefreshContext = {
+  refreshContext: IRefreshContextData;
+  setRefreshContext: (oldValues: IRefreshContextData) => void;
+};
+
 export interface IReactChildProps {
   children: JSX.Element;
 };

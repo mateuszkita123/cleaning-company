@@ -1,9 +1,11 @@
-import { FC, useState, useEffect, FormEvent, useRef, ChangeEvent } from "react";
+import { FC, useState, useEffect, FormEvent, useRef, ChangeEvent, useContext } from "react";
 import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
+import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { optionsGet, optionsPut } from "../../../app/utils";
+import { RefreshContext } from "../../../context/RefreshContext";
 import { IOption, IOptionForMultiSelectState, ITeam, IUser, } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -23,6 +25,7 @@ export const EditTeams: FC = () => {
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOptionForMultiSelectState["selectedOptions"]>(null);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setRefreshContext } = useContext(RefreshContext);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -73,6 +76,7 @@ export const EditTeams: FC = () => {
         .then((result) => {
           console.log(result);
           setIsSubmitting(false);
+          setRefreshContext({ refreshId: uuidv4() });
           if (result.status === "Success") {
             navigate(Endpoints.TEAMS);
           }

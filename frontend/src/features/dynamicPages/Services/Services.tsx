@@ -3,6 +3,7 @@ import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { optionsGet } from "../../../app/utils";
+import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
 import { IServicesState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
@@ -12,14 +13,15 @@ import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);
   const [status, setStatus] = useState<IServicesState["status"]>(FetchingDataStatus.IDLE);
-  const [refreshId, setRefreshId] = useState("");
   const { userContext } = useContext(UserContext);
+  const { refreshContext } = useContext(RefreshContext);
   const location = useLocation();
 
   // console.warn("Services userContext: ", userContext);
   // console.warn("!userContext.token: ", !userContext.token);
 
   useEffect(() => {
+    console.log("Services refreshContext.refreshId: ", refreshContext.refreshId);
     setStatus(FetchingDataStatus.LOADING);
     fetch(API_URL + Endpoints.SERVICES, optionsGet)
       .then(res => res.json())
@@ -33,7 +35,7 @@ export const Services: FC = () => {
       .finally(() => {
         setStatus(FetchingDataStatus.IDLE);
       });
-  }, [refreshId]);
+  }, [refreshContext.refreshId]);
 
   if (status === FetchingDataStatus.LOADING && data.length === 0) {
     return <Loader />
@@ -72,7 +74,7 @@ export const Services: FC = () => {
                     <th>{element.teams_id}</th>
                     <th>{element.user_id}</th>
                     <th>{element.invoice_id}</th>
-                    <th><ActionButtons setRefreshId={setRefreshId} id={element._id} endpoint={Endpoints.SERVICES} /></th>
+                    <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
                   </tr>))
                 }
               </tbody>

@@ -1,8 +1,9 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { optionsGet } from "../../../app/utils";
+import { RefreshContext } from "../../../context/RefreshContext";
 import { IInvoicesState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
 import { Loader } from "../../links/Loader";
@@ -11,7 +12,7 @@ import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 export const Invoices: FC = () => {
   const [data, setData] = useState<IInvoicesState["invoices"]>([]);
   const [status, setStatus] = useState<IInvoicesState["status"]>(FetchingDataStatus.IDLE);
-  const [refreshId, setRefreshId] = useState("");
+  const { refreshContext } = useContext(RefreshContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export const Invoices: FC = () => {
       .finally(() => {
         setStatus(FetchingDataStatus.IDLE);
       });
-  }, [refreshId]);
+  }, [refreshContext.refreshId]);
 
   if (status === FetchingDataStatus.LOADING && data.length === 0) {
     return <Loader />
@@ -53,7 +54,7 @@ export const Invoices: FC = () => {
                   <tr key={element._id.toString()}>
                     <th>{element.is_b2b ? "Tak" : "Nie"}</th>
                     <th>{element.invoice_data_id}</th>
-                    <th><ActionButtons setRefreshId={setRefreshId} id={element._id} endpoint={Endpoints.INVOICES} /></th>
+                    <th><ActionButtons id={element._id} endpoint={Endpoints.INVOICES} /></th>
                   </tr>))}
               </tbody>
             </Table>) : <p>Nie udało się pobrać danych</p>}

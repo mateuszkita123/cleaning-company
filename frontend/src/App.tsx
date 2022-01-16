@@ -11,7 +11,7 @@ import { Account } from './features/dynamicPages/Account';
 import { Invoices } from './features/dynamicPages/Invoices/Invoices';
 import { AddInvoice } from './features/dynamicPages/Invoices/AddInvoice';
 import { EditInvoice } from './features/dynamicPages/Invoices/EditInvoice';
-import { Clients } from './features/dynamicPages/Clients';
+import { Clients } from './features/dynamicPages/Clients/Clients';
 import { Services } from './features/dynamicPages/Services/Services';
 import { AddService } from './features/dynamicPages/Services/AddService';
 import { EditService } from './features/dynamicPages/Services/EditService';

@@ -8,12 +8,15 @@ import * as serviceWorker from './serviceWorker';
 import "./app/utils/faIconsLibrary";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserProvider } from './context/UserContext';
+import { RefreshProvider } from './context/RefreshContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <UserProvider>
-        <App />
+        <RefreshProvider>
+          <App />
+        </RefreshProvider>
       </UserProvider>
     </Provider>
   </React.StrictMode >,
