@@ -2,6 +2,7 @@ import { useRef, FormEvent, useContext, useState } from "react";
 import { FormGroup, Form, Alert } from "react-bootstrap";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
+import { postWithoutCredentialsOptions } from "../../app/utils";
 import { UserContext } from "../../context/UserContext";
 import { SaveButton } from "../links/SaveButton";
 
@@ -24,9 +25,7 @@ export function Login() {
     const body = JSON.stringify({ username: email, password });
 
     fetch(API_URL + "/users/logowanie", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
+      ...postWithoutCredentialsOptions,
       body: body,
     })
       .then(async response => {

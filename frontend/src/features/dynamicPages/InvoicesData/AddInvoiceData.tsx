@@ -3,7 +3,7 @@ import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
-import { optionsPost } from "../../../app/utils";
+import { postOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { IInvoicesData } from "../../../interfaces";
 import { SaveButton } from "../../links/SaveButton";
@@ -48,7 +48,7 @@ export const AddInvoiceData: FC = () => {
         company_phone,
         company_email
       })
-      fetch(API_URL + Endpoints.ADD_INVOICES_DATA, { ...optionsPost, body: body })
+      fetch(API_URL + Endpoints.ADD_INVOICES_DATA, { ...postOptions, body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

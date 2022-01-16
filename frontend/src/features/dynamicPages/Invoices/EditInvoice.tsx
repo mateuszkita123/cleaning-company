@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
-import { getOptions, optionsPost } from "../../../app/utils";
+import { getOptions, postOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
 import { IInvoicesData, IOption, IOptionForSelectState, ITeamsState } from "../../../interfaces";
@@ -58,7 +58,7 @@ export const EditInvoice: FC = () => {
 
     if (selectedB2BOption !== null && selectedInvoicesDataOption !== null) {
       const body = JSON.stringify({ is_b2b: selectedB2BOption["value"] === 'true', invoice_data_id: selectedInvoicesDataOption["value"] })
-      fetch(API_URL + Endpoints.ADD_INVOICES, { ...optionsPost, body: body })
+      fetch(API_URL + Endpoints.ADD_INVOICES, { ...postOptions, body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

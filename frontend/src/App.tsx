@@ -26,17 +26,14 @@ import { EditTeams } from './features/dynamicPages/Teams/EditTeams';
 import { InvoicesData } from './features/dynamicPages/InvoicesData/InvoicesData';
 import { AddInvoiceData } from './features/dynamicPages/InvoicesData/AddInvoiceData';
 import { EditInvoiceData } from './features/dynamicPages/InvoicesData/EditInvoicesData';
+import { postWithoutCredentialsOptions } from './app/utils';
 import './App.css';
 
 function App() {
   const { userContext, setUserContext } = useContext(UserContext);
 
   const verifyUser = useCallback(() => {
-    fetch(API_URL + "/users/refreshToken", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-    })
+    fetch(API_URL + "/users/refreshToken", postWithoutCredentialsOptions)
       .then(async response => {
         if (response.ok) {
           const data = await response.json();

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { getOptions, optionsPost } from "../../../app/utils";
+import { getOptions, postOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
 import { IUser, IOption, IOptionForMultiSelectState, } from "../../../interfaces";
@@ -54,7 +54,7 @@ export const AddTeams: FC = () => {
         ids: ids
       })
 
-      fetch(API_URL + Endpoints.ADD_TEAMS, { ...optionsPost, body: body })
+      fetch(API_URL + Endpoints.ADD_TEAMS, { ...postOptions, body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

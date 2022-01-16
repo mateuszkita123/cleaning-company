@@ -2,7 +2,9 @@ import { FC, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL } from "../../app/constans";
+import { deleteOptions } from "../../app/utils";
 import { RefreshContext } from "../../context/RefreshContext";
+import { UserContext } from "../../context/UserContext";
 import { TEntityId } from "../../interfaces";
 import ActionButton from "./ActionButton";
 
@@ -13,15 +15,13 @@ interface IDeleteButtonsProps {
 
 export const DeleteButton: FC<IDeleteButtonsProps> = ({ id, endpoint }) => {
   const { setRefreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
   const location = useLocation();
   const { pathname } = location;
 
   const handleClick = () => {
     fetch(API_URL + endpoint, {
-      method: 'DELETE',
-      mode: "cors",
-      credentials: "include",
-      headers: { 'withCredentials': "true", Accept: 'application/json;charset=UTF-8', 'Content-Type': 'application/json' },
+      ...deleteOptions(userContext.token),
       body: JSON.stringify({ id: id })
     })
       .then(res => res.json())

@@ -31,9 +31,10 @@ exports.getRefreshToken = user => {
 
 exports.verifyUser = passport.authenticate("jwt", { session: false })
 
-exports.isClient = function (req, res, next) {
+exports.hasClientPermissions = function (req, res, next) {
+  console.log("hasClientPermissions");
   console.log("isClient req.user ROLE: ", req.user.role_id);
-  if (req.user.role_id === "Klient") {
+  if (req.user.role_id === "Klient" || req.user.role_id === "Pracownik" || req.user.role_id === "Administrator") {
     next();
   } else {
     res.status(401);
@@ -41,9 +42,10 @@ exports.isClient = function (req, res, next) {
   }
 }
 
-exports.isEmployee = function (req, res, next) {
+exports.hasEmployeePermissions = function (req, res, next) {
+  console.log("hasEmployeePermissions");
   console.log("isClient req.user ROLE: ", req.user.role_id);
-  if (req.user.role_id === "Pracownik") {
+  if (req.user.role_id === "Pracownik" || req.user.role_id === "Administrator") {
     next();
   } else {
     res.status(401);
@@ -51,11 +53,14 @@ exports.isEmployee = function (req, res, next) {
   }
 }
 
-exports.isAdmin = function (req, res, next) {
+exports.hasAdminPermissions = function (req, res, next) {
+  console.log("hasAdminPermissions");
   console.log("isClient req.user ROLE: ", req.user.role_id);
   if (req.user.role_id === "Administrator") {
+    console.log("next ");
     next();
   } else {
+    console.log("401 ");
     res.status(401);
     res.send({ status: "Permission error" });
   }

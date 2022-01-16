@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useContext } from "react";
-import { Table } from "react-bootstrap";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Alert, Table } from "react-bootstrap";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
@@ -13,16 +13,24 @@ import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);
   const [status, setStatus] = useState<IServicesState["status"]>(FetchingDataStatus.IDLE);
+  const [error, setError] = useState("");
   const { userContext } = useContext(UserContext);
   const { refreshContext } = useContext(RefreshContext);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
     fetch(API_URL + Endpoints.SERVICES, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
-        setData(result);
+        console.log("result: ", result);
+        if (Array.isArray(result)) {
+          setData(result);
+        }
+        if (result.status === "Permission error") {
+          navigate(Endpoints.LOGIN_PAGE);
+        }
       })
       .catch(error => {
         console.log("Błąd: ", error);
@@ -39,6 +47,7 @@ export const Services: FC = () => {
 
   return location.pathname === Endpoints.SERVICES ? (
     <>
+      {error && <Alert variant="danger">{error}</Alert>}
       <div className="container">
         <h1 className="table-heading">Zarezerwowane usługi</h1>
         <div className="row text-center flex-wrap">
@@ -59,7 +68,7 @@ export const Services: FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((element) => (
+                {data && data.map((element) => (
                   <tr key={element._id.toString()}>
                     <th>{element.service_address}</th>
                     <th>{element.service_area}</th>

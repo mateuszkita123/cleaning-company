@@ -28,6 +28,7 @@ export enum Endpoints {
   ADD_TEAMS = "/zespoly/dodaj",
   EDIT_TEAMS = "/zespoly/edytuj",
   ALL_USERS = "/uzytkownicy",
+  LOGIN_PAGE = "/logowanie",
 }
 
 export const GENERIC_ERROR_MESSAGE = "Coś poszło nie tak.";

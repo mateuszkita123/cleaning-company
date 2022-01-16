@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { getOptions, optionsPost } from "../../../app/utils";
+import { getOptions, postOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
 import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState, IService } from "../../../interfaces";
@@ -87,7 +87,7 @@ export const AddService: FC = () => {
         description: description
       })
 
-      fetch(API_URL + Endpoints.ADD_SERVICES, { ...optionsPost, body: body })
+      fetch(API_URL + Endpoints.ADD_SERVICES, { ...postOptions, body: body })
         .then(res => res.json())
         .then(result => {
           console.log(result);

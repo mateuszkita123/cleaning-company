@@ -3,7 +3,7 @@ import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
-import { getOptions, optionsPut } from "../../../app/utils";
+import { getOptions, putOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
 import { IInvoicesData } from "../../../interfaces";
@@ -61,7 +61,7 @@ export const EditInvoiceData: FC = () => {
 
     if (first_name && last_name && company_name && company_vat_number && company_address && company_phone && company_email) {
       const body = JSON.stringify({ first_name: data.first_name })
-      fetch(API_URL + Endpoints.EDIT_INVOICES_DATA, { ...optionsPut, body: body })
+      fetch(API_URL + Endpoints.EDIT_INVOICES_DATA, { ...putOptions, body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

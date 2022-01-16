@@ -2,6 +2,7 @@ import { useRef, FormEvent, useContext, useState } from "react";
 import { Form, FormGroup, Alert } from "react-bootstrap";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
+import { postWithoutCredentialsOptions } from "../../app/utils";
 import { UserContext } from "../../context/UserContext";
 import { SaveButton } from "../links/SaveButton";
 
@@ -32,9 +33,7 @@ export function Register() {
       if (!!password && password === confirmedPassword) {
         const body = JSON.stringify({ firstName, lastName, username: email, password });
         fetch(API_URL + "/users/rejestracja", {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
+          ...postWithoutCredentialsOptions,
           body: body,
         })
           .then(async response => {
