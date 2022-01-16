@@ -4,7 +4,7 @@ const User = require("../models/user");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser } = require("../authenticate")
+const { getToken, COOKIE_OPTIONS, getRefreshToken, verifyUser } = require("../authenticate");
 
 if (process.env.NODE_ENV !== "production") {
   // Load environment variables from .env file in non prod environments

@@ -1,8 +1,9 @@
 import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsGet } from "../../../app/utils";
+import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { IClientsState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
 import { Loader } from "../../links/Loader";
@@ -11,10 +12,11 @@ export const Clients: FC = () => {
   const [data, setData] = useState<IClientsState["clients"]>([]);
   const [status, setStatus] = useState<IClientsState["status"]>(FetchingDataStatus.IDLE);
   const { refreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.CLIENTS, optionsGet)
+    fetch(API_URL + Endpoints.CLIENTS, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
         setData(result);

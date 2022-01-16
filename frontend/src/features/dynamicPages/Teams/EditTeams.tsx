@@ -4,8 +4,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsGet, optionsPut } from "../../../app/utils";
+import { getOptions, optionsPut } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { IOption, IOptionForMultiSelectState, ITeam, IUser, } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -26,12 +27,13 @@ export const EditTeams: FC = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setRefreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, optionsGet)
+    fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, getOptions(userContext.token))
       .then(res => res.json())
       .then((result: IComponentState["team"]) => {
         const selectedEmployees = result?.employee_id?.map((elem) => ({ label: `${elem.firstName} ${elem.lastName}`, value: elem._id })) || [];
@@ -39,7 +41,7 @@ export const EditTeams: FC = () => {
         setSelectedUserOptions(selectedEmployees);
 
         async function fetchMyAPI() {
-          const response = await fetchUserDataOptions<TEmployeeOptionType[]>(setStatus);
+          const response = await fetchUserDataOptions<TEmployeeOptionType[]>(setStatus, getOptions(userContext.token));
           setUsersDataOptions(mapResults(response));
         }
 

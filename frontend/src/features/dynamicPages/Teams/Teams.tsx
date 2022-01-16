@@ -2,8 +2,9 @@ import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsGet } from "../../../app/utils";
+import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { ITeamsState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
 import { Loader } from "../../links/Loader";
@@ -12,12 +13,13 @@ import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 export const Teams: FC = () => {
   const [data, setData] = useState<ITeamsState["teams"]>([]);
   const [status, setStatus] = useState<ITeamsState["status"]>(FetchingDataStatus.IDLE);
+  const { userContext } = useContext(UserContext);
   const { refreshContext } = useContext(RefreshContext);
   const location = useLocation();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.TEAMS, optionsGet)
+    fetch(API_URL + Endpoints.TEAMS, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
         setData(result);

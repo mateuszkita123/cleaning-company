@@ -2,7 +2,7 @@ import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsGet } from "../../../app/utils";
+import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
 import { IServicesState } from "../../../interfaces";
@@ -17,13 +17,9 @@ export const Services: FC = () => {
   const { refreshContext } = useContext(RefreshContext);
   const location = useLocation();
 
-  // console.warn("Services userContext: ", userContext);
-  // console.warn("!userContext.token: ", !userContext.token);
-
   useEffect(() => {
-    console.log("Services refreshContext.refreshId: ", refreshContext.refreshId);
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.SERVICES, optionsGet)
+    fetch(API_URL + Endpoints.SERVICES, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
         setData(result);

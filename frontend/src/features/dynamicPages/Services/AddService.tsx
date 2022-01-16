@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsPost } from "../../../app/utils";
+import { getOptions, optionsPost } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { IInvoice, IUser, ITeam, IOption, IOptionForSelectState, IService } from "../../../interfaces";
 import { Loader } from "../../links/Loader";
 import { SaveButton } from "../../links/SaveButton";
@@ -39,13 +40,14 @@ export const AddService: FC = () => {
   const [usersDataOptions, setUsersDataOptions] = useState<IOption[]>([]);
   const [teamsDataOptions, setTeamsDataOptions] = useState<IOption[]>([]);
   const { setRefreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
 
     async function fetchMyAPI() {
-      const result = await fetchOptionsForServices<IAddService>(setStatus);
+      const result = await fetchOptionsForServices<IAddService>(setStatus, getOptions(userContext.token));
       const invoices = result?.invoices.map((element: IInvoice) => ({ label: element._id, value: element._id })) || [];
       const users = result?.users.map((element: IUser) => ({ label: element.username, value: element._id })) || [];
       const teams = result?.teams.map((element: ITeam) => ({ label: element.name, value: element._id })) || [];

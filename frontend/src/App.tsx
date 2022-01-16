@@ -46,8 +46,8 @@ function App() {
           console.warn("setUserContext token=null because of NOT ok response from /refreshToken");
           setUserContext({ ...userContext, token: null });
         }
-        // call refreshToken every 60 minutes to renew the authentication token.
-        setTimeout(verifyUser, 60 * 60 * 1000);
+        // call refreshToken every 1 minutes to renew the authentication token.
+        setTimeout(verifyUser, 1 * 60 * 1000);
       })
   }, [setUserContext]);
 

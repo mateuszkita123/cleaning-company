@@ -1,8 +1,9 @@
 import { FC, useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsGet } from "../../../app/utils";
+import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { IUsersState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
 import { Loader } from "../../links/Loader";
@@ -11,10 +12,11 @@ export const UsersPage: FC = () => {
   const [data, setData] = useState<IUsersState["users"]>([]);
   const [status, setStatus] = useState<IUsersState["status"]>(FetchingDataStatus.IDLE);
   const { refreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.ALL_USERS, optionsGet)
+    fetch(API_URL + Endpoints.ALL_USERS, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
         setData(result);

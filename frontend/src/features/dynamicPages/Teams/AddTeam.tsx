@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import Select, { MultiValue, ActionMeta } from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
-import { optionsPost } from "../../../app/utils";
+import { getOptions, optionsPost } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { IUser, IOption, IOptionForMultiSelectState, } from "../../../interfaces";
 import { SaveButton } from "../../links/SaveButton";
 import { fetchUserDataOptions, mapResults } from "./TeamsApi";
@@ -24,6 +25,7 @@ export const AddTeams: FC = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setRefreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
   const navigate = useNavigate();
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -32,7 +34,7 @@ export const AddTeams: FC = () => {
     setStatus(FetchingDataStatus.LOADING);
 
     async function fetchMyAPI() {
-      const response = await fetchUserDataOptions<IUsersIdsState["employees"]>(setStatus);
+      const response = await fetchUserDataOptions<IUsersIdsState["employees"]>(setStatus, getOptions(userContext.token));
       setUsersDataOptions(mapResults(response));
     }
 

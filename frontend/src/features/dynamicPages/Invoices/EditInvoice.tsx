@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { v4 as uuidv4 } from "uuid";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
-import { optionsGet, optionsPost } from "../../../app/utils";
+import { getOptions, optionsPost } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { IInvoicesData, IOption, IOptionForSelectState, ITeamsState } from "../../../interfaces";
 import { SaveButton } from "../../links/SaveButton";
 
@@ -22,11 +23,12 @@ export const EditInvoice: FC = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setRefreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
-    fetch(API_URL + Endpoints.INVOICES_DATA, optionsGet)
+    fetch(API_URL + Endpoints.INVOICES_DATA, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
         const invoicesDataIds = result.map((element: IInvoicesData) => ({ label: element._id, value: element._id }));

@@ -49,6 +49,13 @@ app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 
+app.use(function (req, res, next) {
+  console.log("res.locals: ", res.locals);
+  console.log("res.locals.currentUser: ", res.locals.currentUser);
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.use("/users", userRoutes);
 app.use("/konto", accountRoutes);
 app.use("/uslugi", servicesRoutes);

@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect } from "react"
 import { Card, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { API_URL, Endpoints } from "../../app/constans"
+import { getOptions } from "../../app/utils"
 import { UserContext } from "../../context/UserContext"
 import { Loader } from "../links/Loader"
 
@@ -9,17 +10,7 @@ export const Account = () => {
   const { userContext, setUserContext } = useContext(UserContext);
 
   const fetchUserDetails = useCallback(() => {
-    console.log("userContext.token: ", userContext.token);
-    // if (!!userContext.token) {
-    fetch(API_URL + "/users/me", {
-      method: "GET",
-      credentials: "include",
-      // Pass authentication token as bearer token in header
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userContext.token}`,
-      }
-    })
+    fetch(API_URL + "/users/me", getOptions(userContext.token))
       .then(async response => {
         if (response.ok) {
           const data = await response.json();
@@ -37,7 +28,6 @@ export const Account = () => {
           }
         }
       })
-    // }
   }, [setUserContext, userContext.token])
 
   useEffect(() => {

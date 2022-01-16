@@ -7,6 +7,8 @@ const Team = require("../models/team");
 const User = require("../models/user");
 const Invoice = require("../models/invoice");
 
+const { verifyUser, isClient } = require("../authenticate")
+
 const getServiceDataFromRequest = (req) => {
 
   const { invoice_id,
@@ -24,7 +26,7 @@ const getServiceDataFromRequest = (req) => {
 }
 
 //INDEX - show all reserved services
-router.get("/", function (req, res) {
+router.get("/", verifyUser, isClient, function (req, res) {
   Service.find({}, function (err, allServices) {
     if (err) {
       console.log(err);

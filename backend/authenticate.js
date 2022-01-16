@@ -30,3 +30,33 @@ exports.getRefreshToken = user => {
 }
 
 exports.verifyUser = passport.authenticate("jwt", { session: false })
+
+exports.isClient = function (req, res, next) {
+  console.log("isClient req.user ROLE: ", req.user.role_id);
+  if (req.user.role_id === "Klient") {
+    next();
+  } else {
+    res.status(401);
+    res.send({ status: "Permission error" });
+  }
+}
+
+exports.isEmployee = function (req, res, next) {
+  console.log("isClient req.user ROLE: ", req.user.role_id);
+  if (req.user.role_id === "Pracownik") {
+    next();
+  } else {
+    res.status(401);
+    res.send({ status: "Permission error" });
+  }
+}
+
+exports.isAdmin = function (req, res, next) {
+  console.log("isClient req.user ROLE: ", req.user.role_id);
+  if (req.user.role_id === "Administrator") {
+    next();
+  } else {
+    res.status(401);
+    res.send({ status: "Permission error" });
+  }
+}
