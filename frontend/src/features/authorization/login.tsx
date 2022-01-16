@@ -1,9 +1,8 @@
 import { useRef, FormEvent, useContext, useState } from "react";
-import { FormGroup, Button, Form, Alert } from "react-bootstrap";
+import { FormGroup, Form, Alert } from "react-bootstrap";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, GENERIC_ERROR_MESSAGE, INVALID_CREDENTIALS_MESSAGE, INVALID_DATA_MESSAGE } from "../../app/constans";
 import { UserContext } from "../../context/UserContext";
-import { ReturnToHomePage } from "../links/ReturnToHomePage";
 import { SaveButton } from "../links/SaveButton";
 
 export function Login() {
@@ -42,7 +41,7 @@ export function Login() {
           }
         } else {
           const data = await response.json();
-          // console.warn("data: ", data);
+          console.warn("data: ", data);
           console.warn("setUserContext token=data.token because of ok response from /users/logowanie");
           setUserContext({ ...userContext, token: data.token });
         }

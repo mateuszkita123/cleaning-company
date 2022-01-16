@@ -70,12 +70,13 @@ router.post("/logowanie", passport.authenticate("local"), (req, res, next) => {
 
 router.post("/refreshToken", (req, res, next) => {
   const { signedCookies = {} } = req;
-  const { refreshToken } = signedCookies;
+  const { refreshToken } = signedCookies; // cookies aren't longer working on localhost on latest browsers versions
 
   if (refreshToken) {
     try {
       const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
       const userId = payload._id
+
       User.findOne({ _id: userId }).then(
         user => {
           if (user) {
@@ -86,7 +87,7 @@ router.post("/refreshToken", (req, res, next) => {
 
             if (tokenIndex === -1) {
               res.statusCode = 401
-              res.send("Unauthorized")
+              res.send("Unauthorized - refresh token not found inside tokens array")
             } else {
               const token = getToken({ _id: userId })
               // If the refresh token exists, then create new one and replace it.
@@ -104,18 +105,18 @@ router.post("/refreshToken", (req, res, next) => {
             }
           } else {
             res.statusCode = 401
-            res.send("Unauthorized")
+            res.send("Unauthorized - could not find user")
           }
         },
         err => next(err)
       )
     } catch (err) {
       res.statusCode = 401
-      res.send("Unauthorized")
+      res.send("Unauthorized - could not verify token")
     }
   } else {
     res.statusCode = 401
-    res.send("Unauthorized")
+    res.send("Unauthorized - refresh token not found")
   }
 });
 

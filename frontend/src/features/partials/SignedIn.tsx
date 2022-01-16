@@ -22,10 +22,10 @@ export function SignedIn() {
 
   return (
     <>
-      <li style={{ marginRight: "0.5em" }}>
+      <li className={"nav-item"}>
         <Link className="nav-link" to={"/me"}>Zalogowano jako {userContext.details?.username}</Link>
       </li>
-      <li>
+      <li className={"nav-item"}>
         <Link className="nav-link" to="" onClick={logoutHandler}>Wyloguj</Link>
       </li>
     </>

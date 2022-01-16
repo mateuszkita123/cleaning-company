@@ -9,7 +9,6 @@ if (process.env.NODE_ENV !== "production") {
 
 exports.COOKIE_OPTIONS = {
   httpOnly: true,
-  // Since localhost is not having https protocol, secure cookies does not work correctly (in postman)
   secure: !dev,
   signed: true,
   maxAge: eval(process.env.REFRESH_TOKEN_EXPIRY) * 1000,
@@ -23,6 +22,7 @@ exports.getToken = user => {
 }
 
 exports.getRefreshToken = user => {
+  console.warn("process.env.REFRESH_TOKEN_SECRET: ", process.env.REFRESH_TOKEN_SECRET);
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: eval(process.env.REFRESH_TOKEN_EXPIRY),
   })
