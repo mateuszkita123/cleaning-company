@@ -11,7 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+.navbar {
+  background: linear-gradient(180deg, #63bf91, #49bd9e, #2abaab, #00b6b7, #00b2c1, #00acca, #00a7d0, #2ca0d3);
+  color:#ffffff;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
