@@ -30,6 +30,7 @@ export const Services: FC = () => {
           setError("Nie masz uprawnień do wyświetlenia zawartości tej strony!");
         }
         if (Array.isArray(result)) {
+          setStatus(FetchingDataStatus.IDLE);
           setData(result);
         }
       })
@@ -37,9 +38,6 @@ export const Services: FC = () => {
         console.log("Błąd: ", error);
         setStatus(FetchingDataStatus.FAILED);
         setError("Wystąpił nieobsługiwany błąd!");
-      })
-      .finally(() => {
-        // setStatus(FetchingDataStatus.IDLE);
       });
   }, [refreshContext.refreshId]);
 
@@ -67,7 +65,7 @@ export const Services: FC = () => {
       <div className="container">
         <h1 className="table-heading">Zarezerwowane usługi</h1>
         <div className="row text-center flex-wrap">
-          <Table responsive striped bordered hover>
+          {FetchingDataStatus.IDLE && data.length !== 0 ? (<Table responsive striped bordered hover>
             <thead>
               <tr>
                 <th>Adres</th>
@@ -98,7 +96,7 @@ export const Services: FC = () => {
                 </tr>))
               }
             </tbody>
-          </Table>
+          </Table>) : <p>Nie masz jeszcze zarezerwowanych usług!</p>}
         </div>
       </div>
       <div className="container">

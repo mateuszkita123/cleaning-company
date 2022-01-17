@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect } from "react"
 import { Card, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
-import { API_URL, Endpoints } from "../../app/constans"
-import { getOptions } from "../../app/utils"
-import { UserContext } from "../../context/UserContext"
-import { Loader } from "../links/Loader"
+import { API_URL, Endpoints } from "../../../app/constans"
+import { getOptions } from "../../../app/utils"
+import { UserContext } from "../../../context/UserContext"
+import { Loader } from "../../links/Loader"
 
 export const Account = () => {
   const { userContext, setUserContext } = useContext(UserContext);

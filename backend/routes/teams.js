@@ -6,7 +6,7 @@ const Team = require("../models/team");
 const User = require("../models/user");
 const { UserRoles } = require("../constans");
 
-// TODO add middleware - handling user roles
+const { verifyUser, hasEmployeePermissions } = require("../authenticate")
 
 const getTeamDataFromRequest = (req) => {
   const ids = req.body.ids;
@@ -16,7 +16,7 @@ const getTeamDataFromRequest = (req) => {
 }
 
 //INDEX - show all teams
-router.get("/", function (req, res) {
+router.get("/", verifyUser, hasEmployeePermissions, function (req, res) {
   Team.find({}).populate({
     path: "employee_id"
   }).exec((err, allTeams) => {
@@ -35,7 +35,7 @@ router.get("/", function (req, res) {
 });
 
 //NEW - show form to create new team
-router.get("/dodaj", function (req, res) {
+router.get("/dodaj", verifyUser, hasEmployeePermissions, function (req, res) {
   User.find({ role_id: UserRoles.USER }, function (err, allUsers) {
     if (err) {
       console.log(err);
@@ -47,7 +47,7 @@ router.get("/dodaj", function (req, res) {
 });
 
 //CREATE - add a new team to DB
-router.post("/dodaj", function (req, res) {
+router.post("/dodaj", verifyUser, hasEmployeePermissions, function (req, res) {
   const newTeam = getTeamDataFromRequest(req);
 
   console.log("newTeam: ", newTeam);
@@ -62,7 +62,7 @@ router.post("/dodaj", function (req, res) {
   });
 });
 
-router.get("/edytuj/:id", function (req, res) {
+router.get("/edytuj/:id", verifyUser, hasEmployeePermissions, function (req, res) {
   Team.find({ _id: req.params.id }).populate({
     path: "employee_id"
   }).exec((err, allTeams) => {
@@ -81,7 +81,7 @@ router.get("/edytuj/:id", function (req, res) {
 });
 
 // UPDATE - updates selected team
-router.put("/edytuj/:id", function (req, res) {
+router.put("/edytuj/:id", verifyUser, hasEmployeePermissions, function (req, res) {
   const newTeam = getTeamDataFromRequest(req);
 
   console.log("newTeam: ", newTeam);
@@ -96,7 +96,7 @@ router.put("/edytuj/:id", function (req, res) {
 });
 
 // DELETE - deletes selected team
-router.delete("/", function (req, res) {
+router.delete("/", verifyUser, hasEmployeePermissions, function (req, res) {
   const id = req.body.id;
 
   Team.findOneAndDelete({ _id: id }, (err) => {

@@ -7,7 +7,7 @@ import { Footer } from './features/partials/Footer';
 import { Header } from './features/partials/Header';
 import { Login } from './features/authorization/Login';
 import { Register } from './features/authorization/Register';
-import { Account } from './features/dynamicPages/Account';
+import { Account } from './features/dynamicPages/Account/Account';
 import { Invoices } from './features/dynamicPages/Invoices/Invoices';
 import { AddInvoice } from './features/dynamicPages/Invoices/AddInvoice';
 import { EditInvoice } from './features/dynamicPages/Invoices/EditInvoice';
@@ -43,8 +43,8 @@ function App() {
           console.warn("setUserContext token=null because of NOT ok response from /refreshToken");
           setUserContext({ ...userContext, token: null });
         }
-        // call refreshToken every 1 minutes to renew the authentication token.
-        setTimeout(verifyUser, 1 * 60 * 1000);
+        // call refreshToken every 5 minutes to renew the authentication token.
+        setTimeout(verifyUser, 5 * 60 * 1000);
       })
   }, [setUserContext]);
 

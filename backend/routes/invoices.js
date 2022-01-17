@@ -3,11 +3,13 @@ const express = require("express");
 const router = express.Router();
 
 const Invoice = require("../models/invoice");
-const InvoicesData = require("../models/invoiceData");
 const Team = require("../models/team");
 
+const { verifyUser, hasClientPermissions } = require("../authenticate")
+
 //INDEX - show all invoices
-router.get("/", function (req, res) {
+router.get("/", verifyUser, hasClientPermissions, function (req, res) {
+  // TODO different actions for different roles
   Invoice.find({}, function (err, allInvoices) {
     if (err) {
       console.log(err);
@@ -17,8 +19,8 @@ router.get("/", function (req, res) {
   });
 });
 
-//CREATE - add a new team to DB
-router.post("/dodaj", function (req, res) {
+//CREATE - add a new invoice to DB
+router.post("/dodaj", verifyUser, hasClientPermissions, function (req, res) {
   // get data from form and add to reports array
   const is_b2b = req.body.is_b2b;
   const invoice_data_id = req.body.invoice_data_id;
@@ -27,7 +29,7 @@ router.post("/dodaj", function (req, res) {
     invoice_data_id: invoice_data_id
   }
 
-  // Create a new team and save to DB
+  // Create a new invoice and save to DB
   if (is_b2b !== undefined && invoice_data_id !== undefined) {
     Invoice.create(newInvoice, function (err, newlyCreated) {
       if (err) {
@@ -42,8 +44,8 @@ router.post("/dodaj", function (req, res) {
   }
 });
 
-//NEW - show form to create new report
-router.get("/dodaj", function (req, res) {
+//NEW - show form to create new invoice
+router.get("/dodaj", verifyUser, hasClientPermissions, function (req, res) {
   Team.find({}, function (err, allTeams) {
     if (err) {
       console.log(err);

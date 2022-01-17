@@ -7,7 +7,7 @@ const Team = require("../models/team");
 const User = require("../models/user");
 const Invoice = require("../models/invoice");
 
-const { verifyUser, hasEmployeePermissions, hasAdminPermissions } = require("../authenticate")
+const { verifyUser, hasClientPermissions, hasEmployeePermissions, hasAdminPermissions } = require("../authenticate")
 
 const getServiceDataFromRequest = (req) => {
 
@@ -26,14 +26,26 @@ const getServiceDataFromRequest = (req) => {
 }
 
 //INDEX - show all reserved services
-router.get("/", verifyUser, hasEmployeePermissions, function (req, res) {
-  Service.find({}, function (err, allServices) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(allServices);
-    }
-  });
+router.get("/", verifyUser, hasClientPermissions, function (req, res) {
+  console.log("req.user: ", req.user._id);
+
+  if (req.user.role_id === "Klient") {
+    Service.find({ user_id: req.user._id }, function (err, allClientServices) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(allClientServices);
+      }
+    });
+  } else {
+    Service.find({}, function (err, allServices) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(allServices);
+      }
+    });
+  }
 });
 
 //NEW - show form to create new report

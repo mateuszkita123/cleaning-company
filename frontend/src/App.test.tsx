@@ -1,10 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import { store } from './app/store';
 import App from './App';
-import { UserRoles } from './app/constans';
+import { Endpoints, UserRoles } from './app/constans';
 import { renderWithContext } from './app/utils/testUtils';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const initialState = {
   details: {
@@ -35,7 +36,7 @@ test('renders home page not logged in header', () => {
 });
 
 test('renders home page logged in header', () => {
-  renderWithContext(<App />, initialState);
+  renderWithContext((<App />), initialState);
 
   const helloMessage = screen.queryByText('Zalogowano jako admin@wp.pl');
   const logoutButton = screen.queryByText('Wyloguj');

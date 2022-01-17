@@ -13,6 +13,7 @@ export enum UserRoles {
 }
 
 export enum Endpoints {
+  HOME_PAGE = "/",
   INVOICES_DATA = "/dane_do_faktur",
   ADD_INVOICES_DATA = "/dane_do_faktur/dodaj",
   EDIT_INVOICES_DATA = "/dane_do_faktur/edytuj",
