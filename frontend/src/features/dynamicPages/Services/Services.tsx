@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useContext } from "react";
 import { Alert, Table } from "react-bootstrap";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
@@ -12,12 +12,11 @@ import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);
-  const [status, setStatus] = useState<IServicesState["status"]>(FetchingDataStatus.IDLE);
+  const [status, setStatus] = useState<IServicesState["status"]>(FetchingDataStatus.LOADING);
   const [error, setError] = useState("");
   const { userContext } = useContext(UserContext);
   const { refreshContext } = useContext(RefreshContext);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
@@ -65,38 +64,39 @@ export const Services: FC = () => {
       <div className="container">
         <h1 className="table-heading">Zarezerwowane usługi</h1>
         <div className="row text-center flex-wrap">
-          {FetchingDataStatus.IDLE && data.length !== 0 ? (<Table responsive striped bordered hover>
-            <thead>
-              <tr>
-                <th>Adres</th>
-                <th>Powierzchnia [m<sup>2</sup>]</th>
-                <th>Cena jednostkowa [PLN/m<sup>2</sup>]</th>
-                <th>Cena całkowita [PLN]</th>
-                <th>Opis</th>
-                <th>Status</th>
-                <th>Id zespołów</th>
-                <th>Id użytkownika</th>
-                <th>Id faktury</th>
-                <th>Akcje</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data && data.map((element) => (
-                <tr key={element._id.toString()}>
-                  <th>{element.service_address}</th>
-                  <th>{element.service_area}</th>
-                  <th>{element.service_unit_price}</th>
-                  <th>{element.service_area.valueOf() * element.service_unit_price.valueOf()}</th>
-                  <th>{element.description}</th>
-                  <th>{element.status}</th>
-                  <th>{element.teams_id}</th>
-                  <th>{element.user_id}</th>
-                  <th>{element.invoice_id}</th>
-                  <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
-                </tr>))
-              }
-            </tbody>
-          </Table>) : <p>Nie masz jeszcze zarezerwowanych usług!</p>}
+          {FetchingDataStatus.IDLE && data.length !== 0 ? (
+            <Table responsive striped bordered hover>
+              <thead>
+                <tr>
+                  <th>Adres</th>
+                  <th>Powierzchnia [m<sup>2</sup>]</th>
+                  <th>Cena jednostkowa [PLN/m<sup>2</sup>]</th>
+                  <th>Cena całkowita [PLN]</th>
+                  <th>Opis</th>
+                  <th>Status</th>
+                  <th>Id zespołów</th>
+                  <th>Id użytkownika</th>
+                  <th>Id faktury</th>
+                  <th>Akcje</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data && data.map((element) => (
+                  <tr key={element._id.toString()}>
+                    <th>{element.service_address}</th>
+                    <th>{element.service_area}</th>
+                    <th>{element.service_unit_price}</th>
+                    <th>{element.service_area.valueOf() * element.service_unit_price.valueOf()}</th>
+                    <th>{element.description}</th>
+                    <th>{element.status}</th>
+                    <th>{element.teams_id}</th>
+                    <th>{element.user_id}</th>
+                    <th>{element.invoice_id}</th>
+                    <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
+                  </tr>))
+                }
+              </tbody>
+            </Table>) : <p>Nie masz jeszcze zarezerwowanych usług!</p>}
         </div>
       </div>
       <div className="container">

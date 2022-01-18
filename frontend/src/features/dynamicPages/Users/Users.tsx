@@ -1,5 +1,6 @@
 import { FC, useState, useEffect, useContext } from "react";
-import { Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
+import { Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
@@ -7,26 +8,35 @@ import { UserContext } from "../../../context/UserContext";
 import { IUsersState } from "../../../interfaces";
 import { ActionButtons } from "../../links/ActionButtons";
 import { Loader } from "../../links/Loader";
+import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 
-export const UsersPage: FC = () => {
+export const Users: FC = () => {
   const [data, setData] = useState<IUsersState["users"]>([]);
-  const [status, setStatus] = useState<IUsersState["status"]>(FetchingDataStatus.IDLE);
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState<IUsersState["status"]>(FetchingDataStatus.LOADING);
   const { refreshContext } = useContext(RefreshContext);
   const { userContext } = useContext(UserContext);
+  const location = useLocation();
 
   useEffect(() => {
     setStatus(FetchingDataStatus.LOADING);
     fetch(API_URL + Endpoints.ALL_USERS, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
-        setData(result);
+        console.log("result: ", result);
+        if (result.status === "Permission error") {
+          setStatus(FetchingDataStatus.FAILED);
+          setError("Nie masz uprawnień do wyświetlenia zawartości tej strony!");
+        }
+        if (Array.isArray(result)) {
+          setStatus(FetchingDataStatus.IDLE);
+          setData(result);
+        }
       })
       .catch(error => {
         console.log("Błąd: ", error);
         setStatus(FetchingDataStatus.FAILED);
-      })
-      .finally(() => {
-        setStatus(FetchingDataStatus.IDLE);
+        setError("Wystąpił nieobsługiwany błąd!");
       });
   }, [refreshContext.refreshId]);
 
@@ -34,11 +44,24 @@ export const UsersPage: FC = () => {
     return <Loader />
   }
 
+  if (status === FetchingDataStatus.FAILED) {
+    return location.pathname === Endpoints.ALL_USERS ? (
+      <>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <div className="container">
+          <p>
+            <ReturnToHomePage />
+          </p>
+        </div>
+      </>
+    ) : <Outlet />
+  }
+
   return (
     <div className="container">
       <h1 className="table-heading">Zarejestrowani użytkownicy</h1>
       <div className="row text-center flex-wrap">
-        {status !== FetchingDataStatus.FAILED ? (
+        {FetchingDataStatus.IDLE && data.length !== 0 ? (
           <Table responsive striped bordered hover>
             <thead>
               <tr>
@@ -57,7 +80,7 @@ export const UsersPage: FC = () => {
                   <th><ActionButtons id={user._id} endpoint={Endpoints.ALL_USERS} /></th>
                 </tr>))}
             </tbody>
-          </Table>) : <p>Nie udało się pobrać danych</p>}
+          </Table>) : <p>W systemie nie ma jeszcze zarejestrowanych użytkowników!</p>}
       </div>
     </div>
   );

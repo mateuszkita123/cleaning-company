@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, useContext } from "react";
-import { Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
 import { getOptions } from "../../../app/utils";
@@ -12,7 +12,8 @@ import { ReturnToHomePage } from "../../links/ReturnToHomePage";
 
 export const Invoices: FC = () => {
   const [data, setData] = useState<IInvoicesState["invoices"]>([]);
-  const [status, setStatus] = useState<IInvoicesState["status"]>(FetchingDataStatus.IDLE);
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState<IInvoicesState["status"]>(FetchingDataStatus.LOADING);
   const { userContext } = useContext(UserContext);
   const { refreshContext } = useContext(RefreshContext);
   const location = useLocation();
@@ -22,14 +23,20 @@ export const Invoices: FC = () => {
     fetch(API_URL + Endpoints.INVOICES, getOptions(userContext.token))
       .then(res => res.json())
       .then((result) => {
-        setData(result);
+        console.log("result: ", result);
+        if (result.status === "Permission error") {
+          setStatus(FetchingDataStatus.FAILED);
+          setError("Nie masz uprawnień do wyświetlenia zawartości tej strony!");
+        }
+        if (Array.isArray(result)) {
+          setStatus(FetchingDataStatus.IDLE);
+          setData(result);
+        }
       })
       .catch(error => {
         console.log("Błąd: ", error);
         setStatus(FetchingDataStatus.FAILED);
-      })
-      .finally(() => {
-        setStatus(FetchingDataStatus.IDLE);
+        setError("Wystąpił nieobsługiwany błąd!");
       });
   }, [refreshContext.refreshId]);
 
@@ -37,12 +44,25 @@ export const Invoices: FC = () => {
     return <Loader />
   }
 
+  if (status === FetchingDataStatus.FAILED) {
+    return location.pathname === Endpoints.INVOICES ? (
+      <>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <div className="container">
+          <p>
+            <ReturnToHomePage />
+          </p>
+        </div>
+      </>
+    ) : <Outlet />
+  }
+
   return location.pathname === Endpoints.INVOICES ? (
     <>
       <div className="container">
         <h1 className="table-heading">Wystawione faktury</h1>
         <div className="row text-center flex-wrap">
-          {status !== FetchingDataStatus.FAILED ? (
+          {FetchingDataStatus.IDLE && data.length !== 0 ? (
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
@@ -59,7 +79,7 @@ export const Invoices: FC = () => {
                     <th><ActionButtons id={element._id} endpoint={Endpoints.INVOICES} /></th>
                   </tr>))}
               </tbody>
-            </Table>) : <p>Nie udało się pobrać danych</p>}
+            </Table>) : <p>W systemie nie ma jeszcze żadnych faktur!</p>}
         </div>
       </div>
       <div className="container">
@@ -70,7 +90,5 @@ export const Invoices: FC = () => {
         </p>
       </div>
     </>
-  ) : (
-    <Outlet />
-  )
+  ) : <Outlet />
 }

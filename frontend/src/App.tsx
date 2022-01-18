@@ -12,10 +12,11 @@ import { Invoices } from './features/dynamicPages/Invoices/Invoices';
 import { AddInvoice } from './features/dynamicPages/Invoices/AddInvoice';
 import { EditInvoice } from './features/dynamicPages/Invoices/EditInvoice';
 import { Clients } from './features/dynamicPages/Clients/Clients';
+import { EditClients } from './features/dynamicPages/Clients/EditClients';
 import { Services } from './features/dynamicPages/Services/Services';
 import { AddService } from './features/dynamicPages/Services/AddService';
 import { EditService } from './features/dynamicPages/Services/EditService';
-import { UsersPage } from './features/dynamicPages/Users/UsersPage';
+import { Users } from './features/dynamicPages/Users/Users';
 import { ContactPage } from './features/staticPages/ContactPage';
 import { HomePage } from './features/staticPages/homePage';
 import { PageNotFound } from './features/staticPages/PageNotFound';
@@ -76,8 +77,8 @@ function App() {
           <Route path={"rejestracja"} element={<Register />} />
           <Route path="/" element={<PrivateRoutes role={UserRoles.ADMIN} />} >
             <Route path={"me"} element={<Account />} />
-            <Route path={"uzytkownicy"} element={<UsersPage />} >
-              <Route path={"edytuj/:id"} element={<UsersPage />} />
+            <Route path={"uzytkownicy"} element={<Users />} >
+              <Route path={"edytuj/:id"} element={<Users />} />
             </Route>
             <Route path={"dane_do_faktur"} element={<InvoicesData />}>
               <Route path={"dodaj"} element={<AddInvoiceData />} />
@@ -95,7 +96,9 @@ function App() {
               <Route path={"dodaj"} element={<AddService />} />
               <Route path={"edytuj/:id"} element={<EditService />} />
             </Route>
-            <Route path={"klienci"} element={<Clients />} />
+            <Route path={"klienci"} element={<Clients />} >
+              <Route path={"edytuj/:id"} element={<EditClients />} />
+            </Route>
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
