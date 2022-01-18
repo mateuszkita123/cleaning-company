@@ -87,7 +87,7 @@ export const AddService: FC = () => {
         description: description
       })
 
-      fetch(API_URL + Endpoints.ADD_SERVICES, { ...postOptions, body: body })
+      fetch(API_URL + Endpoints.ADD_SERVICES, { body: body, ...postOptions(userContext.token) })
         .then(res => res.json())
         .then(result => {
           console.log(result);

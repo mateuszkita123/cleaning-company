@@ -80,9 +80,6 @@ export const Account = () => {
           <Button variant="primary" onClick={logoutHandler}>Wyloguj</Button>
         </Card.Body>
       </Card>
-      <Link to={Endpoints.INVOICES_DATA}>Dane do faktury</Link>
-      <Link to={Endpoints.INVOICES}>Wystawione faktury</Link>
-      <Link to={Endpoints.SERVICES}>Zarezerwowane usługi</Link>
     </>
   )
 }

@@ -1,14 +1,15 @@
 import { FC, useState, useEffect, useContext } from "react";
-import { Alert, Table } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { API_URL, Endpoints, FetchingDataStatus, UserRoles } from "../../../app/constans";
 import { getOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
 import { IServicesState } from "../../../interfaces";
-import { ActionButtons } from "../../links/ActionButtons";
 import { Loader } from "../../links/Loader";
 import { ReturnToHomePage } from "../../links/ReturnToHomePage";
+import { ClientTiles } from "./ClientTiles";
+import { EmployeeTable } from "./EmployeeTable";
 
 export const Services: FC = () => {
   const [data, setData] = useState<IServicesState["services"]>([]);
@@ -59,53 +60,22 @@ export const Services: FC = () => {
     ) : <Outlet />
   }
 
-  return location.pathname === Endpoints.SERVICES ? (
-    <>
-      <div className="container">
-        <h1 className="table-heading">Zarezerwowane usługi</h1>
-        <div className="row text-center flex-wrap">
-          {FetchingDataStatus.IDLE && data.length !== 0 ? (
-            <Table responsive striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Adres</th>
-                  <th>Powierzchnia [m<sup>2</sup>]</th>
-                  <th>Cena jednostkowa [PLN/m<sup>2</sup>]</th>
-                  <th>Cena całkowita [PLN]</th>
-                  <th>Opis</th>
-                  <th>Status</th>
-                  <th>Id zespołów</th>
-                  <th>Id użytkownika</th>
-                  <th>Id faktury</th>
-                  <th>Akcje</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data && data.map((element) => (
-                  <tr key={element._id.toString()}>
-                    <th>{element.service_address}</th>
-                    <th>{element.service_area}</th>
-                    <th>{element.service_unit_price}</th>
-                    <th>{element.service_area.valueOf() * element.service_unit_price.valueOf()}</th>
-                    <th>{element.description}</th>
-                    <th>{element.status}</th>
-                    <th>{element.teams_id}</th>
-                    <th>{element.user_id}</th>
-                    <th>{element.invoice_id}</th>
-                    <th><ActionButtons id={element._id} endpoint={Endpoints.SERVICES} /></th>
-                  </tr>))
-                }
-              </tbody>
-            </Table>) : <p>Nie masz jeszcze zarezerwowanych usług!</p>}
-        </div>
+  return location.pathname === Endpoints.SERVICES ? (<>
+    <div className="container">
+      <h1 className="table-heading">Zarezerwowane usługi</h1>
+      <div className="row text-center flex-wrap">
+        {FetchingDataStatus.IDLE && data.length !== 0 ?
+          userContext.details?.role_id === UserRoles.CLIENT ?
+            <ClientTiles data={data} /> :
+            (<EmployeeTable data={data} />) : (<p>Nie masz jeszcze zarezerwowanych usług!</p>)}
       </div>
-      <div className="container">
-        <p>
-          <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
-          {' '}
-          <ReturnToHomePage />
-        </p>
-      </div>
-    </>
-  ) : <Outlet />
+    </div>
+    <div className="container">
+      <p>
+        <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
+        {' '}
+        <ReturnToHomePage />
+      </p>
+    </div>
+  </>) : <Outlet />
 }

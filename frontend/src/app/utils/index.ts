@@ -16,8 +16,7 @@ export const getOptions = (token: IUserContextData["token"]): RequestInit =>
   ...genericOptions(token),
 })
 
-export const postOptions = (token: IUserContextData["token"]): RequestInit =>
-({
+export const postOptions = (token: IUserContextData["token"]): RequestInit => ({
   method: "POST",
   ...genericOptions(token),
 })

@@ -57,7 +57,7 @@ export const Users: FC = () => {
     ) : <Outlet />
   }
 
-  return (
+  return location.pathname === Endpoints.ALL_USERS ? (
     <div className="container">
       <h1 className="table-heading">Zarejestrowani użytkownicy</h1>
       <div className="row text-center flex-wrap">
@@ -83,5 +83,5 @@ export const Users: FC = () => {
           </Table>) : <p>W systemie nie ma jeszcze zarejestrowanych użytkowników!</p>}
       </div>
     </div>
-  );
+  ) : <Outlet />
 }

@@ -22,26 +22,26 @@ export const HomePage: FC = () => {
     <div className="container">
       <h3>Nasze pakiety usług:</h3>
       <div className="row text-center">
-        <div onClick={() => navigateToAddService("basic")} className="border rounded-3 col-12 col-md-6 col-lg-4 p-4">
+        <div onClick={() => navigateToAddService("basic")} className="cursor-pointer border rounded-3 col-12 col-md-6 col-lg-4 p-4">
           <div>
             <img src="/images/basic.jpg" alt="Pakiet basic" width="250" />
           </div>
           <h4 className="mt-2">Basic</h4>
-          <p>Ceny od 4zł/m2</p>
+          <p>Cena: 4zł/m2</p>
         </div>
-        <div onClick={() => navigateToAddService("full")} className="border rounded-3 col-12 col-md-6 col-lg-4 p-4">
+        <div onClick={() => navigateToAddService("full")} className="cursor-pointer border rounded-3 col-12 col-md-6 col-lg-4 p-4">
           <div>
             <img src="/images/full.jpg" alt="Pakiet full" width="250" />
           </div>
           <h4 className="mt-2">Full</h4>
-          <p>Ceny od 6zł/m2</p>
+          <p>Cena: 6zł/m2</p>
         </div>
-        <div onClick={() => navigateToAddService("premium")} className="border rounded-3 col-12 col-md-6 col-lg-4 p-4">
+        <div onClick={() => navigateToAddService("premium")} className="cursor-pointer border rounded-3 col-12 col-md-6 col-lg-4 p-4">
           <div>
             <img src="/images/premium.jpg" alt="Pakiet premuim" width="250" />
           </div>
           <h4 className="mt-2">Premium</h4>
-          <p>Ceny od 8zł/m2</p>
+          <p>Cena: 8zł/m2</p>
         </div>
       </div>
     </div>

@@ -122,7 +122,7 @@ export const AddInvoiceData: FC = () => {
         </FormGroup>
         <FormGroup
           className="text-start mb-3">
-          <Form.Label className="fw-bold">Telefon</Form.Label>
+          <Form.Label className="fw-bold">Email</Form.Label>
           <Form.Control
             type="text"
             placeholder="Wpisz email firmowy"

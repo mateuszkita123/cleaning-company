@@ -14,8 +14,6 @@ type ComponentProps = ActionButtonProps & ActionIconProps;
 const ActionButton: React.FC<ComponentProps> = ({ customHandler, icon, path, content, className, fontClassName }) => {
   const navigate = useNavigate();
   const handleClick = () => {
-    console.log("clicked!");
-    console.log("!!customHandler: ", !!customHandler);
     !!customHandler ? customHandler() : navigate(path);
   }
 
