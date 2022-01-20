@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { API_URL, FetchingDataStatus, Endpoints } from "../../../app/constans";
 import { postOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
+import { UserContext } from "../../../context/UserContext";
 import { IInvoicesData } from "../../../interfaces";
 import { SaveButton } from "../../links/SaveButton";
 
@@ -18,6 +19,7 @@ export const AddInvoiceData: FC = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setRefreshContext } = useContext(RefreshContext);
+  const { userContext } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, key: keyof IInvoicesData): void => {
@@ -48,7 +50,7 @@ export const AddInvoiceData: FC = () => {
         company_phone,
         company_email
       })
-      fetch(API_URL + Endpoints.ADD_INVOICES_DATA, { ...postOptions, body: body })
+      fetch(API_URL + Endpoints.ADD_INVOICES_DATA, { ...postOptions(userContext.token), body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

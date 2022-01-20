@@ -3,7 +3,7 @@ import { Alert, Form, FormGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import Select, { ActionMeta, SingleValue } from "react-select";
 import { v4 as uuidv4 } from "uuid";
-import { API_URL, Endpoints, FetchingDataStatus } from "../../../app/constans";
+import { API_URL, Endpoints, FetchingDataStatus, UserRoles } from "../../../app/constans";
 import { getOptions, putOptions } from "../../../app/utils";
 import { RefreshContext } from "../../../context/RefreshContext";
 import { UserContext } from "../../../context/UserContext";
@@ -159,7 +159,7 @@ export const EditService: FC = () => {
             value={data.service_area}
           />
         </FormGroup>
-        <FormGroup
+        {userContext.details?.role_id === UserRoles.CLIENT ? (<FormGroup
           className="text-start mb-3">
           <Form.Label className="fw-bold">Cena jednostkowa [PLN/m<sup>2</sup>]</Form.Label>
           <Form.Control
@@ -167,8 +167,19 @@ export const EditService: FC = () => {
             placeholder="Cena za metr kwadratowy"
             onChange={e => handleChange(e, "service_unit_price")}
             value={data.service_unit_price}
+            disabled
           />
-        </FormGroup>
+        </FormGroup>) :
+          (<FormGroup
+            className="text-start mb-3">
+            <Form.Label className="fw-bold">Cena jednostkowa [PLN/m<sup>2</sup>]</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Cena za metr kwadratowy"
+              onChange={e => handleChange(e, "service_unit_price")}
+              value={data.service_unit_price}
+            />
+          </FormGroup>)}
         <FormGroup
           className="text-start mb-3">
           <Form.Label className="fw-bold">Opis</Form.Label>
@@ -188,6 +199,7 @@ export const EditService: FC = () => {
             value={selectedStatusOption}
             onChange={(newValue, actionMeta) => handleSingleSelectChange(newValue, actionMeta, setSelectedStatusOption)}
             options={statusSelectOptions}
+            isDisabled={userContext.details?.role_id === UserRoles.CLIENT}
           />
         </FormGroup>
         <Form.Label className="fw-bold">Faktura</Form.Label>
@@ -206,6 +218,7 @@ export const EditService: FC = () => {
             value={selectedUserOption}
             onChange={(newValue, actionMeta) => handleSingleSelectChange(newValue, actionMeta, setSelectedUserOption)}
             options={usersDataOptions}
+            isDisabled={userContext.details?.role_id === UserRoles.CLIENT}
           />
         </FormGroup>
         <FormGroup
@@ -215,6 +228,7 @@ export const EditService: FC = () => {
             value={selectedTeamOption}
             onChange={(newValue, actionMeta) => handleSingleSelectChange(newValue, actionMeta, setSelectedTeamOption)}
             options={teamsDataOptions}
+            isDisabled={userContext.details?.role_id === UserRoles.CLIENT}
           />
         </FormGroup>
         <SaveButton isSubmitting={isSubmitting} endpoint={Endpoints.SERVICES} />
