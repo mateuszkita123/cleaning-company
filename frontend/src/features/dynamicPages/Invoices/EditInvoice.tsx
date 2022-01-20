@@ -58,7 +58,7 @@ export const EditInvoice: FC = () => {
 
     if (selectedB2BOption !== null && selectedInvoicesDataOption !== null) {
       const body = JSON.stringify({ is_b2b: selectedB2BOption["value"] === 'true', invoice_data_id: selectedInvoicesDataOption["value"] })
-      fetch(API_URL + Endpoints.ADD_INVOICES, { ...postOptions, body: body })
+      fetch(API_URL + Endpoints.ADD_INVOICES, { ...postOptions(userContext.token), body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

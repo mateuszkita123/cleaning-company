@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect } from "react"
 import { Card, Button } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { API_URL, Endpoints } from "../../../app/constans"
+import { API_URL } from "../../../app/constans"
 import { getOptions } from "../../../app/utils"
 import { UserContext } from "../../../context/UserContext"
 import { Loader } from "../../links/Loader"
@@ -58,28 +57,30 @@ export const Account = () => {
   }
 
   return userContext.details === null ? (
-    <div>Error Loading User details</div>
+    <div>Błąd podczas ładowania szczegółów konta</div>
   ) : !userContext.details ? (
     <Loader />
   ) : (
     <>
-      <Card style={{ width: '18rem' }}>
-        <Card.Img variant="top" />
-        <Card.Body>
-          <Card.Title>Konto użytkownika</Card.Title>
-          <Card.Text>
-            Witaj&nbsp;
-            <strong>
-              {userContext.details.firstName}
-              {userContext.details.lastName &&
-                " " + userContext.details.lastName}
-            </strong>!
-            <br />
-            Rola: <strong>{userContext.details.role_id}</strong>
-          </Card.Text>
-          <Button variant="primary" onClick={logoutHandler}>Wyloguj</Button>
-        </Card.Body>
-      </Card>
+      <div className="container mt-3">
+        <Card>
+          <Card.Img variant="top" />
+          <Card.Body>
+            <Card.Title>Konto użytkownika</Card.Title>
+            <Card.Text>
+              Witaj&nbsp;
+              <strong>
+                {userContext.details.firstName}
+                {userContext.details.lastName &&
+                  " " + userContext.details.lastName}
+              </strong>!
+              <br />
+              Rola: <strong>{userContext.details.role_id}</strong>
+            </Card.Text>
+            <Button variant="primary" onClick={logoutHandler}>Wyloguj</Button>
+          </Card.Body>
+        </Card>
+      </div>
     </>
   )
 }

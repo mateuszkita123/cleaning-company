@@ -61,13 +61,14 @@ export const Services: FC = () => {
   }
 
   return location.pathname === Endpoints.SERVICES ? (<>
-    <div className="container">
+    <div className="container mb-3">
       <h1 className="table-heading">Zarezerwowane usługi</h1>
       <div className="row text-center flex-wrap">
         {FetchingDataStatus.IDLE && data.length !== 0 ?
           userContext.details?.role_id === UserRoles.CLIENT ?
             <ClientTiles data={data} /> :
-            (<EmployeeTable data={data} />) : (<p>Nie masz jeszcze zarezerwowanych usług!</p>)}
+            <EmployeeTable data={data} /> :
+          <p>Nie masz jeszcze zarezerwowanych usług!</p>}
       </div>
     </div>
     <div className="container">

@@ -73,7 +73,7 @@ export const EditTeams: FC = () => {
         ids: ids
       })
 
-      fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, { ...putOptions, body: body })
+      fetch(`${API_URL}${Endpoints.EDIT_TEAMS}/${id}`, { ...putOptions(userContext.token), body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

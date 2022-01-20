@@ -54,7 +54,7 @@ export const AddTeams: FC = () => {
         ids: ids
       })
 
-      fetch(API_URL + Endpoints.ADD_TEAMS, { ...postOptions, body: body })
+      fetch(API_URL + Endpoints.ADD_TEAMS, { ...postOptions(userContext.token), body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);

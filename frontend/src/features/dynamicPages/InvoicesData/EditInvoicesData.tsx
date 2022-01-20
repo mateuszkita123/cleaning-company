@@ -61,7 +61,7 @@ export const EditInvoiceData: FC = () => {
 
     if (first_name && last_name && company_name && company_vat_number && company_address && company_phone && company_email) {
       const body = JSON.stringify({ first_name: data.first_name })
-      fetch(API_URL + Endpoints.EDIT_INVOICES_DATA, { ...putOptions, body: body })
+      fetch(API_URL + Endpoints.EDIT_INVOICES_DATA, { ...putOptions(userContext.token), body: body })
         .then(res => res.json())
         .then((result) => {
           console.log(result);
