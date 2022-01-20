@@ -4,10 +4,10 @@ export function NotSignedIn() {
   return (
     <>
       <li className={"nav-item"}>
-        <Link className="nav-link" to="/logowanie">Logowanie</Link>
+        <Link className="nav-link text-white" to="/logowanie">Logowanie</Link>
       </li>
       <li className={"nav-item"}>
-        <Link className="nav-link" to="/rejestracja">Rejestracja</Link>
+        <Link className="nav-link text-white" to="/rejestracja">Rejestracja</Link>
       </li>
     </>
   );

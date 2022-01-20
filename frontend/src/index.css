@@ -1,3 +1,8 @@
+/* Global */
+*, *::before, *::after {
+  box-sizing: border-box; 
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -11,8 +16,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-.navbar {
-  background: linear-gradient(180deg, #63bf91, #49bd9e, #2abaab, #00b6b7, #00b2c1, #00acca, #00a7d0, #2ca0d3);
+/* header section */
+.banner-image {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.8)), url("https://images.unsplash.com/photo-1482449609509-eae2a7ea42b7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80");
+  width:100%;
+  background-position: center center;
+  background-size: cover;
+}
+.banner-content h1{
+  padding:40vh 3rem 5vh 3rem;
+}
+.banner-content h2{
+  padding:0 3rem 46vh 3rem;
+}
+.link {
   color:#ffffff;
 }
 /* Sticky footer styles
@@ -87,4 +104,7 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
+}
+.navbar-space {
+  padding-top:57.5px;
 }

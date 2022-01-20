@@ -7,10 +7,14 @@ export const HomePage: FC = () => {
 
   return (<>
     <header className="jumbotron">
+      <div className="banner-image">
+        <div className="banner-content text-white">
+              <h1>Jesteśmy liderem na rynku sprzątającym</h1>
+              <h2>Zachęcamy do skorzystania z naszych usług i kontaktu!</h2>
+        </div>
+      </div>
+      
       <div className="container">
-        <h1 className="table-heading"><img alt="Cleaning Master logo" src="/images/logo.png" width="100px" /> Cleaning Master</h1>
-        <p>Jesteśmy liderem na rynku sprzątającym.</p>
-        <p>Zachęcamy do skorzystania z naszych usługi i kontaktu.</p>
         <p>
           <Link className="btn btn-primary btn-lg" to="/uslugi">Usługi</Link>
           {' '}

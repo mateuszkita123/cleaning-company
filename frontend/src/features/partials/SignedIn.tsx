@@ -23,10 +23,10 @@ export function SignedIn() {
   return (
     <>
       <li className={"nav-item"}>
-        <Link className="nav-link" to={"/me"}>Zalogowano jako {userContext.details?.username}</Link>
+        <Link className="nav-link text-white" to={"/me"}>Zalogowano jako {userContext.details?.username}</Link>
       </li>
       <li className={"nav-item"}>
-        <Link className="nav-link" to="" onClick={logoutHandler}>Wyloguj</Link>
+        <Link className="nav-link text-white" to="" onClick={logoutHandler}>Wyloguj</Link>
       </li>
     </>
   );

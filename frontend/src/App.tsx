@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { API_URL, UserRoles } from './app/constans';
 import { UserContext } from './context/UserContext';
-import { Footer } from './features/partials/Footer';
-import { Header } from './features/partials/Header';
-import { Login } from './features/authorization/Login';
-import { Register } from './features/authorization/Register';
+import { Footer } from './features/partials/footer';
+import { Header } from './features/partials/header';
+import { Login } from './features/authorization/login';
+import { Register } from './features/authorization/register';
 import { Account } from './features/dynamicPages/Account/Account';
 import { Invoices } from './features/dynamicPages/Invoices/Invoices';
 import { AddInvoice } from './features/dynamicPages/Invoices/AddInvoice';
@@ -17,7 +17,7 @@ import { Services } from './features/dynamicPages/Services/Services';
 import { AddService } from './features/dynamicPages/Services/AddService';
 import { EditService } from './features/dynamicPages/Services/EditService';
 import { Users } from './features/dynamicPages/Users/Users';
-import { ContactPage } from './features/staticPages/ContactPage';
+import { ContactPage } from './features/staticPages/contactPage';
 import { HomePage } from './features/staticPages/homePage';
 import { PageNotFound } from './features/staticPages/PageNotFound';
 import { PrivateRoutes } from './features/authorization/PrivateRoutes';
@@ -32,7 +32,6 @@ import './App.css';
 
 function App() {
   const { userContext, setUserContext } = useContext(UserContext);
-
   const verifyUser = useCallback(() => {
     fetch(API_URL + "/users/refreshToken", postWithoutCredentialsOptions)
       .then(async response => {
@@ -68,7 +67,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className={"App"}>
         <Header />
         <Routes>
           <Route index element={<HomePage />} />
