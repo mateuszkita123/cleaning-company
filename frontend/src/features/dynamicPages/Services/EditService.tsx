@@ -111,7 +111,7 @@ export const EditService: FC = () => {
         status: selectedStatusOption["value"]
       })
 
-      fetch(`${API_URL}${Endpoints.EDIT_SERVICES}/${id}`, { ...putOptions, body: body })
+      fetch(`${API_URL}${Endpoints.EDIT_SERVICES}/${id}`, { ...putOptions(userContext.token), body: body })
         .then(res => res.json())
         .then(result => {
           console.log(result);

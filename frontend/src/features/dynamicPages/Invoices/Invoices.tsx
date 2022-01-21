@@ -84,7 +84,7 @@ export const Invoices: FC = () => {
       </div>
       <div className="container">
         <p>
-          <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_INVOICES}>Wystaw fakturę</Link>
+          <Link className="btn btn-primary btn-lg mb-3" to={Endpoints.ADD_INVOICES}>Wystaw fakturę</Link>
           {' '}
           <ReturnToHomePage />
         </p>

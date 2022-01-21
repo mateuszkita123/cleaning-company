@@ -51,7 +51,7 @@ export const Services: FC = () => {
         {error && <Alert variant="danger">{error}</Alert>}
         <div className="container">
           <p>
-            <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
+            <Link className="btn btn-primary btn-lg mb-3" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
             {' '}
             <ReturnToHomePage />
           </p>
@@ -73,7 +73,7 @@ export const Services: FC = () => {
     </div>
     <div className="container">
       <p>
-        <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
+        <Link className="btn btn-primary btn-lg mb-3" to={Endpoints.ADD_SERVICES}>Zarezerwuj usługę</Link>
         {' '}
         <ReturnToHomePage />
       </p>

@@ -9,7 +9,7 @@ interface ISaveButtonProps {
 }
 
 export const SaveButton: FC<ISaveButtonProps> = ({ isSubmitting, endpoint }) => {
-  return (<div className="text-center mb-3">
+  return (<div className="text-center pb-3">
     <Button
       variant="primary"
       type="submit"

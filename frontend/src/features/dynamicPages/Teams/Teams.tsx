@@ -84,7 +84,7 @@ export const Teams: FC = () => {
       </div>
       <div className="container">
         <p>
-          <Link className="btn btn-primary btn-lg" to={Endpoints.ADD_TEAMS}>Utwórz zespół</Link>
+          <Link className="btn btn-primary btn-lg mb-3" to={Endpoints.ADD_TEAMS}>Utwórz zespół</Link>
           {' '}
           <ReturnToHomePage />
         </p>
