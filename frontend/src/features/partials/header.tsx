@@ -18,14 +18,14 @@ export const Header: FC<HeaderProps> = (props) => {
   const location = useLocation();
   return (
     <>
-      <nav className={`navbar navbar-expand-lg ${location.pathname === "/" ? "fixed-top" : ''} bg-dark`}>
+      <nav className={`navbar navbar-expand-lg ${location.pathname === "/" ? "fixed-top" : ''} navbar-dark bg-dark`}>
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             <img alt="Cleaning Master logo " src="/images/logo.png" width="30" className="d-inline-block align-text-top" />
             {' '}
             <span className="text-white">Cleaning Master</span>
           </a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button className="pos navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
